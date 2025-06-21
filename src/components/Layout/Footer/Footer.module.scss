@@ -1,0 +1,167 @@
+@import "../../../styles/variables.scss";
+
+.footer {
+  border-top: 10px solid $secondary-color;
+  background-color: $primary-color;
+  color: $white;
+  font-size: 1.4rem;
+}
+
+.footerTopbar {
+  position: relative;
+  padding: 30px 0;
+
+  @media screen and (min-width: $breakpoint-lg) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @media screen and (min-width: $breakpoint-md) {
+    margin-bottom: 26px;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-md) {
+    padding: 16px 0;
+  }
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+
+  @media (max-width: $breakpoint-md) {
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+}
+
+.contactTel {
+  margin: 0 4px;
+  a {
+    color: $white;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.contactNetwork {
+  color: $white;
+  margin-right: 12px;
+  transition: opacity 0.2s;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.footerNavbar {
+  @media screen and (min-width: $breakpoint-lg) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  @media (max-width: $breakpoint-lg) {
+    margin-top: 24px;
+  }
+}
+
+.footerNavlink {
+  margin-left: 24px;
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
+
+  &.footerNavlinkSecondary {
+    color: $secondary-color !important;
+  }
+
+  @media (max-width: $breakpoint-lg) {
+    margin-left: 0;
+    margin-right: 24px;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    display: block;
+    margin-bottom: 24px;
+  }
+}
+
+.desktopCityList {
+  @media (max-width: $breakpoint-md) {
+    display: none;
+  }
+}
+
+.footerCities {
+  columns: 6;
+  margin-bottom: 26px;
+  padding-left: 0;
+  list-style: none;
+  font-size: 1.4rem;
+  line-height: 1.14;
+
+  li {
+    padding: 4px 0;
+    a {
+      color: inherit;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.footerBottombar {
+  position: relative;
+  padding: 30px 0;
+  color: rgba(255, 255, 255, 0.7);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media screen and (min-width: $breakpoint-md) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @media screen and (max-width: $breakpoint-md) {
+    &::before {
+      left: -8px;
+      right: -8px;
+    }
+  }
+}
+
+.footerCopyright {
+  @media screen and (max-width: $breakpoint-md) {
+    display: block;
+    margin-bottom: 16px;
+  }
+}
+
+.footerLink {
+  margin-left: 20px;
+  text-decoration: underline;
+
+  @media (max-width: $breakpoint-md) {
+    margin-left: 0;
+    margin-right: 16px;
+  }
+}
