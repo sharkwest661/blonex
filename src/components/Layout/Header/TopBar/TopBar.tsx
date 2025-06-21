@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const TopBar: React.FC = () => {
   return (
-    <div className={styles.headerTopbar}>
+    <div className={styles.header__topbar}>
       <div className={styles.contact}>
         <a href="#" aria-label="Facebook" className={styles.contactNetwork}>
           <Facebook size={20} />

@@ -1,16 +1,60 @@
 @import "../../../../styles/variables.scss";
 
-.headerTopbar {
+.header__topbar {
   padding: 8px 0;
   background-color: $white;
   font-size: 1.4rem;
   line-height: 1.14;
   color: $primary-color;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+}
 
-  @media screen and (max-width: $breakpoint-md) {
+@media screen and (min-width: $breakpoint-md) {
+  .header__topbar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__topbar {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__topbar--mob {
+    position: relative;
+    display: block;
+    padding: 0;
+    padding-top: 32px;
+  }
+
+  .header__topbar--mob:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -8px;
+    right: -8px;
+    height: 1px;
+    background-color: rgba($primary-color, 0.1);
+  }
+}
+
+@media screen and (min-width: $breakpoint-md) {
+  .header__topbar--mob {
     display: none;
   }
 }
@@ -18,14 +62,16 @@
 .contact {
   display: flex;
   align-items: center;
-  gap: 8px; // Adds space between items
+  gap: 8px;
 }
 
 .contactTel {
   margin: 0 4px;
+
   a {
     color: $primary-color;
     text-decoration: none;
+
     &:hover {
       text-decoration: underline;
     }
@@ -33,24 +79,44 @@
 }
 
 .contactNetwork {
-  color: $primary-color; // This will color the SVG icon
+  color: $primary-color;
   display: flex;
   align-items: center;
   transition: opacity 0.2s;
+
   &:hover {
     opacity: 0.7;
   }
 }
 
-.logoutSection {
+.header__logout {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+}
+
+.logoutSection {
+  @extend .header__logout;
   gap: 8px;
+
   a {
     color: $primary-color;
     text-decoration: none;
+
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  svg {
+    color: $primary-color;
+    flex-shrink: 0;
   }
 }

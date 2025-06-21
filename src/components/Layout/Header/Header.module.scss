@@ -2,12 +2,19 @@
 
 .header {
   color: $primary-color;
-  background-color: $white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: $white !important;
 }
 
-.navbarBg {
-  background-color: $primary-color;
+.header__topbar {
+  padding: 8px 0;
+  background-color: $white;
+  font-size: 1.4rem;
+  line-height: 1.14;
+  color: $primary-color;
+}
+
+.navbar_bg {
+  background-color: $primary-color !important;
 }
 
 .navbar {
@@ -16,18 +23,261 @@
   align-items: center;
   justify-content: space-between;
   min-height: 86px;
-  padding: 10px 0;
+  padding: 20px 0;
 
-  @media (max-width: $breakpoint-md) {
+  @media (max-width: 767px) {
     min-height: 64px;
   }
 }
 
+@media screen and (min-width: $breakpoint-md) {
+  .header__topbar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__topbar {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__topbar--mob {
+    position: relative;
+    display: block;
+    padding: 0;
+    padding-top: 32px;
+  }
+
+  .header__topbar--mob:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -8px;
+    right: -8px;
+    height: 1px;
+    background-color: rgba($primary-color, 0.1);
+  }
+}
+
+@media screen and (min-width: $breakpoint-md) {
+  .header__topbar--mob {
+    display: none;
+  }
+}
+
+.header__btn {
+  position: relative;
+  margin-left: 6px;
+  padding: 13px 28px;
+  background: $secondary-color;
+  color: $primary-color;
+  z-index: 5;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: $border-radius;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: $font-family-bold;
+}
+
+.header__btn:hover,
+.header__btn:focus {
+  color: $primary-color;
+  background-color: $secondary-color;
+  -webkit-box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
+  -moz-box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
+  box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
+}
+
+@media screen and (max-width: 767px) {
+  .header__btn {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    justify-content: center;
+  }
+
+  .header__btn span {
+    display: none;
+  }
+
+  .header__btn.show {
+    width: auto;
+    padding: 4px 16px;
+    gap: 8px;
+  }
+
+  .header__btn.show span {
+    display: inline-block;
+  }
+}
+
+.header__links {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+}
+
+@media screen and (min-width: $breakpoint-md) {
+  .header__links {
+    margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__links {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+    -webkit-flex-direction: column-reverse;
+    -moz-box-orient: vertical;
+    -moz-box-direction: reverse;
+    -ms-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -moz-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    padding-bottom: 24px;
+  }
+}
+
+.header__link {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  margin-right: 10px;
+  padding: 10px;
+  color: $white;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+  text-decoration: none;
+
+  svg {
+    color: inherit;
+    flex-shrink: 0;
+  }
+}
+
+.header__link:hover,
+.header__link:focus {
+  color: $white;
+}
+
+@media screen and (min-width: 767px) {
+  .header__link:hover,
+  .header__link:focus {
+    background-color: #014c52;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__link {
+    margin-right: 0;
+    color: $primary-color;
+    width: 100%;
+
+    svg {
+      color: $primary-color;
+    }
+  }
+
+  .header__link:hover,
+  .header__link:focus {
+    color: $primary-color;
+
+    svg {
+      color: $primary-color;
+    }
+  }
+}
+
+// Icons are now handled by Lucide React components - no ::before needed
+
+.header__logout {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+// Legacy class names support (keeping existing class names working)
+.navbarBg {
+  @extend .navbar_bg;
+}
+
+.headerBtn {
+  @extend .header__btn;
+}
+
+.headerLinks {
+  @extend .header__links;
+}
+
+.headerLink {
+  @extend .header__link;
+}
+
+// Additional responsive navbar styles
 .navbarToggler {
   display: none;
 
-  @media (max-width: $breakpoint-md) {
-    display: flex; // changed to flex for centering icon
+  @media (max-width: 767px) {
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 32px;
@@ -35,7 +285,7 @@
     padding: 0;
     border: none;
     background-color: transparent;
-    color: $white; // Icon color
+    color: $white;
     z-index: 1001;
   }
 }
@@ -43,8 +293,10 @@
 .navbarBrand {
   margin-right: auto;
   margin-left: 20px;
-  @media (max-width: $breakpoint-md) {
-    margin: 0 auto; // Center the logo on mobile when menu is closed
+
+  @media (max-width: 767px) {
+    margin: 0 auto;
+
     &.hidden {
       display: none;
     }
@@ -55,7 +307,7 @@
   display: flex;
   align-items: center;
 
-  @media (max-width: $breakpoint-md) {
+  @media (max-width: 767px) {
     display: none;
     position: fixed;
     top: 0;
@@ -71,92 +323,6 @@
 
     &.show {
       display: flex;
-    }
-  }
-}
-
-.headerLinks {
-  display: flex;
-  align-items: center;
-
-  @media (max-width: $breakpoint-md) {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba($primary-color, 0.1);
-  }
-}
-
-.headerLink {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 46px;
-  margin-right: 10px;
-  padding: 10px;
-  color: $white;
-  border-radius: $border-radius;
-  transition: background-color 0.3s;
-
-  &:hover,
-  &:focus {
-    color: $white;
-    background-color: #014c52;
-  }
-
-  @media (max-width: $breakpoint-md) {
-    color: $primary-color;
-    width: 100%;
-    margin-right: 0;
-
-    .linkIcon {
-      color: $primary-color;
-    }
-
-    &:hover,
-    &:focus {
-      background-color: rgba($primary-color, 0.05);
-    }
-  }
-}
-
-.headerBtn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: 20px;
-  padding: 13px 20px;
-  background: $secondary-color;
-  color: $primary-color;
-  z-index: 5;
-  transition: 0.3s;
-  border-radius: $border-radius;
-  font-family: $font-family-bold;
-
-  &:hover {
-    box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
-  }
-
-  @media (max-width: $breakpoint-md) {
-    position: absolute;
-    right: 0;
-    width: 32px;
-    height: 32px;
-    padding: 4px;
-    justify-content: center;
-
-    span {
-      display: none;
-    }
-    &.show {
-      position: static;
-      width: auto;
-      padding: 4px 16px;
-
-      span {
-        display: inline-block;
-      }
     }
   }
 }
