@@ -1,0 +1,26 @@
+@import "./variables.scss";
+@import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css");
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: $font-family-main;
+  background-color: $background-color;
+  color: $text-color;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.main_container {
+  width: 1600px;
+  max-width: 95%;
+  margin: 0 auto;
+}

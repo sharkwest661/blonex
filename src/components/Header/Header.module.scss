@@ -1,0 +1,44 @@
+@import "../../styles/variables.scss";
+
+.header {
+  color: $primary-color;
+  background-color: $white;
+}
+
+.navbar_bg {
+  background-color: $primary-color;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.navbarBrand {
+  img {
+    height: 40px;
+  }
+}
+
+.headerLinks {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.headerLink {
+  color: $white;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.headerBtn {
+  background-color: $secondary-color;
+  color: $primary-color;
+  padding: 10px 20px;
+  border-radius: $border-radius;
+  font-weight: bold;
+}
