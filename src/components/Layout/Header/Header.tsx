@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
-import { Heart, User, Plus, Menu, X } from "lucide-react";
 import TopBar from "./TopBar/TopBar";
 import styles from "./Header.module.scss";
 import Container from "@/components/Layout/Container/Container";
@@ -35,13 +34,15 @@ const Header: React.FC = () => {
         <Container>
           <nav className={styles.navbar}>
             <button
-              className={styles.navbarToggler}
+              className={clsx(styles.navbarToggler, {
+                [styles.active]: isMenuOpen,
+              })}
               type="button"
               aria-expanded={isMenuOpen}
               aria-label="Toggle navigation"
               onClick={toggleMenu}
             >
-              {isMenuOpen ? <X size={28} color="black" /> : <Menu size={28} />}
+              {/* Icon handled by CSS background-image */}
             </button>
 
             <Link
@@ -72,7 +73,7 @@ const Header: React.FC = () => {
                     styles["header__link--favorites"]
                   )}
                 >
-                  <Heart size={24} />
+                  {/* Icon handled by CSS ::before pseudo-element */}
                   Seçdiklərim
                 </Link>
                 <Link
@@ -82,7 +83,7 @@ const Header: React.FC = () => {
                     styles["header__link--login"]
                   )}
                 >
-                  <User size={24} />
+                  {/* Icon handled by CSS ::before pseudo-element */}
                   Şəxsi kabinet
                 </Link>
               </div>
@@ -90,11 +91,11 @@ const Header: React.FC = () => {
 
             <Link
               href="/new-ad"
-              className={clsx(styles.header__btn, {
+              className={clsx(styles.header__btn, styles.btn, {
                 [styles.show]: isMenuOpen,
               })}
             >
-              <Plus size={24} />
+              {/* Icon handled by CSS background-image */}
               <span>Yeni elan</span>
             </Link>
           </nav>

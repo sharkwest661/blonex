@@ -1,36 +1,29 @@
-@import "../../../styles/variables.scss";
+// Import global variables if you have them
+// @import '../../../styles/variables';
 
+// Header styles
 .header {
-  color: $primary-color;
-  background-color: $white !important;
+  color: #013f44;
+  background-color: #ffffff !important;
 }
 
 .header__topbar {
   padding: 8px 0;
-  background-color: $white;
+  background-color: #fff;
   font-size: 1.4rem;
   line-height: 1.14;
-  color: $primary-color;
+  color: #013f44;
 }
 
 .navbar_bg {
-  background-color: $primary-color !important;
+  background-color: #013f44 !important;
 }
 
 .navbar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 86px;
   padding: 20px 0;
-
-  @media (max-width: 767px) {
-    min-height: 64px;
-  }
 }
 
-@media screen and (min-width: $breakpoint-md) {
+@media screen and (min-width: 768px) {
   .header__topbar {
     display: -webkit-box;
     display: -webkit-flex;
@@ -71,11 +64,11 @@
     left: -8px;
     right: -8px;
     height: 1px;
-    background-color: rgba($primary-color, 0.1);
+    background-color: rgba(1, 63, 68, 0.1);
   }
 }
 
-@media screen and (min-width: $breakpoint-md) {
+@media screen and (min-width: 768px) {
   .header__topbar--mob {
     display: none;
   }
@@ -84,9 +77,10 @@
 .header__btn {
   position: relative;
   margin-left: 6px;
-  padding: 13px 28px;
-  background: $secondary-color;
-  color: $primary-color;
+  padding: 13px 28px 13px 42px;
+  background: #ffe600 url("../../../../public/assets/images/add-icon.svg")
+    no-repeat center left 8px/24px 24px;
+  color: #013f44;
   z-index: 5;
   -webkit-transition: 0.3s;
   -o-transition: 0.3s;
@@ -96,20 +90,14 @@
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  border-radius: $border-radius;
+  border-radius: 10px;
   font-weight: 500;
   cursor: pointer;
-  font-family: $font-family-bold;
 }
 
 .header__btn:hover,
 .header__btn:focus {
-  color: $primary-color;
-  background-color: $secondary-color;
-  -webkit-box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
-  -moz-box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
-  box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
+  color: #013f44;
 }
 
 @media screen and (max-width: 767px) {
@@ -117,7 +105,7 @@
     width: 32px;
     height: 32px;
     padding: 4px;
-    justify-content: center;
+    background-position: center;
   }
 
   .header__btn span {
@@ -126,13 +114,20 @@
 
   .header__btn.show {
     width: auto;
-    padding: 4px 16px;
-    gap: 8px;
+    padding: 4px 16px 4px 38px;
+    background-position: center left 4px;
   }
 
   .header__btn.show span {
     display: inline-block;
   }
+}
+
+.header__btn:hover {
+  background-color: #ffe600;
+  -webkit-box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
+  -moz-box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
+  box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
 }
 
 .header__links {
@@ -152,7 +147,7 @@
   transition: 0.3s;
 }
 
-@media screen and (min-width: $breakpoint-md) {
+@media screen and (min-width: 768px) {
   .header__links {
     margin-left: auto;
   }
@@ -187,11 +182,10 @@
   -moz-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  gap: 10px;
   height: 46px;
   margin-right: 10px;
   padding: 10px;
-  color: $white;
+  color: #fff;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -200,16 +194,11 @@
   -moz-transition: 0.3s;
   transition: 0.3s;
   text-decoration: none;
-
-  svg {
-    color: inherit;
-    flex-shrink: 0;
-  }
 }
 
 .header__link:hover,
 .header__link:focus {
-  color: $white;
+  color: #fff;
 }
 
 @media screen and (min-width: 767px) {
@@ -222,25 +211,47 @@
 @media screen and (max-width: 767px) {
   .header__link {
     margin-right: 0;
-    color: $primary-color;
-    width: 100%;
-
-    svg {
-      color: $primary-color;
-    }
+    color: #013f44;
   }
 
   .header__link:hover,
   .header__link:focus {
-    color: $primary-color;
-
-    svg {
-      color: $primary-color;
-    }
+    color: #013f44;
   }
 }
 
-// Icons are now handled by Lucide React components - no ::before needed
+.header__link:before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background-repeat: no-repeat;
+  -moz-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  background-image: url("../../../../public/assets/images/review-icon.svg");
+}
+
+.header__link--favorites:before {
+  background-image: url("../../../../public/assets/images/favorite_white-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .header__link--favorites:before {
+    background-image: url("../../../../public/assets/images/favorite_main-icon.svg");
+  }
+}
+
+.header__link--login:before {
+  background-image: url("../../../../public/assets/images/person-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .header__link--login:before {
+    background-image: url("../../../../public/assets/images/person_main-icon.svg");
+  }
+}
 
 .header__logout {
   display: -webkit-box;
@@ -255,74 +266,117 @@
   align-items: center;
 }
 
-// Legacy class names support (keeping existing class names working)
-.navbarBg {
-  @extend .navbar_bg;
+.header__logout:before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  background: url("../../../../public/assets/images/logout-icon.svg") no-repeat
+    center/cover;
 }
 
-.headerBtn {
-  @extend .header__btn;
+// Navbar specific styles
+.navbar {
+  position: relative;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.headerLinks {
-  @extend .header__links;
-}
-
-.headerLink {
-  @extend .header__link;
-}
-
-// Additional responsive navbar styles
 .navbarToggler {
-  display: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: url("../../../../public/assets/images/toggler.svg") no-repeat
+    center/24px 24px;
+  z-index: 5;
+  border: none;
+  cursor: pointer;
+  display: none; /* Hidden by default */
+}
 
-  @media (max-width: 767px) {
+.navbarToggler.active {
+  background-image: url("../../../../public/assets/images/toggler_close.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .navbarToggler {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .navbarCollapse {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none !important;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100% !important;
+    padding: 80px 8px 20px;
+    background-color: #fff;
+    overflow-y: auto;
+    z-index: 4;
+  }
+
+  .navbarCollapse.show {
+    display: block !important;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .navbarCollapse {
+    display: flex !important;
+    position: static;
+    width: auto;
+    height: auto;
+    background: none;
     padding: 0;
-    border: none;
-    background-color: transparent;
-    color: $white;
-    z-index: 1001;
   }
 }
 
 .navbarBrand {
-  margin-right: auto;
-  margin-left: 20px;
+  margin: 0;
+}
 
-  @media (max-width: 767px) {
-    margin: 0 auto;
+@media screen and (max-width: 767px) {
+  .navbarBrand {
+    max-width: 64px;
+  }
 
-    &.hidden {
-      display: none;
-    }
+  .navbarBrand img {
+    width: 100%;
   }
 }
 
-.navbarCollapse {
-  display: flex;
-  align-items: center;
-
-  @media (max-width: 767px) {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: $white;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 80px 16px 20px;
-    z-index: 1000;
-    overflow-y: auto;
-
-    &.show {
-      display: flex;
-    }
+@media screen and (max-width: 767px) {
+  .navbar {
+    min-height: 64px;
+    padding: 16px 8px;
+    z-index: 100;
   }
+}
+
+.hidden {
+  display: none;
 }

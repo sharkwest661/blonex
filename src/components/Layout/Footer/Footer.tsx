@@ -1,148 +1,72 @@
 import React from "react";
 import Link from "next/link";
-import { Facebook, Instagram, Send, MessageSquare } from "lucide-react";
 import styles from "./Footer.module.scss";
 import Container from "../Container/Container";
+import { getAllCities } from "@/constants/cities";
 
 const Footer: React.FC = () => {
-  const cities = {
-    main: [
-      "Bakı",
-      "Sumqayıt",
-      "Xırdalan",
-      "Gəncə",
-      "Qəbələ",
-      "Quba",
-      "Xaçmaz",
-      "Lənkəran",
-      "Mingəçevir",
-      "Şəki",
-      "Qusar",
-      "Şirvan",
-    ],
-    other: [
-      "Ağcabədi",
-      "Ağdam",
-      "Ağdaş",
-      "Ağdərə",
-      "Ağstafa",
-      "Ağsu",
-      "Astara",
-      "Balakən",
-      "Beyləqan",
-      "Bərdə",
-      "Biləsuvar",
-      "Cəbrayıl",
-      "Cəlilabad",
-      "Culfa",
-      "Daşkəsən",
-      "Füzuli",
-      "Gədəbəy",
-      "Goranboy",
-      "Göyçay",
-      "Göygöl",
-      "Göytəpə",
-      "Hacıqabul",
-      "Horadiz",
-      "İmişli",
-      "İsmayıllı",
-      "Kəlbəcər",
-      "Kürdəmir",
-      "Laçın",
-      "Lerik",
-      "Masallı",
-      "Nabran",
-      "Naftalan",
-      "Naxçıvan",
-      "Neftçala",
-      "Oğuz",
-      "Ordubad",
-      "Qax",
-      "Qazax",
-      "Qobustan",
-      "Qubadlı",
-      "Saatlı",
-      "Sabirabad",
-      "Şabran",
-      "Şahbuz",
-      "Salyan",
-      "Şamaxı",
-      "Samux",
-      "Şəmkir",
-      "Şərur",
-      "Siyəzən",
-      "Şuşa",
-      "Tərtər",
-      "Tovuz",
-      "Ucar",
-      "Xankəndi",
-      "Xızı",
-      "Xocalı",
-      "Xocavənd",
-      "Xudat",
-      "Yardımlı",
-      "Yevlax",
-      "Zaqatala",
-      "Zəngilan",
-      "Zərdab",
-    ],
-  };
+  const allCities = getAllCities();
 
   return (
     <footer className={styles.footer}>
       <Container>
-        <div className={styles.footerTopbar}>
-          <div className={`${styles.contact} ${styles.contactSecondary}`}>
-            <a href="#" aria-label="Facebook" className={styles.contactNetwork}>
-              <Facebook size={24} />
+        <div className={styles.footer__topbar}>
+          <div className={`${styles.contact} ${styles["contact--secondary"]}`}>
+            <a
+              href="#"
+              aria-label="Facebook"
+              className={`${styles.contact__network} ${styles.facebook}`}
+            >
+              {/* Icon handled by CSS background-image */}
             </a>
             <a
               href="#"
               aria-label="Instagram"
-              className={styles.contactNetwork}
+              className={`${styles.contact__network} ${styles.instagram}`}
             >
-              <Instagram size={24} />
+              {/* Icon handled by CSS background-image */}
             </a>
-            <span className={styles.contactTel}>
+            <span className={styles.contact__tel}>
               Dəstək:
               <a href="tel:0511234567">051 123 45 67</a>
             </span>
-            <a href="#" aria-label="WhatsApp" className={styles.contactNetwork}>
-              <MessageSquare size={24} />
+            <a
+              href="#"
+              aria-label="WhatsApp"
+              className={`${styles.contact__network} ${styles.whatsapp}`}
+            >
+              {/* Icon handled by CSS background-image */}
             </a>
-            <a href="#" aria-label="Telegram" className={styles.contactNetwork}>
-              <Send size={24} />
+            <a
+              href="#"
+              aria-label="Telegram"
+              className={`${styles.contact__network} ${styles.telegram}`}
+            >
+              {/* Icon handled by CSS background-image */}
             </a>
           </div>
-          <div className={styles.footerNavbar}>
-            <Link href="/" className={styles.footerNavlink}>
-              Əsas səhifə
-            </Link>
-            <Link href="/reklam" className={styles.footerNavlink}>
-              Reklam yerləşdirmək
-            </Link>
-            <Link href="/about" className={styles.footerNavlink}>
+          <div className={styles.footer__navbar}>
+            <Link href="/about" className={styles.footer__navlink}>
               Haqqımızda
             </Link>
+            <Link href="/contact" className={styles.footer__navlink}>
+              Əlaqə
+            </Link>
+            <Link href="/rules" className={styles.footer__navlink}>
+              Qaydalar
+            </Link>
             <Link
-              href="/register-store"
-              className={`${styles.footerNavlink} ${styles.footerNavlinkSecondary}`}
+              href="/business"
+              className={`${styles.footer__navlink} ${styles["footer__navlink--secondary"]}`}
             >
-              Mağaza qeydiyyatı
+              Biznes
             </Link>
           </div>
         </div>
 
         <div className={styles.desktopCityList}>
-          <ul className={styles.footerCities}>
-            {cities.main.map((city) => (
-              <li key={city}>
-                <Link href={`/city/${city.toLowerCase()}`}>{city}</Link>
-              </li>
-            ))}
-          </ul>
-          <ul className={styles.footerCities}>
-            {cities.other.map((city) => (
+          <ul className={styles.footer__cities}>
+            {allCities.map((city) => (
               <li key={city}>
                 <Link href={`/city/${city.toLowerCase()}`}>{city}</Link>
               </li>
@@ -150,15 +74,15 @@ const Footer: React.FC = () => {
           </ul>
         </div>
 
-        <div className={styles.footerBottombar}>
-          <span className={styles.footerCopyright}>
-            © IT Enterprise MMC, 2021. Bütün hüquqlar qorunur.
-          </span>
+        <div className={styles.footer__bottombar}>
+          <div className={styles.footer__copyright}>
+            © 2025 Bolbol. Bütün hüquqlar qorunur.
+          </div>
           <div>
-            <Link href="/privacy" className={styles.footerLink}>
+            <Link href="/privacy" className={styles.footer__link}>
               Məxfilik siyasəti
             </Link>
-            <Link href="/terms" className={styles.footerLink}>
+            <Link href="/terms" className={styles.footer__link}>
               İstifadə şərtləri
             </Link>
           </div>

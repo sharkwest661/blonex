@@ -1,223 +1,366 @@
-@import "../../../styles/variables.scss";
-
+// Footer styles
 .footer {
-  border-top: 10px solid $secondary-color;
-  background-color: $primary-color;
-  color: $white;
-  font-size: 1.4rem;
+  border-top: 10px solid #ffe600;
+  background-color: #013f44;
+  color: #fff;
 }
 
-.footerTopbar {
+.footer__topbar {
   position: relative;
   padding: 30px 0;
+}
 
-  @media screen and (min-width: $breakpoint-lg) {
+@media screen and (min-width: 992px) {
+  .footer__topbar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
   }
+}
 
-  @media screen and (min-width: $breakpoint-md) {
+@media screen and (min-width: 768px) {
+  .footer__topbar {
     margin-bottom: 26px;
-
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
   }
 
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .footer__topbar:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .footer__topbar {
     padding: 16px 0;
   }
 }
 
-.contact {
-  display: flex;
-  align-items: center;
-
-  @media (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-  }
-}
-
-.contactSecondary {
-  // Additional styling for secondary contact section if needed
-}
-
-.contactTel {
-  margin: 0 4px;
-
-  a {
-    color: $white;
-    text-decoration: none;
-
-    &:hover,
-    &:focus {
-      text-decoration: underline;
-    }
-  }
-}
-
-.contactNetwork {
-  color: $white;
-  margin-right: 12px;
-  transition: opacity 0.2s ease;
-  display: flex;
-  align-items: center;
-
-  &:hover,
-  &:focus {
-    opacity: 0.8;
-  }
-}
-
-.footerNavbar {
-  @media screen and (min-width: $breakpoint-lg) {
+@media screen and (min-width: 992px) {
+  .footer__navbar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -moz-box-pack: end;
+    -ms-flex-pack: end;
     justify-content: flex-end;
   }
+}
 
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: $breakpoint-md) {
+@media screen and (max-width: 991px) and (min-width: 768px) {
+  .footer__navbar {
     margin-top: 24px;
   }
 }
 
-.footerNavlink {
+.footer__navlink {
   margin-left: 24px;
   color: inherit;
   text-decoration: none;
-  transition: color 0.2s ease;
+}
 
-  &:hover,
-  &:focus {
-    color: inherit;
-  }
+.footer__navlink:hover,
+.footer__navlink:focus {
+  color: inherit;
+}
 
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: $breakpoint-md) {
+.footer__navlink--secondary {
+  color: #ffe600 !important;
+}
+
+@media screen and (max-width: 991px) and (min-width: 768px) {
+  .footer__navlink {
     margin-left: 0;
     margin-right: 24px;
   }
+}
 
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+@media screen and (max-width: 767px) {
+  .footer__navlink {
     display: block;
     margin-left: 0;
     margin-bottom: 24px;
   }
 }
 
-.footerNavlinkSecondary {
-  color: $secondary-color !important;
-}
-
-.desktopCityList {
-  @media (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: none;
-  }
-}
-
-.footerCities {
+.footer__cities {
+  -webkit-columns: 6;
+  -moz-columns: 6;
   columns: 6;
   margin-bottom: 26px;
   padding-left: 0;
   list-style: none;
   font-size: 1.4rem;
   line-height: 1.14;
-
-  li {
-    padding: 4px 0;
-    break-inside: avoid;
-
-    a {
-      color: inherit;
-      text-decoration: none;
-
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
-    }
-  }
-
-  // Responsive columns for better mobile experience
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    columns: 4;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    columns: 2;
-  }
-
-  @media screen and (max-width: 480px) {
-    columns: 1;
-  }
 }
 
-.footerBottombar {
+.footer__cities li {
+  padding: 4px 0;
+}
+
+.footer__bottombar {
   position: relative;
   padding: 30px 0;
   font-size: 1.4rem;
   line-height: 1.14;
   color: rgba(255, 255, 255, 0.7);
+}
 
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  @media screen and (min-width: $breakpoint-md) {
+@media screen and (min-width: 768px) {
+  .footer__bottombar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
   }
+}
 
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    &::before {
-      left: -8px;
-      right: -8px;
-    }
+.footer__bottombar:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media screen and (max-width: 767px) {
+  .footer__bottombar:before {
+    left: -8px;
+    right: -8px;
   }
 }
 
-.footerCopyright {
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: block;
-    margin-bottom: 16px;
-  }
-}
-
-.footerLink {
+.footer__link {
   margin-left: 20px;
   text-decoration: underline;
   color: inherit;
-  transition: opacity 0.2s ease;
+}
 
-  &:hover,
-  &:focus {
-    opacity: 0.8;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+@media screen and (max-width: 767px) {
+  .footer__link {
     margin-left: 0;
     margin-right: 16px;
   }
 }
 
-// Global footer link styles
+@media screen and (max-width: 767px) {
+  .footer__copyright {
+    display: block;
+    margin-bottom: 16px;
+  }
+}
+
 .footer a {
   color: inherit;
+}
 
-  &:hover,
-  &:focus {
-    color: inherit;
+.footer a:hover,
+.footer a:focus {
+  color: inherit;
+}
+
+// Contact section styles
+.contact {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.contact__tel {
+  margin: 0 4px;
+}
+
+@media screen and (max-width: 767px) {
+  .contact__tel {
+    width: 100%;
+    margin: 0;
+    margin-top: 24px;
+    -webkit-box-ordinal-group: 3;
+    -webkit-order: 2;
+    -moz-box-ordinal-group: 3;
+    -ms-flex-order: 2;
+    order: 2;
+  }
+
+  .contact__tel a {
+    text-decoration: underline;
+  }
+}
+
+.contact__network {
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+  background-repeat: no-repeat;
+  background-position: center;
+  -moz-background-size: cover;
+  background-size: cover;
+  display: block;
+}
+
+.contact__network.facebook {
+  background-image: url("../../../../public/assets/images/facebook-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact__network.facebook {
+    background-image: url("../../../../public/assets/images/facebook4-icon.svg");
+  }
+}
+
+.contact__network.instagram {
+  background-image: url("../../../../public/assets/images/instagram-icon.svg");
+}
+
+@media screen and (min-width: 768px) {
+  .contact__network.whatsapp,
+  .contact__network.telegram {
+    width: 20px;
+    height: 20px;
+    margin-right: 0;
+  }
+}
+
+.contact__network.whatsapp {
+  background-image: url("../../../../public/assets/images/whatsapp-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact__network.whatsapp {
+    background-image: url("../../../../public/assets/images/whatsapp2-icon.svg");
+  }
+}
+
+.contact__network.telegram {
+  background-image: url("../../../../public/assets/images/telegram-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact__network.telegram {
+    background-image: url("../../../../public/assets/images/telegram2-icon.svg");
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contact__network {
+    margin-right: 12px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contact {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+}
+
+.contact--secondary .contact__network.facebook {
+  background-image: url("../../../../public/assets/images/facebook3-icon.svg");
+}
+
+.contact--secondary .contact__network.instagram {
+  background-image: url("../../../../public/assets/images/instagram3-icon.svg");
+}
+
+.contact--secondary .contact__network.whatsapp {
+  background-image: url("../../../../public/assets/images/whatsapp3-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact--secondary .contact__network.whatsapp {
+    background-image: url("../../../../public/assets/images/whatsapp4-icon.svg");
+  }
+}
+
+.contact--secondary .contact__network.telegram {
+  background-image: url("../../../../public/assets/images/telegram3-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact--secondary .contact__network.telegram {
+    background-image: url("../../../../public/assets/images/telegram4-icon.svg");
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contact--secondary {
+    margin-bottom: 40px;
+  }
+}
+
+// Desktop city list responsive behavior
+.desktopCityList {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+// Responsive columns for footer cities
+@media screen and (max-width: 991px) {
+  .footer__cities {
+    -webkit-columns: 4;
+    -moz-columns: 4;
+    columns: 4;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .footer__cities {
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    columns: 2;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .footer__cities {
+    -webkit-columns: 1;
+    -moz-columns: 1;
+    columns: 1;
   }
 }
