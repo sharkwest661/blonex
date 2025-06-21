@@ -1,0 +1,468 @@
+@import "../../../styles/variables.scss";
+
+// Menu toggle button
+.menuToggle {
+  display: none;
+  position: relative;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $white;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  @media (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: flex;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+
+  &.active {
+    color: $primary-color;
+  }
+}
+
+// Backdrop
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+// Main mobile menu
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $white;
+  z-index: 1000;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+
+  @media (min-width: $breakpoint-md) {
+    display: none;
+  }
+
+  &.open {
+    transform: translateX(0);
+  }
+}
+
+.menuContent {
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 80px; // Extra space at bottom
+}
+
+// Header section
+.menuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background-color: $primary-color;
+  color: $white;
+  min-height: 72px;
+}
+
+.logo {
+  img {
+    height: 40px;
+    width: auto;
+  }
+}
+
+.closeButton {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Search section
+.searchSection {
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.searchBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: #999;
+  z-index: 1;
+}
+
+.searchInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0 44px;
+  border: 2px solid #e0e0e0;
+  border-radius: 24px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: $secondary-color;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+// User section
+.userSection {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  gap: 12px;
+}
+
+.userInfo,
+.loginButton,
+.favoritesButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: $primary-color;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+
+  &:hover,
+  &:focus {
+    background-color: #f8f9fa;
+    color: $primary-color;
+  }
+}
+
+.userInfo {
+  background-color: #f8f9fa;
+  pointer-events: none;
+}
+
+// Quick actions
+.quickActions {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.addListing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  background-color: $secondary-color;
+  color: $white;
+  text-decoration: none;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: darken($secondary-color, 10%);
+    color: $white;
+    transform: translateY(-1px);
+  }
+}
+
+// Main navigation
+.mainNav {
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: #f8f9fa;
+    color: $primary-color;
+  }
+}
+
+// Categories section
+.categoriesSection {
+  padding: 20px;
+}
+
+.sectionTitle {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: $primary-color;
+}
+
+.categoriesList {
+  display: grid;
+  gap: 8px;
+}
+
+.categoryItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: $text-dark;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+
+  &:hover,
+  &:focus {
+    background-color: #f8f9fa;
+    border-color: #e0e0e0;
+    color: $primary-color;
+    transform: translateX(4px);
+  }
+}
+
+.categoryIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.categoryName {
+  flex: 1;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.categoryCount {
+  font-size: 13px;
+  color: #666;
+}
+
+.showMoreButton {
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  border: 2px solid #e0e0e0;
+  background: transparent;
+  color: $primary-color;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    border-color: $secondary-color;
+    background-color: $secondary-color;
+    color: $white;
+  }
+}
+
+// Contact section
+.contactSection {
+  padding: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.contactInfo {
+  margin-bottom: 16px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #f8f9fa;
+  color: $primary-color;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: $primary-color;
+    color: $white;
+    transform: translateY(-2px);
+  }
+}
+
+// Footer links
+.footerLinks {
+  padding: 20px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+
+  a {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+
+    &:hover,
+    &:focus {
+      color: $primary-color;
+    }
+  }
+}
+
+// Smooth scrolling for iOS
+.menuContent {
+  -webkit-overflow-scrolling: touch;
+}
+
+// Focus states for accessibility
+.menuToggle:focus,
+.closeButton:focus,
+.searchInput:focus,
+.loginButton:focus,
+.favoritesButton:focus,
+.addListing:focus,
+.navItem:focus,
+.categoryItem:focus,
+.showMoreButton:focus,
+.socialLink:focus {
+  outline: 2px solid $secondary-color;
+  outline-offset: 2px;
+}
+
+// Animation for category items
+.categoryItem {
+  opacity: 0;
+  animation: slideInLeft 0.3s ease forwards;
+}
+
+@for $i from 1 through 16 {
+  .categoryItem:nth-child(#{$i}) {
+    animation-delay: #{$i * 0.05}s;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Dark mode support (if needed)
+@media (prefers-color-scheme: dark) {
+  .mobileMenu {
+    background-color: #1a1a1a;
+    color: $white;
+  }
+
+  .searchInput {
+    background-color: #2a2a2a;
+    color: $white;
+    border-color: #404040;
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+
+  .categoryIcon {
+    background-color: #2a2a2a;
+  }
+
+  .socialLink {
+    background-color: #2a2a2a;
+    color: $white;
+
+    &:hover,
+    &:focus {
+      background-color: $secondary-color;
+    }
+  }
+}

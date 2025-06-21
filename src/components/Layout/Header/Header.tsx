@@ -41,7 +41,7 @@ const Header: React.FC = () => {
               aria-label="Toggle navigation"
               onClick={toggleMenu}
             >
-              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              {isMenuOpen ? <X size={28} color="black" /> : <Menu size={28} />}
             </button>
 
             <Link
