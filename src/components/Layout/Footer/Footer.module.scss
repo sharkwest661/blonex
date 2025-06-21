@@ -19,6 +19,7 @@
 
   @media screen and (min-width: $breakpoint-md) {
     margin-bottom: 26px;
+
     &::before {
       content: "";
       position: absolute;
@@ -29,7 +30,7 @@
     }
   }
 
-  @media screen and (max-width: $breakpoint-md) {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     padding: 16px 0;
   }
 }
@@ -38,17 +39,25 @@
   display: flex;
   align-items: center;
 
-  @media (max-width: $breakpoint-md) {
+  @media (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex-wrap: wrap;
     margin-bottom: 40px;
   }
 }
 
+.contactSecondary {
+  // Additional styling for secondary contact section if needed
+}
+
 .contactTel {
   margin: 0 4px;
+
   a {
     color: $white;
-    &:hover {
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
       text-decoration: underline;
     }
   }
@@ -57,8 +66,12 @@
 .contactNetwork {
   color: $white;
   margin-right: 12px;
-  transition: opacity 0.2s;
-  &:hover {
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+
+  &:hover,
+  &:focus {
     opacity: 0.8;
   }
 }
@@ -69,7 +82,8 @@
     align-items: center;
     justify-content: flex-end;
   }
-  @media (max-width: $breakpoint-lg) {
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: $breakpoint-md) {
     margin-top: 24px;
   }
 }
@@ -77,27 +91,32 @@
 .footerNavlink {
   margin-left: 24px;
   color: inherit;
-  &:hover {
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover,
+  &:focus {
     color: inherit;
   }
 
-  &.footerNavlinkSecondary {
-    color: $secondary-color !important;
-  }
-
-  @media (max-width: $breakpoint-lg) {
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: $breakpoint-md) {
     margin-left: 0;
     margin-right: 24px;
   }
 
-  @media (max-width: $breakpoint-md) {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     display: block;
+    margin-left: 0;
     margin-bottom: 24px;
   }
 }
 
+.footerNavlinkSecondary {
+  color: $secondary-color !important;
+}
+
 .desktopCityList {
-  @media (max-width: $breakpoint-md) {
+  @media (max-width: calc(#{$breakpoint-md} - 1px)) {
     display: none;
   }
 }
@@ -112,18 +131,38 @@
 
   li {
     padding: 4px 0;
+    break-inside: avoid;
+
     a {
       color: inherit;
-      &:hover {
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
         text-decoration: underline;
       }
     }
+  }
+
+  // Responsive columns for better mobile experience
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    columns: 4;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    columns: 2;
+  }
+
+  @media screen and (max-width: 480px) {
+    columns: 1;
   }
 }
 
 .footerBottombar {
   position: relative;
   padding: 30px 0;
+  font-size: 1.4rem;
+  line-height: 1.14;
   color: rgba(255, 255, 255, 0.7);
 
   &::before {
@@ -141,7 +180,7 @@
     justify-content: space-between;
   }
 
-  @media screen and (max-width: $breakpoint-md) {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     &::before {
       left: -8px;
       right: -8px;
@@ -150,7 +189,7 @@
 }
 
 .footerCopyright {
-  @media screen and (max-width: $breakpoint-md) {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     display: block;
     margin-bottom: 16px;
   }
@@ -159,9 +198,26 @@
 .footerLink {
   margin-left: 20px;
   text-decoration: underline;
+  color: inherit;
+  transition: opacity 0.2s ease;
 
-  @media (max-width: $breakpoint-md) {
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     margin-left: 0;
     margin-right: 16px;
+  }
+}
+
+// Global footer link styles
+.footer a {
+  color: inherit;
+
+  &:hover,
+  &:focus {
+    color: inherit;
   }
 }
