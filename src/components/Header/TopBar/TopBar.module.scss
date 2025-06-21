@@ -1,0 +1,56 @@
+@import "../../../styles/variables.scss";
+
+.headerTopbar {
+  padding: 8px 0;
+  background-color: $white;
+  font-size: 1.4rem;
+  line-height: 1.14;
+  color: $primary-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media screen and (max-width: $breakpoint-md) {
+    display: none;
+  }
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 8px; // Adds space between items
+}
+
+.contactTel {
+  margin: 0 4px;
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.contactNetwork {
+  color: $primary-color; // This will color the SVG icon
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s;
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.logoutSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
