@@ -1,6 +1,9 @@
 // Import external dependencies first
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css");
 
+// Import custom fonts BEFORE variables
+@import "../styles/fonts.scss";
+
 // Import SCSS variables
 @import "../styles/variables.scss";
 

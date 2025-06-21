@@ -1,0 +1,59 @@
+// src/styles/fonts.scss
+// Custom font definitions for Arimo fonts
+
+@font-face {
+  font-family: "Arimo-Regular";
+  src: url("/assets/fonts/Arimo-Regular.eot"); /* IE9 Compat Modes */
+  src: url("/assets/fonts/Arimo-Regular.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("/assets/fonts/Arimo-Regular.woff2") format("woff2"),
+    /* Modern Browsers */ url("/assets/fonts/Arimo-Regular.woff") format("woff"),
+    /* Pretty Modern Browsers */ url("/assets/fonts/Arimo-Regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("/assets/fonts/Arimo-Regular.svg#Arimo-Regular") format("svg"); /* Legacy iOS */
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; // Improves loading performance
+}
+
+@font-face {
+  font-family: "Arimo-Bold";
+  src: url("/assets/fonts/Arimo-Bold.eot"); /* IE9 Compat Modes */
+  src: url("/assets/fonts/Arimo-Bold.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("/assets/fonts/Arimo-Bold.woff2") format("woff2"),
+    /* Modern Browsers */ url("/assets/fonts/Arimo-Bold.woff") format("woff"),
+    /* Pretty Modern Browsers */ url("/assets/fonts/Arimo-Bold.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */ url("/assets/fonts/Arimo-Bold.svg#Arimo-Bold")
+      format("svg"); /* Legacy iOS */
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Alternative approach: Use single font family with different weights
+@font-face {
+  font-family: "Arimo";
+  src: url("/assets/fonts/Arimo-Regular.eot");
+  src: url("/assets/fonts/Arimo-Regular.eot?#iefix") format("embedded-opentype"),
+    url("/assets/fonts/Arimo-Regular.woff2") format("woff2"),
+    url("/assets/fonts/Arimo-Regular.woff") format("woff"),
+    url("/assets/fonts/Arimo-Regular.ttf") format("truetype"),
+    url("/assets/fonts/Arimo-Regular.svg#Arimo-Regular") format("svg");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arimo";
+  src: url("/assets/fonts/Arimo-Bold.eot");
+  src: url("/assets/fonts/Arimo-Bold.eot?#iefix") format("embedded-opentype"),
+    url("/assets/fonts/Arimo-Bold.woff2") format("woff2"),
+    url("/assets/fonts/Arimo-Bold.woff") format("woff"),
+    url("/assets/fonts/Arimo-Bold.ttf") format("truetype"),
+    url("/assets/fonts/Arimo-Bold.svg#Arimo-Bold") format("svg");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

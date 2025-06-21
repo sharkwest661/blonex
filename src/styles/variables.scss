@@ -3,16 +3,26 @@ $primary-color: #013f44;
 $secondary-color: #ffe600;
 $accent-color: #e8724c;
 $text-color: #000000;
+$text-dark: #333333;
 $text-light: #808080;
 $background-color: #f5f6fc;
 $white: #ffffff;
 $black: #000000;
 
-/* Typography */
-$font-family-main: "Arimo-Regular", Helvetica, Arial, sans-serif;
-$font-family-bold: "Arimo-Bold", Helvetica, Arial, sans-serif;
+/* Typography - Updated to use custom fonts */
 
-// CORRECTED font sizes for standard 16px base (no 62.5% trick)
+// APPROACH 1: Separate font families (recommended for your current setup)
+$font-family-main: "Arimo-Regular", "Arimo", Helvetica, Arial, sans-serif;
+$font-family-bold: "Arimo-Bold", "Arimo", Helvetica, Arial, sans-serif;
+
+// APPROACH 2: Single font family with weights (alternative)
+$font-family-arimo: "Arimo", Helvetica, Arial, sans-serif;
+
+// Font weights (for use with single family approach)
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+// Font sizes (standard 16px base)
 $font-size-base: 1rem; // = 16px
 $font-size-large: 1.125rem; // = 18px
 $font-size-xl: 1.5rem; // = 24px

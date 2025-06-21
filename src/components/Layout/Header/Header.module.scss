@@ -1,380 +1,174 @@
-// Import global variables if you have them
-@import "../../../styles/variables";
+@import "../../../styles/variables.scss";
 
 // Header styles
 .header {
-  color: #013f44;
-  background-color: #ffffff !important;
+  color: $primary-color;
+  background-color: $white !important;
 }
 
-.header__topbar {
-  padding: 8px 0;
-  background-color: #fff;
-  font-size: $font-size-small;
-  line-height: 1.14;
-  color: #013f44;
-}
-
+// Navbar background
 .navbar_bg {
-  background-color: #013f44 !important;
+  background-color: $primary-color !important;
 }
 
+// Main navbar layout
 .navbar {
-  padding: 20px 0;
-}
-
-@media screen and (min-width: 768px) {
-  .header__topbar {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -moz-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    -moz-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .header__topbar {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .header__topbar--mob {
-    position: relative;
-    display: block;
-    padding: 0;
-    padding-top: 32px;
-  }
-
-  .header__topbar--mob:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -8px;
-    right: -8px;
-    height: 1px;
-    background-color: rgba(1, 63, 68, 0.1);
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .header__topbar--mob {
-    display: none;
-  }
-}
-
-.header__btn {
   position: relative;
-  margin-left: 6px;
-  padding: 13px 28px 13px 42px;
-  background: #ffe600 url("../../../../public/assets/images/add-icon.svg")
-    no-repeat center left 8px/24px 24px;
-  color: #013f44;
-  z-index: 5;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  -moz-transition: 0.3s;
-  transition: 0.3s;
-  border: none;
-  text-decoration: none;
-  display: inline-flex;
+  padding: 20px 0;
+  display: flex;
   align-items: center;
-  border-radius: 10px;
-  font-weight: 500;
-  cursor: pointer;
+  justify-content: space-between; // Logo left, content right
+  min-height: 64px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 16px 0;
+  }
 }
 
-.header__btn:hover,
-.header__btn:focus {
-  color: #013f44;
-}
+// Logo - Left side
+.navbarBrand {
+  margin: 0;
+  z-index: 10; // Above mobile menu
 
-@media screen and (max-width: 767px) {
-  .header__btn {
-    width: 32px;
+  img {
     height: 32px;
-    padding: 4px;
-    background-position: center;
-  }
-
-  .header__btn span {
-    display: none;
-  }
-
-  .header__btn.show {
     width: auto;
-    padding: 4px 16px 4px 38px;
-    background-position: center left 4px;
   }
 
-  .header__btn.show span {
-    display: inline-block;
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    img {
+      height: 28px;
+    }
   }
 }
 
-.header__btn:hover {
-  background-color: #ffe600;
-  -webkit-box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
-  -moz-box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
-  box-shadow: 0px 10px 20px rgba(255, 230, 0, 0.3);
-}
-
-.header__links {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
+// Right side container - Desktop only
+.navbarRight {
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -moz-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  -moz-transition: 0.3s;
-  transition: 0.3s;
-}
+  gap: 16px;
 
-@media screen and (min-width: 768px) {
-  .header__links {
-    margin-left: auto;
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none; // Hidden on mobile, replaced by mobile menu
   }
 }
 
-@media screen and (max-width: 767px) {
-  .header__links {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: reverse;
-    -webkit-flex-direction: column-reverse;
-    -moz-box-orient: vertical;
-    -moz-box-direction: reverse;
-    -ms-flex-direction: column-reverse;
-    flex-direction: column-reverse;
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-    -moz-box-align: start;
-    -ms-flex-align: start;
-    align-items: flex-start;
-    padding-bottom: 24px;
-  }
-}
-
-.header__link {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
+// Navigation links container
+.header__links {
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -moz-box-align: center;
-  -ms-flex-align: center;
+  align-items: center;
+  gap: 8px;
+}
+
+// Individual navigation links
+.header__link {
+  display: flex;
   align-items: center;
   height: 46px;
-  margin-right: 10px;
-  padding: 10px;
-  color: #fff;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  -moz-transition: 0.3s;
-  transition: 0.3s;
+  padding: 10px 12px;
+  color: $white;
+  border-radius: $border-radius;
+  transition: all 0.3s ease;
   text-decoration: none;
-}
+  font-size: $font-size-base;
+  font-family: $font-family-main;
 
-.header__link:hover,
-.header__link:focus {
-  color: #fff;
-}
+  &:hover,
+  &:focus {
+    color: $white;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 
-@media screen and (min-width: 767px) {
-  .header__link:hover,
-  .header__link:focus {
-    background-color: #014c52;
+  // Icons
+  &:before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   }
 }
 
-@media screen and (max-width: 767px) {
-  .header__link {
-    margin-right: 0;
-    color: #013f44;
-  }
-
-  .header__link:hover,
-  .header__link:focus {
-    color: #013f44;
-  }
-}
-
-.header__link:before {
-  content: "";
-  display: block;
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-  background-repeat: no-repeat;
-  -moz-background-size: cover;
-  background-size: cover;
-  background-position: center;
-  background-image: url("../../../../public/assets/images/review-icon.svg");
-}
-
+// Specific link icons
 .header__link--favorites:before {
   background-image: url("../../../../public/assets/images/favorite_white-icon.svg");
-}
-
-@media screen and (max-width: 767px) {
-  .header__link--favorites:before {
-    background-image: url("../../../../public/assets/images/favorite_main-icon.svg");
-  }
 }
 
 .header__link--login:before {
   background-image: url("../../../../public/assets/images/person-icon.svg");
 }
 
-@media screen and (max-width: 767px) {
-  .header__link--login:before {
-    background-image: url("../../../../public/assets/images/person_main-icon.svg");
-  }
-}
-
-.header__logout {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -moz-box-align: center;
-  -ms-flex-align: center;
+// New listing button
+.header__btn {
+  display: inline-flex;
   align-items: center;
-}
-
-.header__logout:before {
-  content: "";
-  display: block;
-  width: 24px;
-  height: 24px;
-  margin-right: 5px;
-  background: url("../../../../public/assets/images/logout-icon.svg") no-repeat
-    center/cover;
-}
-
-// Navbar specific styles
-.navbar {
   position: relative;
-  padding: 20px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.navbarToggler {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  background: url("../../../../public/assets/images/toggler.svg") no-repeat
-    center/24px 24px;
-  z-index: 5;
-  border: none;
+  padding: 13px 28px 13px 42px;
+  background: $secondary-color
+    url("../../../../public/assets/images/add-icon.svg") no-repeat center left
+    12px/24px 24px;
+  color: $primary-color;
+  border-radius: $border-radius;
+  font-weight: 600;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  text-decoration: none;
+  transition: all 0.3s ease;
   cursor: pointer;
-  display: none; /* Hidden by default */
-}
 
-.navbarToggler.active {
-  background-image: url("../../../../public/assets/images/toggler_close.svg");
-}
+  &:hover,
+  &:focus {
+    color: $primary-color;
+    background-color: $secondary-color;
+    box-shadow: 0px 8px 16px rgba(255, 230, 0, 0.3);
+    transform: translateY(-1px);
+  }
 
-@media screen and (max-width: 767px) {
-  .navbarToggler {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  span {
+    display: inline-block;
   }
 }
 
-@media screen and (max-width: 767px) {
-  .navbarCollapse {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: none !important;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -moz-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-align-content: flex-start;
-    -ms-flex-line-pack: start;
-    align-content: flex-start;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -moz-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    width: 100%;
-    height: 100% !important;
-    padding: 80px 8px 20px;
-    background-color: #fff;
-    overflow-y: auto;
-    z-index: 4;
-  }
-
-  .navbarCollapse.show {
-    display: block !important;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .navbarCollapse {
-    display: flex !important;
-    position: static;
-    width: auto;
-    height: auto;
-    background: none;
-    padding: 0;
-  }
-}
-
-.navbarBrand {
-  margin: 0;
-}
-
-@media screen and (max-width: 767px) {
-  .navbarBrand {
-    max-width: 64px;
-  }
-
-  .navbarBrand img {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 767px) {
+// Mobile responsive adjustments
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
   .navbar {
-    min-height: 64px;
-    padding: 16px 8px;
-    z-index: 100;
+    justify-content: space-between;
   }
+
+  .navbarBrand {
+    // Logo stays on left on mobile, mobile menu takes care of navigation
+    order: 0;
+  }
+}
+
+// Desktop specific styles
+@media screen and (min-width: $breakpoint-md) {
+  .navbar {
+    padding: 20px 0;
+  }
+
+  .header__links {
+    margin-right: 16px;
+  }
+}
+
+// Focus states for accessibility
+.header__link:focus,
+.header__btn:focus {
+  outline: 2px solid $secondary-color;
+  outline-offset: 2px;
+}
+
+// Legacy styles for compatibility (if you had them before)
+.navbarToggler {
+  display: none; // Not needed since we use MobileMenu component
+}
+
+.navbarCollapse {
+  display: none; // Not needed since we use MobileMenu component
 }
 
 .hidden {

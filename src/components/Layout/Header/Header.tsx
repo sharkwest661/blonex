@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
 import TopBar from "./TopBar/TopBar";
+import MobileMenu from "./MobileMenu/MobileMenu";
 import styles from "./Header.module.scss";
 import Container from "@/components/Layout/Container/Container";
 
@@ -12,6 +13,10 @@ const Header: React.FC = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   useEffect(() => {
@@ -30,27 +35,19 @@ const Header: React.FC = () => {
       <Container>
         <TopBar />
       </Container>
+
       <div className={styles.navbar_bg}>
         <Container>
           <nav className={styles.navbar}>
-            <button
-              className={clsx(styles.navbarToggler, {
-                [styles.active]: isMenuOpen,
-              })}
-              type="button"
-              aria-expanded={isMenuOpen}
-              aria-label="Toggle navigation"
-              onClick={toggleMenu}
-            >
-              {/* Icon handled by CSS background-image */}
-            </button>
+            {/* Mobile Menu Toggle - Only visible on mobile */}
+            <MobileMenu
+              isOpen={isMenuOpen}
+              onToggle={toggleMenu}
+              onClose={closeMenu}
+            />
 
-            <Link
-              href="/"
-              className={clsx(styles.navbarBrand, {
-                [styles.hidden]: isMenuOpen,
-              })}
-            >
+            {/* Logo - Left side */}
+            <Link href="/" className={styles.navbarBrand}>
               <Image
                 src="/assets/images/logo.svg"
                 alt="Bolbol Logo"
@@ -60,11 +57,8 @@ const Header: React.FC = () => {
               />
             </Link>
 
-            <div
-              className={clsx(styles.navbarCollapse, {
-                [styles.show]: isMenuOpen,
-              })}
-            >
+            {/* Right side navigation - Desktop only */}
+            <div className={styles.navbarRight}>
               <div className={styles.header__links}>
                 <Link
                   href="/favorites"
@@ -73,7 +67,6 @@ const Header: React.FC = () => {
                     styles["header__link--favorites"]
                   )}
                 >
-                  {/* Icon handled by CSS ::before pseudo-element */}
                   Seçdiklərim
                 </Link>
                 <Link
@@ -83,21 +76,14 @@ const Header: React.FC = () => {
                     styles["header__link--login"]
                   )}
                 >
-                  {/* Icon handled by CSS ::before pseudo-element */}
                   Şəxsi kabinet
                 </Link>
               </div>
-            </div>
 
-            <Link
-              href="/new-ad"
-              className={clsx(styles.header__btn, styles.btn, {
-                [styles.show]: isMenuOpen,
-              })}
-            >
-              {/* Icon handled by CSS background-image */}
-              <span>Yeni elan</span>
-            </Link>
+              <Link href="/new-ad" className={styles.header__btn}>
+                <span>Yeni elan</span>
+              </Link>
+            </div>
           </nav>
         </Container>
       </div>

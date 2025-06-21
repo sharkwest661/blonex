@@ -1,4 +1,3 @@
-// hooks/useMobileMenu.ts
 import { useState, useCallback, useEffect } from "react";
 
 export const useMobileMenu = () => {
@@ -16,21 +15,27 @@ export const useMobileMenu = () => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  // Close menu on route change (if using Next.js router)
+  // Close menu on escape key
   useEffect(() => {
-    const handleRouteChange = () => {
-      closeMenu();
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        closeMenu();
+      }
     };
 
-    // If using Next.js router
-    if (typeof window !== "undefined") {
-      const router = require("next/router").default;
-      router.events.on("routeChangeStart", handleRouteChange);
-      return () => {
-        router.events.off("routeChangeStart", handleRouteChange);
-      };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
     }
-  }, [closeMenu]);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen, closeMenu]);
 
   return {
     isOpen,

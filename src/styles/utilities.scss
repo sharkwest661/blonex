@@ -146,3 +146,38 @@
     text-align: left;
   }
 }
+
+// Font family utilities
+.font-regular {
+  font-family: $font-family-main;
+  font-weight: normal;
+}
+
+.font-bold {
+  font-family: $font-family-bold;
+  font-weight: 700;
+}
+
+.font-italic {
+  font-family: $font-family-italic;
+  font-style: italic;
+}
+
+.font-bold-italic {
+  font-family: $font-family-bold-italic;
+  font-weight: 700;
+  font-style: italic;
+}
+
+// Weight-based utilities (works with any font family)
+.text-normal {
+  font-weight: normal;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.text-italic {
+  font-style: italic;
+}
