@@ -1,6 +1,5 @@
 // src/app/layout.tsx
-// ... (imports)
-import "./globals.scss"; // Make sure this is imported first
+import "./globals.scss"; // Import the consolidated global styles
 import Header from "@/components/Layout/Header/Header";
 import Footer from "@/components/Layout/Footer/Footer";
 

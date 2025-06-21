@@ -1,3 +1,5 @@
+@import "../../../styles/variables.scss";
+
 // Footer styles
 .footer {
   border-top: 10px solid #ffe600;
@@ -114,7 +116,7 @@
   margin-bottom: 26px;
   padding-left: 0;
   list-style: none;
-  font-size: 1.4rem;
+  font-size: $font-size-small;
   line-height: 1.14;
 }
 
@@ -125,7 +127,7 @@
 .footer__bottombar {
   position: relative;
   padding: 30px 0;
-  font-size: 1.4rem;
+  font-size: $font-size-small;
   line-height: 1.14;
   color: rgba(255, 255, 255, 0.7);
 }

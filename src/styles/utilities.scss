@@ -1,0 +1,148 @@
+// src/styles/utilities.scss
+// Utility classes for common patterns
+
+// Spacing utilities
+.mt-1 {
+  margin-top: $spacing-unit;
+}
+.mt-2 {
+  margin-top: $spacing-unit * 2;
+}
+.mt-3 {
+  margin-top: $spacing-unit * 3;
+}
+.mt-4 {
+  margin-top: $spacing-unit * 4;
+}
+
+.mb-1 {
+  margin-bottom: $spacing-unit;
+}
+.mb-2 {
+  margin-bottom: $spacing-unit * 2;
+}
+.mb-3 {
+  margin-bottom: $spacing-unit * 3;
+}
+.mb-4 {
+  margin-bottom: $spacing-unit * 4;
+}
+
+.ml-1 {
+  margin-left: $spacing-unit;
+}
+.ml-2 {
+  margin-left: $spacing-unit * 2;
+}
+.mr-1 {
+  margin-right: $spacing-unit;
+}
+.mr-2 {
+  margin-right: $spacing-unit * 2;
+}
+
+.p-1 {
+  padding: $spacing-unit;
+}
+.p-2 {
+  padding: $spacing-unit * 2;
+}
+.p-3 {
+  padding: $spacing-unit * 3;
+}
+.p-4 {
+  padding: $spacing-unit * 4;
+}
+
+// Text utilities
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.text-small {
+  font-size: $font-size-small;
+}
+.text-large {
+  font-size: $font-size-large;
+}
+.text-xl {
+  font-size: $font-size-xl;
+}
+
+.text-bold {
+  font-family: $font-family-bold;
+}
+.text-light {
+  color: $text-light;
+}
+
+// Display utilities
+.d-none {
+  display: none;
+}
+.d-block {
+  display: block;
+}
+.d-flex {
+  display: flex;
+}
+.d-inline-flex {
+  display: inline-flex;
+}
+
+// Flex utilities
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.justify-around {
+  justify-content: space-around;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+
+.align-center {
+  align-items: center;
+}
+.align-start {
+  align-items: flex-start;
+}
+.align-end {
+  align-items: flex-end;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+// Responsive utilities
+@include respond-to(md) {
+  .d-md-none {
+    display: none;
+  }
+  .d-md-block {
+    display: block;
+  }
+  .d-md-flex {
+    display: flex;
+  }
+
+  .text-md-center {
+    text-align: center;
+  }
+  .text-md-left {
+    text-align: left;
+  }
+}

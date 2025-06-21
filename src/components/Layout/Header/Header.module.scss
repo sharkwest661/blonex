@@ -1,5 +1,5 @@
 // Import global variables if you have them
-// @import '../../../styles/variables';
+@import "../../../styles/variables";
 
 // Header styles
 .header {
@@ -10,7 +10,7 @@
 .header__topbar {
   padding: 8px 0;
   background-color: #fff;
-  font-size: 1.4rem;
+  font-size: $font-size-small;
   line-height: 1.14;
   color: #013f44;
 }

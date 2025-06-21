@@ -12,10 +12,11 @@ $black: #000000;
 $font-family-main: "Arimo-Regular", Helvetica, Arial, sans-serif;
 $font-family-bold: "Arimo-Bold", Helvetica, Arial, sans-serif;
 
-$font-size-base: 1.6rem;
-$font-size-large: 1.8rem;
-$font-size-xl: 2.4rem;
-$font-size-small: 1.4rem;
+// CORRECTED font sizes for standard 16px base (no 62.5% trick)
+$font-size-base: 1rem; // = 16px
+$font-size-large: 1.125rem; // = 18px
+$font-size-xl: 1.5rem; // = 24px
+$font-size-small: 0.875rem; // = 14px
 
 /* Breakpoints */
 $breakpoint-sm: 576px;
