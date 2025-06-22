@@ -182,14 +182,16 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   return (
     <>
       {/* Mobile Menu Toggle Button */}
-      <button
-        className={`${styles.menuToggle} ${isOpen ? styles.active : ""}`}
-        onClick={onToggle}
-        aria-label="Menyunu aç/bağla"
-        aria-expanded={isOpen}
-      >
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+      {!isOpen && (
+        <button
+          className={`${styles.menuToggle} ${isOpen ? styles.active : ""}`}
+          onClick={onToggle}
+          aria-label="Menyunu aç/bağla"
+          aria-expanded={isOpen}
+        >
+          <Menu size={24} />
+        </button>
+      )}
 
       {/* Backdrop */}
       {isOpen && (

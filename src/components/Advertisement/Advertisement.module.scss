@@ -2,16 +2,8 @@
 @import "../../styles/variables.scss";
 
 .advertisement {
-  width: 100%;
-  max-width: 300px;
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    max-width: 250px;
-  }
-
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    max-width: 100%;
-    margin: 20px 0;
+    padding-bottom: 22px; // commercial-banner-1 mobile padding
   }
 }
 
@@ -20,6 +12,22 @@
   top: 20px;
   z-index: 10;
 
+  // Make all nested elements fill height on desktop (>1024px)
+  &,
+  & > *,
+  & > * > * {
+    height: 100%;
+  }
+
+  @media screen and (max-width: 1024px) {
+    // Reset height to auto on tablet and below
+    &,
+    & > *,
+    & > * > * {
+      height: auto;
+    }
+  }
+
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     position: static;
   }
@@ -27,12 +35,11 @@
 
 .bannerLink {
   display: block;
-  width: 100%;
   text-decoration: none;
   transition: transform 0.2s ease;
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
   }
 
   &:focus {
@@ -42,28 +49,31 @@
   }
 }
 
-.bannerImage {
+// Desktop banner (show on md and up, equivalent to d-md-block d-none)
+.bannerImage__desktop {
   width: 100%;
   height: auto;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
+  display: block;
 
-  &:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  }
-}
-
-.bannerImage__desktop {
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: none;
+    display: none !important;
   }
 }
 
+// Mobile banner (show on mobile only, equivalent to d-md-none)
 .bannerImage__mobile {
   display: none;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     display: block;
+    width: 100%;
+    height: 41vw; // Original mobile height
+  }
+}
+
+// Additional responsive behavior from original
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .for_banner_2 {
+    display: none !important;
   }
 }
