@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 import clsx from "clsx";
 import TopBar from "./TopBar/TopBar";
 import MobileMenu from "./MobileMenu/MobileMenu";
@@ -46,7 +47,7 @@ const Header: React.FC = () => {
               onClose={closeMenu}
             />
 
-            {/* Logo - Left side */}
+            {/* Logo - Center on mobile, left on desktop */}
             <Link href="/" className={styles.navbarBrand}>
               <Image
                 src="/assets/images/logo.svg"
@@ -57,7 +58,12 @@ const Header: React.FC = () => {
               />
             </Link>
 
-            {/* Right side navigation - Desktop only */}
+            {/* Mobile New Ad Button - Only visible on mobile */}
+            <Link href="/new-ad" className={styles.mobileNewAdBtn}>
+              <Plus size={20} />
+            </Link>
+
+            {/* Desktop Navigation - Only visible on desktop */}
             <div className={styles.navbarRight}>
               <div className={styles.header__links}>
                 <Link

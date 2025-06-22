@@ -1,3 +1,4 @@
+// src/components/Layout/Header/Header.module.scss
 @import "../../../styles/variables.scss";
 
 // Header styles
@@ -17,15 +18,17 @@
   padding: 20px 0;
   display: flex;
   align-items: center;
-  justify-content: space-between; // Logo left, content right
+  justify-content: space-between; // Logo left, content right on desktop
   min-height: 64px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     padding: 16px 0;
+    justify-content: center; // Center logo on mobile
+    position: relative;
   }
 }
 
-// Logo - Left side
+// Logo - Left side on desktop, center on mobile
 .navbarBrand {
   margin: 0;
   z-index: 10; // Above mobile menu
@@ -36,8 +39,45 @@
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    // Center the logo on mobile
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
     img {
       height: 28px;
+    }
+  }
+}
+
+// Mobile New Ad Button - Only visible on mobile
+.mobileNewAdBtn {
+  display: none;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    background-color: $secondary-color;
+    color: $primary-color;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    z-index: 10;
+
+    &:hover,
+    &:focus {
+      background-color: darken($secondary-color, 10%);
+      transform: scale(1.05);
+    }
+
+    &:focus {
+      outline: 2px solid $white;
+      outline-offset: 2px;
     }
   }
 }
@@ -129,18 +169,6 @@
 
   span {
     display: inline-block;
-  }
-}
-
-// Mobile responsive adjustments
-@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-  .navbar {
-    justify-content: space-between;
-  }
-
-  .navbarBrand {
-    // Logo stays on left on mobile, mobile menu takes care of navigation
-    order: 0;
   }
 }
 

@@ -1,9 +1,12 @@
 @import "../../../../styles/variables.scss";
 
-// Menu toggle button
+// Menu toggle button update in MobileMenu.module.scss
 .menuToggle {
   display: none;
-  position: relative;
+  position: absolute; // Position absolutely within navbar
+  left: 0; // Align to left edge
+  top: 50%; // Center vertically
+  transform: translateY(-50%); // Center vertically
   z-index: 1001;
   width: 40px;
   height: 40px;

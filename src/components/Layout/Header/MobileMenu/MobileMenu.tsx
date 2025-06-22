@@ -181,7 +181,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
   return (
     <>
-      {/* Mobile Menu Toggle Button */}
+      {/* Mobile Menu Toggle Button - Only show when menu is closed */}
       {!isOpen && (
         <button
           className={`${styles.menuToggle} ${isOpen ? styles.active : ""}`}
