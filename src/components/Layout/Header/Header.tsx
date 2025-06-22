@@ -51,8 +51,8 @@ const Header: React.FC = () => {
               <Image
                 src="/assets/images/logo.svg"
                 alt="Bolbol Logo"
-                width={120}
-                height={32}
+                width={132}
+                height={44}
                 priority
               />
             </Link>
