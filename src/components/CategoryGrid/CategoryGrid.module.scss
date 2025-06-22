@@ -1,5 +1,136 @@
 @import "../../styles/variables.scss";
 
+// Main category container
+.category {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-top: -16px;
+  }
+}
+
+.category__list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.category__inner {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-bottom: 24px;
+  padding: 10px 10px 15px;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+
+  // Tablet view - 4 columns
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: #{$breakpoint-md}) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  // Mobile view - horizontal scroll with flex
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    background-color: transparent;
+    box-shadow: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      height: 0 !important;
+      display: none;
+    }
+  }
+}
+
+.category__item {
+  display: flex;
+  align-items: center;
+  padding: 14px 5px;
+  text-decoration: none;
+  color: inherit;
+  transition: 0.3s ease;
+  border-radius: 8px;
+
+  // Desktop: 6 columns
+  flex: 0 0 16.666667%;
+  max-width: 16.666667%;
+
+  // Tablet: 4 columns
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: #{$breakpoint-md}) {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  // Mobile: 2 columns in horizontal scroll
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 14px 0;
+  }
+
+  &:hover,
+  &:focus {
+    color: $primary-color;
+    background-color: rgba($primary-color, 0.05);
+    transform: translateY(-2px);
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+
+  // Sub-category items (if needed for future use)
+  &--sub {
+    padding: 10px;
+    transition: 0.3s;
+
+    &:not(:last-of-type) {
+      margin-right: 10px;
+    }
+
+    // Active state for desktop
+    @media screen and (min-width: #{$breakpoint-md}) {
+      &.active {
+        font-family: $font-family-bold;
+      }
+    }
+
+    // Active state for mobile
+    @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+      border: 1px solid $text-light;
+      border-radius: 6px;
+      white-space: nowrap;
+
+      &.active {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        color: $white;
+      }
+    }
+  }
+
+  // Full width item (if needed)
+  &--full {
+    grid-column: 1/-1;
+  }
+
+  // Image styling
+  img {
+    margin-right: 10px;
+
+    @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Category button styles (show more/less button)
 .category__btn {
   width: 100%;
   margin-top: 8px;
@@ -22,11 +153,7 @@
     width: 24px;
     height: 24px;
     margin-right: 8px;
-    // Using a simple CSS icon instead of external image
-    background: currentColor;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 6h16M4 12h16M4 18h16'/%3E%3C/svg%3E")
-      no-repeat center/cover;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 6h16M4 12h16M4 18h16'/%3E%3C/svg%3E")
+    background: url("../../../public/assets/images/categories/categories-more.svg")
       no-repeat center/cover;
     display: block;
   }
@@ -56,4 +183,45 @@
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     display: flex;
   }
+}
+
+// Loading state
+.category__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: $text-light;
+  font-size: $font-size-base;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+// Error state
+.category__error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #dc3545;
+  font-size: $font-size-base;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+// Empty state
+.category__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: $text-light;
+  font-size: $font-size-base;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
 }
