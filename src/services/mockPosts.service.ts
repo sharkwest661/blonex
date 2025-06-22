@@ -5,13 +5,13 @@ import { Post, PostFeature } from "@/components/PostCard";
 const mockFeatures: PostFeature[] = [
   {
     type: "barter",
-    icon: "/assets/img/barter.svg",
+    icon: "/assets/images/barter.svg",
     tooltip: "Barter mümkündür",
     enabled: true,
   },
   {
     type: "credit",
-    icon: "/assets/img/percent.svg",
+    icon: "/assets/images/percent.svg",
     tooltip: "Kredit mümkündür",
     enabled: true,
   },
@@ -47,7 +47,7 @@ const generateMockPost = (
     currency: "₼",
     location: locations[id % locations.length],
     date: "28.01.2021, 16:34",
-    imageUrl: "/assets/img/example/post2.png",
+    imageUrl: "/assets/images/example/post2.png",
     type,
     features: id % 3 === 0 ? mockFeatures : mockFeatures.slice(0, 1),
     href: `/listing/${type}-${id}`,

@@ -208,7 +208,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           {/* Header */}
           <div className={styles.menuHeader}>
             <Link href="/" className={styles.logo} onClick={handleLinkClick}>
-              <img src="/assets/img/logo.svg" alt="Bolbol" />
+              <img src="/assets/images/logo.svg" alt="Bolbol" />
             </Link>
             <button
               className={styles.closeButton}

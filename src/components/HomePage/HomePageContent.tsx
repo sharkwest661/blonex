@@ -17,7 +17,7 @@ export const HomePageContent: React.FC = () => {
       <ListingSection
         title={{
           title: "VIP Elanlar",
-          icon: "/assets/img/vip-large.svg",
+          icon: "/assets/images/vip-large.svg",
           iconWidth: 24,
           iconHeight: 24,
           seeAllText: "Bütün VIP elanlar",
@@ -31,8 +31,8 @@ export const HomePageContent: React.FC = () => {
           emptyMessage: "VIP elan tapılmadı",
         }}
         advertisement={{
-          desktopImage: "/assets/img/example/banner1.png",
-          mobileImage: "/assets/img/example/banner-mob.png",
+          desktopImage: "/assets/images/example/banner1.png",
+          mobileImage: "/assets/images/example/banner-mob.png",
           altText: "Advertisement Banner",
           href: "#",
         }}
@@ -40,7 +40,7 @@ export const HomePageContent: React.FC = () => {
 
       {/* Full Width Banner 1 */}
       <FullWidthBanner
-        imageSrc="/assets/img/example/banner2.png"
+        imageSrc="/assets/images/example/banner2.png"
         altText="Full Width Advertisement"
         href="#"
       />
@@ -61,8 +61,8 @@ export const HomePageContent: React.FC = () => {
           emptyMessage: "Yeni elan tapılmadı",
         }}
         advertisement={{
-          desktopImage: "/assets/img/example/banner3.png",
-          mobileImage: "/assets/img/example/banner-mob.png",
+          desktopImage: "/assets/images/example/banner3.png",
+          mobileImage: "/assets/images/example/banner-mob.png",
           altText: "Advertisement Banner",
           href: "#",
         }}
@@ -70,7 +70,7 @@ export const HomePageContent: React.FC = () => {
 
       {/* Full Width Banner 2 */}
       <FullWidthBanner
-        imageSrc="/assets/img/example/banner2.png"
+        imageSrc="/assets/images/example/banner2.png"
         altText="Full Width Advertisement"
         href="#"
       />
@@ -79,7 +79,7 @@ export const HomePageContent: React.FC = () => {
       <ListingSection
         title={{
           title: "Premium elanlar",
-          icon: "/assets/img/premium-icon.svg",
+          icon: "/assets/images/premium-icon.svg",
           iconWidth: 24,
           iconHeight: 24,
           align: "center",
@@ -91,8 +91,8 @@ export const HomePageContent: React.FC = () => {
           emptyMessage: "Premium elan tapılmadı",
         }}
         advertisement={{
-          desktopImage: "/assets/img/example/banner3.png",
-          mobileImage: "/assets/img/example/banner-mob.png",
+          desktopImage: "/assets/images/example/banner3.png",
+          mobileImage: "/assets/images/example/banner-mob.png",
           altText: "Advertisement Banner",
           href: "#",
         }}

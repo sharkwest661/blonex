@@ -71,7 +71,7 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({
           {seeAllText && seeAllHref && (
             <Link href={seeAllHref} className={styles.btn}>
               <Image
-                src="/assets/img/chevron_lmain.svg"
+                src="/assets/images/chevron_lmain.svg"
                 alt=""
                 width={16}
                 height={16}
