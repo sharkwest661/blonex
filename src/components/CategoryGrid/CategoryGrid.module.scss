@@ -32,12 +32,11 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  // Mobile view - 2 column grid layout (not horizontal scroll)
+  // Mobile view - flex wrap layout (matches original design)
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    padding: 16px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0;
     margin-bottom: 16px;
   }
 }
