@@ -1,0 +1,44 @@
+// src/components/Home/HomeFilter/HomeFilter.module.scss
+@import "../../../styles/variables.scss";
+
+.homeFilters {
+  padding: 40px 0;
+  background-color: $background-color;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 20px 0;
+  }
+}
+
+.searchSection {
+  display: block;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: block;
+  }
+}
+
+.searchContainer {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 0 16px;
+  }
+}
+
+.searchRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.searchBar {
+  width: 100%;
+  max-width: 690px;
+  display: flex;
+  justify-content: center;
+}

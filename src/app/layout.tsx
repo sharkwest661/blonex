@@ -1,8 +1,14 @@
 // src/app/layout.tsx
-import "./globals.scss"; // Import the consolidated global styles
+import "./globals.scss";
 import Header from "@/components/Layout/Header/Header";
 import Footer from "@/components/Layout/Footer/Footer";
-import { arimoRegular, arimoBold } from "@/fonts";
+import { Providers } from "@/providers";
+
+export const metadata = {
+  title: "Bolbol - Azərbaycanın ən böyük elan platforması",
+  description:
+    "Bolbol-da istədiyiniz hər şeyi tapın və ya satın. Avtomobil, ev, elektronika və daha çox.",
+};
 
 export default function RootLayout({
   children,
@@ -10,14 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="az"
-      className={`${arimoRegular.variable} ${arimoBold.variable}`}
-    >
-      <body className={arimoRegular.className}>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+    <html lang="az">
+      <body>
+        <Providers>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
