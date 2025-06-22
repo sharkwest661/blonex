@@ -106,16 +106,6 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
   const shouldShowButton =
     isMobile && showAllButton && sortedCategories.length > 4 && !showAll;
 
-  console.log("Render state:", {
-    isMobile,
-    showAll,
-    categoriesCount: sortedCategories.length,
-    shouldShowButton,
-    innerClassName: `${styles.category__inner} ${
-      isMobile && showAll ? styles["show-all"] : ""
-    }`,
-  });
-
   return (
     <section className={`${styles.category} ${className || ""}`}>
       <div className={styles.category__list}>

@@ -1,9 +1,10 @@
-// Update src/components/common/index.ts
+// src/components/common/index.ts
 export { default as Loader } from "./Loader";
 export { default as LoaderDots } from "./Loader/LoaderDots";
 export { default as SkeletonLoader } from "./Loader/SkeletonLoader";
 export {
-  default as ErrorBoundary,
+  ErrorBoundary as default,
+  ErrorBoundary,
   ErrorFallback,
   AsyncErrorBoundary,
   withErrorBoundary,

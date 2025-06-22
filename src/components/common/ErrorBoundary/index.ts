@@ -1,11 +1,9 @@
 // src/components/common/ErrorBoundary/index.ts
-export { default as ErrorBoundary } from "./ErrorBoundary";
-export { default as ErrorFallback } from "./ErrorFallback";
-export { default as AsyncErrorBoundary } from "./AsyncErrorBoundary";
-export {
-  default as withErrorBoundary,
-  ErrorBoundaryDecorator,
-} from "./withErrorBoundary";
+export { ErrorBoundary as default } from "./ErrorBoundary";
+export { ErrorBoundary } from "./ErrorBoundary";
+export { ErrorFallback } from "./ErrorFallback";
+export { AsyncErrorBoundary } from "./AsyncErrorBoundary";
+export { withErrorBoundary, ErrorBoundaryDecorator } from "./withErrorBoundary";
 
 // Export types
 export type { ErrorFallbackProps } from "./ErrorFallback";
