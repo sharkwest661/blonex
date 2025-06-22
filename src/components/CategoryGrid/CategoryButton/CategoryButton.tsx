@@ -19,9 +19,9 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
       className={`${styles.category__btn} ${className || ""}`}
       onClick={onClick}
       aria-expanded={isExpanded}
-      aria-label={isExpanded ? "Daha az göstər" : "Bütün kateqoriyalar"}
+      aria-label="Bütün kateqoriyalar"
     >
-      {isExpanded ? "Daha az göstər" : "Bütün kateqoriyalar"}
+      Bütün kateqoriyalar
     </button>
   );
 };

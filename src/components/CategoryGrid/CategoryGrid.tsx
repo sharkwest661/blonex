@@ -38,7 +38,12 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
   // Handle screen size detection
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      // Reset showAll when switching from mobile to desktop
+      if (!mobile) {
+        setShowAll(false);
+      }
     };
 
     // Initial check
@@ -50,13 +55,6 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
     // Cleanup
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
-
-  // Reset showAll when screen size changes
-  useEffect(() => {
-    if (!isMobile) {
-      setShowAll(false); // Reset on desktop
-    }
-  }, [isMobile]);
 
   // Handle loading state
   if (isLoading) {
@@ -96,46 +94,55 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
     (a, b) => (a.order || 0) - (b.order || 0)
   );
 
-  // Determine which categories to show based on original logic
-  const getVisibleCategories = () => {
-    if (!isMobile) {
-      // Desktop: Always show all categories
-      return sortedCategories;
-    } else {
-      // Mobile: Show first 4, or all if showAll is true
-      if (showAll || sortedCategories.length <= 4) {
-        return sortedCategories;
-      } else {
-        return sortedCategories.slice(0, 4);
-      }
-    }
+  // Handle button click - force re-render by updating state
+  const handleToggleShow = () => {
+    console.log("Button clicked, showAll before:", showAll);
+    console.log("isMobile:", isMobile);
+    setShowAll(true);
+    console.log("Setting showAll to true");
   };
 
-  const visibleCategories = getVisibleCategories();
-
-  // Show button only on mobile when there are more than 4 items and not showing all
+  // Determine button visibility
   const shouldShowButton =
     isMobile && showAllButton && sortedCategories.length > 4 && !showAll;
 
-  const handleToggleShow = () => {
-    setShowAll(true); // Only allow expanding, not collapsing (matches original)
-  };
+  console.log("Render state:", {
+    isMobile,
+    showAll,
+    categoriesCount: sortedCategories.length,
+    shouldShowButton,
+    innerClassName: `${styles.category__inner} ${
+      isMobile && showAll ? styles["show-all"] : ""
+    }`,
+  });
 
   return (
     <section className={`${styles.category} ${className || ""}`}>
       <div className={styles.category__list}>
-        <div className={styles.category__inner}>
-          {visibleCategories.map((category) => (
-            <CategoryItem
-              key={category.id}
-              category={category}
-              className={styles.category__item}
-            />
-          ))}
+        <div
+          className={`${styles.category__inner} ${
+            isMobile && showAll ? styles["show-all"] : ""
+          }`}
+        >
+          {sortedCategories.map((category, index) => {
+            // Show/hide logic: on mobile, hide items after index 3 unless showAll is true
+            const shouldHide = isMobile && !showAll && index >= 4;
+            const itemClassName = `${styles.category__item} ${
+              isMobile && showAll ? styles["category__item--show-all"] : ""
+            } ${shouldHide ? styles["d-none"] : ""}`;
+
+            return (
+              <CategoryItem
+                key={category.id}
+                category={category}
+                className={itemClassName}
+              />
+            );
+          })}
         </div>
       </div>
 
-      {/* Show button only on mobile when there are more than 4 categories */}
+      {/* Show button only on mobile when there are more than 4 categories and not showing all */}
       {shouldShowButton && (
         <CategoryButton
           onClick={handleToggleShow}

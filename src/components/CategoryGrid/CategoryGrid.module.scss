@@ -7,6 +7,12 @@
   }
 }
 
+// Show all state for mobile grid layout
+.show-all {
+  // Applied to category__inner when showing all categories on mobile
+  // The actual styling is handled by the &.show-all selector above
+}
+
 .category__list {
   display: flex;
   align-items: center;
@@ -16,34 +22,23 @@
 
 .category__inner {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-bottom: 24px;
   padding: 10px 10px 15px;
-  background-color: $white;
-  border-radius: $border-radius;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+  // Removed white background and box shadow per user request
 
-  // Tablet view - 4 columns
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: #{$breakpoint-md}) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  // Tablet view - 3 columns (from original code)
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  // Mobile view - horizontal scroll with flex
+  // Mobile view - 2 column grid layout (not horizontal scroll)
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    background-color: transparent;
-    box-shadow: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      height: 0 !important;
-      display: none;
-    }
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 16px 8px;
+    margin-bottom: 16px;
   }
 }
 
@@ -51,86 +46,71 @@
   display: flex;
   align-items: center;
   padding: 14px 5px;
-  text-decoration: none;
-  color: inherit;
-  transition: 0.3s ease;
-  border-radius: 8px;
 
-  // Desktop: 6 columns
+  // Desktop: 6 columns (16.666667% each)
   flex: 0 0 16.666667%;
   max-width: 16.666667%;
 
-  // Tablet: 4 columns
+  // Tablet: 4 columns (25% each) - between 768px-991px
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: #{$breakpoint-md}) {
     flex: 0 0 25%;
     max-width: 25%;
   }
 
-  // Mobile: 2 columns in horizontal scroll
+  // Mobile: 2 items visible (50% each) in horizontal scroll, or full width in grid when showing all
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex: 0 0 50%;
     max-width: 50%;
     padding: 14px 0;
-  }
 
-  &:hover,
-  &:focus {
-    color: $primary-color;
-    background-color: rgba($primary-color, 0.05);
-    transform: translateY(-2px);
-  }
-
-  &:focus {
-    outline: 2px solid $secondary-color;
-    outline-offset: 2px;
-  }
-
-  // Sub-category items (if needed for future use)
-  &--sub {
-    padding: 10px;
-    transition: 0.3s;
-
-    &:not(:last-of-type) {
-      margin-right: 10px;
-    }
-
-    // Active state for desktop
-    @media screen and (min-width: #{$breakpoint-md}) {
-      &.active {
-        font-family: $font-family-bold;
-      }
-    }
-
-    // Active state for mobile
-    @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-      border: 1px solid $text-light;
-      border-radius: 6px;
-      white-space: nowrap;
-
-      &.active {
-        background-color: $primary-color;
-        border-color: $primary-color;
-        color: $white;
-      }
+    // When showing all categories, items should work in grid layout
+    &.show-all {
+      flex: none;
+      max-width: none;
+      width: 100%;
+      padding: 8px;
     }
   }
 
-  // Full width item (if needed)
-  &--full {
-    grid-column: 1/-1;
-  }
-
-  // Image styling
   img {
     margin-right: 10px;
+  }
+}
 
-    @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-      margin-right: 8px;
+// Sub-category items (for special cases)
+.category__item--sub {
+  padding: 10px;
+  transition: 0.3s;
+
+  &:not(:last-of-type) {
+    margin-right: 10px;
+  }
+
+  @media screen and (min-width: #{$breakpoint-md}) {
+    &.active {
+      font-family: $font-family-bold;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    border: 1px solid $text-light;
+    border-radius: 6px;
+    white-space: nowrap;
+
+    &.active {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      color: $white;
     }
   }
 }
 
-// Category button styles (show more/less button)
+// Full width item
+.category__item--full {
+  grid-column: 1/-1;
+}
+
+// Category button (show more) - only visible on mobile when needed
 .category__btn {
   width: 100%;
   margin-top: 8px;
@@ -174,15 +154,15 @@
     transform: translateY(0);
   }
 
-  // Hidden on desktop (768px and up)
+  // Hidden on desktop - button logic is handled by React component
   @media screen and (min-width: #{$breakpoint-md}) {
     display: none;
   }
+}
 
-  // Visible only on mobile
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: flex;
-  }
+// Utility class for hiding elements (matching original d-none behavior)
+.d-none {
+  display: none !important;
 }
 
 // Loading state
@@ -193,9 +173,6 @@
   padding: 40px 20px;
   color: $text-light;
   font-size: $font-size-base;
-  background-color: $white;
-  border-radius: $border-radius;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
 }
 
 // Error state
@@ -206,9 +183,6 @@
   padding: 40px 20px;
   color: #dc3545;
   font-size: $font-size-base;
-  background-color: $white;
-  border-radius: $border-radius;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
   text-align: center;
 }
 
@@ -220,8 +194,5 @@
   padding: 40px 20px;
   color: $text-light;
   font-size: $font-size-base;
-  background-color: $white;
-  border-radius: $border-radius;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
   text-align: center;
 }
