@@ -2,7 +2,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search } from "lucide-react";
 import { useDebounce } from "@/hooks/useDebounce";
 import {
   searchService,
@@ -14,6 +13,7 @@ interface HomeSearchProps {
   onSearch?: (query: string) => void;
   placeholder?: string;
   className?: string;
+  variant?: "default" | "small" | "top"; // Added variant prop
 }
 
 // Custom hook for typing animation with pause support
@@ -72,6 +72,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
   onSearch,
   placeholder,
   className,
+  variant = "default",
 }) => {
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -84,7 +85,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
   // Debounce the search query
   const debouncedQuery = useDebounce(query, 300);
 
-  // Typing animation phrases
+  // Typing animation phrases (only for default variant)
   const typingPhrases = [
     "iPhone, Samsung, Xiaomi...",
     "Avtomobil, mətbəx dəsti...",
@@ -93,9 +94,13 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
   ];
 
   // Pass isFocused as isPaused parameter to pause animation when focused
-  const animatedPlaceholder = useTypingAnimation(typingPhrases, 100, isFocused);
+  const animatedPlaceholder = useTypingAnimation(
+    variant === "default" ? typingPhrases : [],
+    100,
+    isFocused
+  );
 
-  // React Query for search suggestions
+  // React Query for search suggestions (only for default variant)
   const {
     data: suggestions = [],
     isLoading,
@@ -103,7 +108,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
   } = useQuery({
     queryKey: ["searchSuggestions", debouncedQuery],
     queryFn: () => searchService.getSearchSuggestions(debouncedQuery),
-    enabled: debouncedQuery.length > 1,
+    enabled: debouncedQuery.length > 1 && variant === "default",
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
@@ -112,7 +117,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
     const value = e.target.value;
     setQuery(value);
     setSelectedIndex(-1);
-    setShowSuggestions(value.length > 0);
+    setShowSuggestions(value.length > 0 && variant === "default");
   };
 
   // Handle search submission
@@ -184,8 +189,23 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
     };
   }, []);
 
+  // Get appropriate CSS classes based on variant
+  const getSearchClasses = () => {
+    const baseClass = styles.search;
+    const variantClass =
+      variant !== "default" ? styles[`search--${variant}`] : "";
+    return `${baseClass} ${variantClass} ${className || ""}`.trim();
+  };
+
+  const getButtonClasses = () => {
+    const baseClass = styles.search__btn;
+    const variantClass =
+      variant === "small" ? styles["search__btn--small"] : "";
+    return `${baseClass} ${variantClass}`.trim();
+  };
+
   return (
-    <div ref={searchRef} className={`${styles.search} ${className || ""}`}>
+    <div ref={searchRef} className={getSearchClasses()}>
       <form onSubmit={handleSubmit}>
         <div className={styles.search__group}>
           <input
@@ -196,12 +216,16 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
             onKeyDown={handleKeyDown}
             onFocus={() => {
               setIsFocused(true);
-              if (query.length > 0) {
+              if (query.length > 0 && variant === "default") {
                 setShowSuggestions(true);
               }
             }}
             onBlur={() => setIsFocused(false)}
-            placeholder={animatedPlaceholder || placeholder || "Axtar..."}
+            placeholder={
+              variant === "default"
+                ? animatedPlaceholder || placeholder || "Axtar..."
+                : placeholder || "Axtar..."
+            }
             className={styles.search__input}
             autoComplete="off"
             aria-label="Axtarış"
@@ -213,18 +237,18 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
           <div className={styles.search__append}>
             <button
               type="submit"
-              className={styles.search__btn}
+              className={getButtonClasses()}
               aria-label="Axtar"
               disabled={!query.trim()}
             >
-              <Search size={24} />
+              {/* Button styling and icon handled by CSS background-image */}
             </button>
           </div>
         </div>
       </form>
 
-      {/* Search Suggestions */}
-      {showSuggestions && query.length > 0 && (
+      {/* Search Suggestions - Only show for default variant */}
+      {variant === "default" && showSuggestions && query.length > 0 && (
         <div className={styles.suggestions}>
           {isLoading && (
             <div className={styles.suggestions__loading}>Axtarılır...</div>
