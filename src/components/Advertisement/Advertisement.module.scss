@@ -1,0 +1,69 @@
+// src/components/Advertisement/Advertisement.module.scss
+@import "../../styles/variables.scss";
+
+.advertisement {
+  width: 100%;
+  max-width: 300px;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    max-width: 250px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    max-width: 100%;
+    margin: 20px 0;
+  }
+}
+
+.sticky_top {
+  position: sticky;
+  top: 20px;
+  z-index: 10;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    position: static;
+  }
+}
+
+.bannerLink {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+    border-radius: $border-radius;
+  }
+}
+
+.bannerImage {
+  width: 100%;
+  height: auto;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.bannerImage__desktop {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none;
+  }
+}
+
+.bannerImage__mobile {
+  display: none;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: block;
+  }
+}

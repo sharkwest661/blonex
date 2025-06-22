@@ -1,0 +1,76 @@
+// src/components/PostGrid/PostGrid.module.scss
+@import "../../styles/variables.scss";
+
+.post {
+  overflow: hidden;
+  padding: 20px;
+  padding-left: 0 !important;
+  margin: -20px;
+}
+
+.post__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.post__item {
+  width: calc(100% / 5 - 15px);
+
+  @media screen and (max-width: 1200px) {
+    width: calc(100% / 5 - 15px);
+  }
+
+  @media screen and (max-width: 1024px) {
+    width: calc(100% / 4 - 8px);
+    margin-bottom: 16px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    width: calc(100% / 3 - 8px);
+  }
+
+  @media screen and (max-width: 576px) {
+    width: calc(100% / 2 - 8px);
+  }
+}
+
+// Loading state
+.post__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: $text-light;
+  font-size: $font-size-base;
+  gap: 16px;
+}
+
+// Error state
+.post__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #dc3545;
+  font-size: $font-size-base;
+  text-align: center;
+  gap: 8px;
+
+  p:first-child {
+    font-weight: 600;
+  }
+}
+
+// Empty state
+.post__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: $text-light;
+  font-size: $font-size-base;
+  text-align: center;
+}

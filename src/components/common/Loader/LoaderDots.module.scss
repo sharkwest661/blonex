@@ -1,0 +1,75 @@
+// src/components/common/Loader/LoaderDots.module.scss
+@import "../../../styles/variables.scss";
+
+.loaderDots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.loaderDots__dot {
+  border-radius: 50%;
+  animation: loader-dots-bounce 1.4s ease-in-out infinite both;
+}
+
+// Size variants
+.loaderDots--small .loaderDots__dot {
+  width: 6px;
+  height: 6px;
+}
+
+.loaderDots--medium .loaderDots__dot {
+  width: 8px;
+  height: 8px;
+}
+
+.loaderDots--large .loaderDots__dot {
+  width: 12px;
+  height: 12px;
+}
+
+// Color variants
+.loaderDots--primary .loaderDots__dot {
+  background-color: $primary-color;
+}
+
+.loaderDots--secondary .loaderDots__dot {
+  background-color: $secondary-color;
+}
+
+.loaderDots--white .loaderDots__dot {
+  background-color: $white;
+}
+
+// Staggered animation
+.loaderDots__dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loaderDots__dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.loaderDots__dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes loader-dots-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loaderDots__dot {
+    animation: none;
+    opacity: 0.6;
+  }
+}

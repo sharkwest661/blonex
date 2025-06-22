@@ -1,0 +1,45 @@
+// src/components/ListingSection/ListingSection.module.scss
+@import "../../styles/variables.scss";
+
+.listingSection {
+  margin-bottom: 40px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-bottom: 32px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    gap: 16px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-direction: column;
+    padding: 20px 0;
+    gap: 0;
+  }
+}
+
+.content {
+  flex: 1;
+  min-width: 0; // Prevents flex item from overflowing
+}
+
+.sidebar {
+  flex-shrink: 0;
+  width: 300px;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    width: 250px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    width: 100%;
+    order: -1; // Move advertisement above content on mobile
+  }
+}

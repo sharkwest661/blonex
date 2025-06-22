@@ -1,3 +1,4 @@
+// Update next.config.mjs to include example images domain
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -9,6 +10,8 @@ const nextConfig = {
         pathname: "/media/**",
       },
     ],
+    // Allow local example images
+    unoptimized: process.env.NODE_ENV === "development",
   },
 };
 
