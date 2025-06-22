@@ -434,35 +434,3 @@
     transform: translateX(0);
   }
 }
-
-// Dark mode support (if needed)
-@media (prefers-color-scheme: dark) {
-  .mobileMenu {
-    background-color: #1a1a1a;
-    color: $white;
-  }
-
-  .searchInput {
-    background-color: #2a2a2a;
-    color: $white;
-    border-color: #404040;
-
-    &::placeholder {
-      color: #999;
-    }
-  }
-
-  .categoryIcon {
-    background-color: #2a2a2a;
-  }
-
-  .socialLink {
-    background-color: #2a2a2a;
-    color: $white;
-
-    &:hover,
-    &:focus {
-      background-color: $secondary-color;
-    }
-  }
-}

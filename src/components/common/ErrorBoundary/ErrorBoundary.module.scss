@@ -316,37 +316,6 @@
   }
 }
 
-// Dark mode support (if needed)
-@media (prefers-color-scheme: dark) {
-  .errorBoundary {
-    background-color: #1a1a1a;
-  }
-
-  .errorContent {
-    background-color: #2a2a2a;
-    color: $white;
-  }
-
-  .errorTitle {
-    color: $white;
-  }
-
-  .errorDescription {
-    color: rgba($white, 0.9);
-  }
-
-  .errorDetails {
-    background-color: #1a1a1a;
-    border-color: rgba($white, 0.2);
-  }
-
-  .errorDetailsText {
-    background-color: #000;
-    border-color: rgba($white, 0.2);
-    color: rgba($white, 0.9);
-  }
-}
-
 // Compact variant for smaller error boundaries
 .errorBoundary--compact {
   min-height: 200px;

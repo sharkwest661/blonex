@@ -57,12 +57,14 @@ export const PostGrid: React.FC<PostGridProps> = ({
 
   return (
     <div className={`${styles.post} ${className || ""}`}>
-      <div className={styles.post__list}>
-        {posts.map((post) => (
-          <div key={post.id} className={styles.post__item}>
-            <PostCard post={post} />
-          </div>
-        ))}
+      <div className={styles.wrapper}>
+        <div className={styles.post__list}>
+          {posts.map((post) => (
+            <div key={post.id} className={styles.post__item}>
+              <PostCard post={post} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -6,16 +6,16 @@
   border-radius: $border-radius;
   background-color: $white;
   box-shadow: 0px 0px 0px 0px $primary-color, 0px 10px 20px rgba(0, 0, 0, 0.05);
-  font-size: $font-size-base;
+  font-size: $font-size-small; // 1.2rem equivalent
   line-height: 1.17;
   overflow: hidden;
   transition: 0.3s;
-  position: relative;
+  z-index: -1 !important;
 
-  &:hover {
-    box-shadow: 0px 0px 0px 0px $primary-color,
-      0px 10px 12px rgba(0, 0, 0, 0.25);
-  }
+  // &:hover {
+  //   box-shadow: 0px 0px 0px 0px $primary-color,
+  //     0px 10px 12px rgba(0, 0, 0, 0.25);
+  // }
 
   // Checked state (for selection)
   &--checked {
@@ -31,23 +31,11 @@
   // Pulsed state (for special promotions)
   &--pulsed {
     animation: pulse 2s infinite;
+    z-index: -1 !important;
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     z-index: -1 !important;
-  }
-}
-
-// Main link wrapper
-.post__link {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-
-  &:hover,
-  &:focus {
-    color: inherit;
-    text-decoration: none;
   }
 }
 
@@ -56,21 +44,18 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1.34/1;
-  z-index: 0;
-}
+  z-index: 0 !important;
 
-.post__imgLink {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1/0.7;
-  position: relative;
-  overflow: hidden;
+  > img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .post__image {
-  object-fit: cover;
   width: 100% !important;
   height: 100% !important;
+  object-fit: cover;
 }
 
 .post__imagePlaceholder {
@@ -93,7 +78,7 @@
   display: flex;
   align-items: center;
   padding: 5px;
-  z-index: 1;
+  z-index: 0 !important;
 }
 
 // VIP and Premium badges
@@ -131,8 +116,7 @@
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 2;
+  z-index: 0 !important;
 
   &:before,
   &:after {
@@ -143,6 +127,7 @@
     transform: translate(-50%, -50%);
     display: block;
     transition: 0.3s;
+    z-index: 1 !important;
   }
 
   &:before {
@@ -202,7 +187,7 @@
   border-radius: 3px;
   color: $primary-color;
   transition: 0.3s;
-  z-index: 1;
+  z-index: 0 !important;
   text-decoration: none;
 
   &:hover,
@@ -226,6 +211,7 @@
     width: 18px;
     height: 18px;
     background: url("/assets/images/link.svg") no-repeat center/cover;
+    z-index: 0 !important;
   }
 
   img {
@@ -237,23 +223,27 @@
 // Info section
 .post__info {
   position: relative;
-  padding: 22px 5px 5px;
   color: rgba(0, 0, 0, 0.5);
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 22px 5px 5px;
-  }
 
   p {
     margin-bottom: 3px !important;
   }
+
+  @media screen and (min-width: $breakpoint-md) {
+    padding: 22px 5px 5px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 22px 5px 5px;
+    padding-top: 4px !important;
+  }
 }
 
 .post__content {
-  padding: 0 $spacing-unit * 2; // px-5 equivalent
+  padding: 0 5px; // px-5 equivalent (5px left and right)
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 0 $spacing-unit;
+    padding: 0 5px;
   }
 }
 
@@ -277,6 +267,7 @@
   &:hover,
   &:focus {
     color: $primary-color;
+    text-decoration: none;
   }
 }
 
@@ -303,9 +294,14 @@
     height: 36px !important;
   }
 
+  @media screen and (max-width: 576px) {
+    height: 36px !important;
+  }
+
   &:hover,
   &:focus {
     color: $primary-color;
+    text-decoration: none;
   }
 }
 
@@ -321,6 +317,13 @@
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $primary-color;
+    text-decoration: none;
+  }
 }
 
 .post__meta {
@@ -334,11 +337,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 $spacing-unit * 2; // px-5 equivalent
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 0 $spacing-unit;
-  }
+  // No padding - matches original d-flex justify-content-between structure
 }
 
 // Price
@@ -361,7 +360,7 @@
 .post__features {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 }
 
 .post__feature {
@@ -396,23 +395,6 @@
   }
 }
 
-// Responsive adjustments for different screen sizes
-@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-  .post__info {
-    padding-top: 4px !important;
-  }
-
-  .other_post_title {
-    height: 36px !important;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .other_post_title {
-    height: 36px !important;
-  }
-}
-
 // Loading state
 .post__item--loading {
   .post__image {
@@ -431,27 +413,8 @@
 }
 
 // Focus states for accessibility
-.post__link:focus {
+.post__item:focus-within {
   outline: 2px solid $secondary-color;
   outline-offset: 2px;
   border-radius: $border-radius;
-}
-
-// Dark mode support (if needed)
-@media (prefers-color-scheme: dark) {
-  .post__item {
-    background-color: #1a1a1a;
-    color: $white;
-  }
-
-  .post__title,
-  .other_post_title,
-  .post__title2 {
-    color: $white;
-  }
-
-  .post__store {
-    background-color: #2a2a2a;
-    color: $white;
-  }
 }

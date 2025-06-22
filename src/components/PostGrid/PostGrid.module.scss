@@ -14,24 +14,40 @@
   gap: 10px;
 }
 
+.wrapper {
+  // Wrapper specific styles can be added here if needed
+}
+
 .post__item {
+  // Desktop: 5 columns
   width: calc(100% / 5 - 15px);
 
+  // Large tablets: 5 columns (1200px and below)
   @media screen and (max-width: 1200px) {
     width: calc(100% / 5 - 15px);
   }
 
+  // Tablets: 4 columns (1024px and below)
   @media screen and (max-width: 1024px) {
     width: calc(100% / 4 - 8px);
     margin-bottom: 16px;
   }
 
+  // Small tablets: 3 columns (767px and below)
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     width: calc(100% / 3 - 8px);
   }
 
+  // Mobile: 2 columns (576px and below)
   @media screen and (max-width: 576px) {
     width: calc(100% / 2 - 8px);
+  }
+}
+
+// Wrapper adjustments for mobile
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .wrapper {
+    padding: 20px 0px !important;
   }
 }
 
