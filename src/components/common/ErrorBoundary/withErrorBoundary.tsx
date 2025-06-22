@@ -1,5 +1,5 @@
 // src/components/common/ErrorBoundary/withErrorBoundary.tsx
-import React, { ComponentType, forwardRef } from "react";
+import React, { ComponentType } from "react";
 import ErrorBoundary from "./ErrorBoundary";
 import { ErrorFallback, ErrorFallbackProps } from "./ErrorFallback";
 
@@ -14,7 +14,7 @@ interface WithErrorBoundaryOptions {
 export function withErrorBoundary<P extends object>(
   Component: ComponentType<P>,
   options: WithErrorBoundaryOptions = {}
-) {
+): ComponentType<P> {
   const {
     fallback: FallbackComponent = ErrorFallback,
     fallbackProps = {},
@@ -23,7 +23,7 @@ export function withErrorBoundary<P extends object>(
     enableRetry = true,
   } = options;
 
-  const WrappedComponent = forwardRef<any, P>((props, ref) => {
+  const WrappedComponent: ComponentType<P> = (props: P) => {
     const fallbackElement = (
       <FallbackComponent showRetry={enableRetry} {...fallbackProps} />
     );
@@ -35,10 +35,10 @@ export function withErrorBoundary<P extends object>(
         showErrorDetails={showErrorDetails}
         enableRetry={enableRetry}
       >
-        <Component {...props} ref={ref} />
+        <Component {...props} />
       </ErrorBoundary>
     );
-  });
+  };
 
   WrappedComponent.displayName = `withErrorBoundary(${
     Component.displayName || Component.name
