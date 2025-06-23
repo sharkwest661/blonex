@@ -9,46 +9,40 @@
 }
 
 .post__list {
-  display: flex;
-  flex-wrap: wrap;
+  // Converted from flexbox to CSS grid
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); // Desktop: 5 columns
   gap: 10px;
-}
-
-.wrapper {
-  // Wrapper specific styles can be added here if needed
-}
-
-.post__item {
-  // Desktop: 5 columns
-  width: calc(100% / 5 - 15px);
 
   // Large tablets: 5 columns (1200px and below)
   @media screen and (max-width: 1200px) {
-    width: calc(100% / 5 - 15px);
+    grid-template-columns: repeat(5, 1fr);
   }
 
   // Tablets: 4 columns (1024px and below)
   @media screen and (max-width: 1024px) {
-    width: calc(100% / 4 - 8px);
-    margin-bottom: 16px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
   }
 
   // Small tablets: 3 columns (767px and below)
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    width: calc(100% / 3 - 8px);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   // Mobile: 2 columns (576px and below)
   @media screen and (max-width: 576px) {
-    width: calc(100% / 2 - 8px);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-// Wrapper adjustments for mobile
-@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-  .wrapper {
-    padding: 20px 0px !important;
-  }
+.wrapper {
+  // Wrapper specific styles remain unchanged
+}
+
+.post__item {
+  // No need for explicit width calculations with CSS Grid
+  // Item will automatically fit grid cell
 }
 
 // Loading state
@@ -89,4 +83,11 @@
   color: $text-light;
   font-size: $font-size-base;
   text-align: center;
+}
+
+// Wrapper adjustments for mobile
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .wrapper {
+    padding: 20px 0px !important;
+  }
 }

@@ -16,17 +16,17 @@
   &,
   & > *,
   & > * > * {
-    height: 100%;
+    height: auto;
   }
 
-  @media screen and (max-width: 1024px) {
-    // Reset height to auto on tablet and below
-    &,
-    & > *,
-    & > * > * {
-      height: auto;
-    }
-  }
+  // @media screen and (max-width: 1024px) {
+  //   // Reset height to auto on tablet and below
+  //   &,
+  //   & > *,
+  //   & > * > * {
+  //     height: auto;
+  //   }
+  // }
 }
 
 // Desktop link - visible on medium screens and up
