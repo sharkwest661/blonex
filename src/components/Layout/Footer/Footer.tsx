@@ -47,6 +47,9 @@ const Footer: React.FC = () => {
           </div>
           <div className={styles.footer__navbar}>
             <a href="" className={styles.footer__navlink}>
+              Əsas səhifə
+            </a>
+            <a href="" className={styles.footer__navlink}>
               Reklam yerləşdirmək
             </a>
             <a href="" className={styles.footer__navlink}>
@@ -73,7 +76,7 @@ const Footer: React.FC = () => {
 
         <div className={styles.footer__bottombar}>
           <div className={styles.footer__copyright}>
-            © 2025 Bolbol. Bütün hüquqlar qorunur.
+            © IT Enterprise MMC, 2021. Bütün hüquqlar qorunur.
           </div>
           <div>
             <Link href="/privacy" className={styles.footer__link}>
