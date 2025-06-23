@@ -1,3 +1,4 @@
+// src/constants/cities.ts
 // City data for Azerbaijan
 export const AZERBAIJAN_CITIES = {
   main: [

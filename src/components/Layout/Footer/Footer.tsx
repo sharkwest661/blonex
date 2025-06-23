@@ -1,11 +1,16 @@
+// src/components/Layout/Footer/Footer.tsx
 import React from "react";
 import Link from "next/link";
-import styles from "./Footer.module.scss";
-import Container from "../Container/Container";
+import { Container } from "@/components/Layout/Container";
 import { getAllCities } from "@/constants/cities";
+import styles from "./Footer.module.scss";
 
 const Footer: React.FC = () => {
   const allCities = getAllCities();
+
+  // Split cities into columns for display
+  const mainCities = allCities.slice(0, 12); // First 12 cities (main cities)
+  const otherCities = allCities.slice(12); // Remaining cities
 
   return (
     <footer className={styles.footer}>
@@ -19,6 +24,7 @@ const Footer: React.FC = () => {
             >
               {/* Icon handled by CSS background-image */}
             </a>
+
             <a
               href="#"
               aria-label="Instagram"
@@ -46,28 +52,38 @@ const Footer: React.FC = () => {
             </a>
           </div>
           <div className={styles.footer__navbar}>
-            <a href="" className={styles.footer__navlink}>
+            <Link href="/" className={styles.footer__navlink}>
               Əsas səhifə
-            </a>
-            <a href="" className={styles.footer__navlink}>
+            </Link>
+            <Link href="/advertising" className={styles.footer__navlink}>
               Reklam yerləşdirmək
-            </a>
-            <a href="" className={styles.footer__navlink}>
+            </Link>
+            <Link href="/about" className={styles.footer__navlink}>
               Haqqımızda
-            </a>
-            <a
-              href=""
+            </Link>
+            <Link
+              href="/store-registration"
               className={`${styles.footer__navlink} ${styles["footer__navlink--secondary"]}`}
             >
               Mağaza qeydiyyatı
-            </a>
+            </Link>
           </div>
         </div>
 
         <div className={styles.desktopCityList}>
           <ul className={styles.footer__cities}>
-            {allCities.map((city) => (
-              <li key={city}>
+            {/* Main cities first (in one column) */}
+            {mainCities.map((city) => (
+              <li key={`main-${city}`}>
+                <Link href={`/city/${city.toLowerCase()}`}>{city}</Link>
+              </li>
+            ))}
+          </ul>
+
+          <ul className={styles.footer__cities}>
+            {/* Other cities in multiple columns */}
+            {otherCities.map((city) => (
+              <li key={`other-${city}`}>
                 <Link href={`/city/${city.toLowerCase()}`}>{city}</Link>
               </li>
             ))}
@@ -75,9 +91,9 @@ const Footer: React.FC = () => {
         </div>
 
         <div className={styles.footer__bottombar}>
-          <div className={styles.footer__copyright}>
+          <span className={styles.footer__copyright}>
             © IT Enterprise MMC, 2021. Bütün hüquqlar qorunur.
-          </div>
+          </span>
           <div>
             <Link href="/privacy" className={styles.footer__link}>
               Məxfilik siyasəti
