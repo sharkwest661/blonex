@@ -32,11 +32,7 @@
 
 .sidebar {
   flex-shrink: 0;
-  width: 300px;
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    width: 250px;
-  }
+  width: auto; // Let width be determined by content (natural image size)
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     width: 100%;

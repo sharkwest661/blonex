@@ -1,16 +1,16 @@
 // src/components/Advertisement/Advertisement.module.scss
 @import "../../styles/variables.scss";
 
-.advertisement {
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding-bottom: 22px; // commercial-banner-1 mobile padding
-  }
-}
-
-.sticky_top {
+// Sticky advertisement container
+.stickyAd {
   position: sticky;
   top: 10px;
   z-index: 3 !important;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    position: static;
+    padding-bottom: 22px; // commercial-banner-1 mobile padding
+  }
 
   // Make all nested elements fill height on desktop (>1024px)
   &,
@@ -27,53 +27,29 @@
       height: auto;
     }
   }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    position: static;
-  }
 }
 
-.bannerLink {
-  display: block;
-  text-decoration: none;
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.01);
-  }
-
-  &:focus {
-    outline: 2px solid $secondary-color;
-    outline-offset: 2px;
-    border-radius: $border-radius;
-  }
-}
-
-// Desktop banner (show on md and up, equivalent to d-md-block d-none)
-.bannerImage__desktop {
-  width: 100%;
-  height: auto;
+// Desktop link - visible on medium screens and up
+.desktopLink {
   display: block;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: none !important;
+    display: none;
   }
 }
 
-// Mobile banner (show on mobile only, equivalent to d-md-none)
-.bannerImage__mobile {
+// Mobile link - visible only on small screens
+.mobileLink {
   display: none;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     display: block;
-    width: 100%;
-    height: 41vw; // Original mobile height
   }
 }
 
-// Additional responsive behavior from original
-@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-  .for_banner_2 {
-    display: none !important;
-  }
+// Banner image
+.bannerImage {
+  display: block;
+  width: 100%;
+  height: auto;
 }

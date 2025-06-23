@@ -2,7 +2,6 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Container from "@/components/Layout/Container/Container";
 import styles from "./SectionTitle.module.scss";
 
 export interface SectionTitleProps {
@@ -15,6 +14,7 @@ export interface SectionTitleProps {
   align?: "left" | "center" | "right";
   showSortDropdown?: boolean;
   className?: string;
+  noPadding?: boolean; // Add this property to the interface
 }
 
 export const SectionTitle: React.FC<SectionTitleProps> = ({
@@ -27,60 +27,57 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({
   align = "left",
   showSortDropdown = false,
   className,
+  noPadding = true, // Default to no padding to match original
 }) => {
   const titleClass = `${styles.title} ${styles[`title--${align}`]} ${
-    className || ""
-  }`;
+    noPadding ? styles.noPadding : ""
+  } ${className || ""}`;
 
   return (
-    <div className={styles.title_bg}>
-      <Container>
-        <div className={titleClass}>
-          <span className={styles.center_vertical}>
-            {icon && (
-              <Image
-                src={icon}
-                alt=""
-                width={iconWidth}
-                height={iconHeight}
-                className={styles.title__icon}
-              />
-            )}
-            {title}
-          </span>
+    <div className={titleClass}>
+      <span className={styles.center_vertical}>
+        {icon && (
+          <Image
+            src={icon}
+            alt=""
+            width={iconWidth}
+            height={iconHeight}
+            className={styles.title__icon}
+          />
+        )}
+        {title}
+      </span>
 
-          {/* Sort Dropdown for "Yeni elanlar" section */}
-          {showSortDropdown && (
-            <form className={styles.sort__form}>
-              <div className={styles.sort__select}>
-                <select
-                  id="sort_input"
-                  className={styles.selectpicker}
-                  defaultValue="-created_at"
-                >
-                  <option value="-created_at">Əvvəlcə yeni</option>
-                  <option value="created_at">Əvvəlcə köhnə</option>
-                  <option value="-price">Əvvəlcə baha</option>
-                  <option value="price">Əvvəlcə ucuz</option>
-                </select>
-              </div>
-            </form>
-          )}
+      {/* Sort Dropdown for "Yeni elanlar" section */}
+      {showSortDropdown && (
+        <form className={styles.sort__form}>
+          <div className={styles.sort__select}>
+            <select
+              id="sort_input"
+              className={styles.selectpicker}
+              defaultValue="-created_at"
+            >
+              <option value="-created_at">Əvvəlcə yeni</option>
+              <option value="created_at">Əvvəlcə köhnə</option>
+              <option value="-price">Əvvəlcə baha</option>
+              <option value="price">Əvvəlcə ucuz</option>
+            </select>
+          </div>
+        </form>
+      )}
 
-          {/* See All Link */}
-          {seeAllText && seeAllHref && (
-            <Link href={seeAllHref} className={styles.btn}>
-              <Image
-                src="/assets/images/chevron_lmain.svg"
-                alt=""
-                width={16}
-                height={16}
-              />
-              {seeAllText}
-            </Link>
-          )}
-        </div>
-      </Container>
+      {/* See All Link */}
+      {seeAllText && seeAllHref && (
+        <Link href={seeAllHref} className={styles.btn}>
+          <Image
+            src="/assets/images/chevron_lmain.svg"
+            alt=""
+            width={16}
+            height={16}
+          />
+          {seeAllText}
+        </Link>
+      )}
     </div>
   );
 };

@@ -21,43 +21,35 @@ export const Advertisement: React.FC<AdvertisementProps> = ({
   priority = false,
   className,
 }) => {
-  const content = (
-    <>
-      {/* Desktop Image */}
-      <Image
-        src={desktopImage}
-        alt={altText}
-        width={300}
-        height={400}
-        className={`${styles.bannerImage} ${styles.bannerImage__desktop}`}
-        priority={priority}
-        sizes="300px"
-      />
-
-      {/* Mobile Image */}
-      <Image
-        src={mobileImage}
-        alt={altText}
-        width={350}
-        height={200}
-        className={`${styles.bannerImage} ${styles.bannerImage__mobile}`}
-        priority={priority}
-        sizes="(max-width: 767px) 100vw, 0px"
-      />
-    </>
-  );
-
   return (
-    <div className={`${styles.advertisement} ${className || ""}`}>
-      <div className={styles.sticky_top}>
-        {href && href !== "#" ? (
-          <Link href={href} className={styles.bannerLink}>
-            {content}
-          </Link>
-        ) : (
-          <div className={styles.bannerLink}>{content}</div>
-        )}
-      </div>
+    <div className={`${styles.stickyAd} ${className || ""}`}>
+      {/* Desktop Image Link - Only visible on medium screens and up */}
+      <Link href={href} className={styles.desktopLink} aria-label={altText}>
+        <Image
+          src={desktopImage}
+          alt={altText}
+          width={0}
+          height={0}
+          sizes="100vw"
+          className={styles.bannerImage}
+          priority={priority}
+          style={{ width: "100%", height: "auto" }}
+        />
+      </Link>
+
+      {/* Mobile Image Link - Only visible on small screens */}
+      <Link href={href} className={styles.mobileLink} aria-label={altText}>
+        <Image
+          src={mobileImage}
+          alt={altText}
+          width={0}
+          height={0}
+          sizes="100vw"
+          className={styles.bannerImage}
+          priority={priority}
+          style={{ width: "100%", height: "auto" }}
+        />
+      </Link>
     </div>
   );
 };

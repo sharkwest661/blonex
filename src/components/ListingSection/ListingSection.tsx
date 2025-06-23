@@ -27,7 +27,9 @@ export const ListingSection: React.FC<ListingSectionProps> = ({
     <section className={`${styles.listingSection} ${className || ""}`}>
       {/* Section Title */}
       <div className="title_bg">
-        <SectionTitle {...title} />
+        <Container>
+          <SectionTitle {...title} noPadding={true} />
+        </Container>
       </div>
 
       {/* Main Content */}
@@ -41,9 +43,7 @@ export const ListingSection: React.FC<ListingSectionProps> = ({
           {/* Advertisement Sidebar */}
           {advertisement && (
             <div className={styles.sidebar}>
-              <div className="sticky-top reklam">
-                <Advertisement {...advertisement} />
-              </div>
+              <Advertisement {...advertisement} />
             </div>
           )}
         </div>
