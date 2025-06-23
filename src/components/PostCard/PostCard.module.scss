@@ -6,16 +6,16 @@
   border-radius: $border-radius;
   background-color: $white;
   box-shadow: 0px 0px 0px 0px $primary-color, 0px 10px 20px rgba(0, 0, 0, 0.05);
-  font-size: $font-size-small; // 1.2rem equivalent
+  font-size: 1.2rem;
   line-height: 1.17;
   overflow: hidden;
   transition: 0.3s;
   z-index: -1 !important;
 
-  // &:hover {
-  //   box-shadow: 0px 0px 0px 0px $primary-color,
-  //     0px 10px 12px rgba(0, 0, 0, 0.25);
-  // }
+  &:hover {
+    box-shadow: 0px 0px 0px 0px $primary-color,
+      0px 10px 12px rgba(0, 0, 0, 0.25);
+  }
 
   // Checked state (for selection)
   &--checked {
@@ -224,6 +224,7 @@
 .post__info {
   position: relative;
   color: rgba(0, 0, 0, 0.5);
+  padding-top: 4px !important;
 
   p {
     margin-bottom: 3px !important;
@@ -235,12 +236,11 @@
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     padding: 22px 5px 5px;
-    padding-top: 4px !important;
   }
 }
 
 .post__content {
-  padding: 0 5px; // px-5 equivalent (5px left and right)
+  padding: 0 5px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     padding: 0 5px;
@@ -253,7 +253,7 @@
   height: 21px;
   margin: 5px 0 0;
   font-family: $font-family-bold;
-  font-size: $font-size-large; // 1.6rem equivalent
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.125;
   color: $primary-color;
@@ -275,7 +275,7 @@
   display: block;
   margin: 5px 0 0;
   font-family: $font-family-bold;
-  font-size: $font-size-large;
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.125;
   color: $primary-color;
@@ -287,7 +287,7 @@
   text-decoration: none;
 
   @media screen and (max-width: 400px) {
-    font-size: $font-size-base;
+    font-size: 1.4rem;
   }
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
@@ -309,7 +309,7 @@
   display: block;
   height: 17px;
   margin: 0 0 5px;
-  font-size: $font-size-base; // 1.4rem equivalent
+  font-size: 1.4rem;
   font-weight: 500 !important;
   color: $primary-color;
   overflow: hidden;
@@ -344,7 +344,7 @@
 .post__price {
   padding: 2px 4px;
   font-family: $font-family-bold;
-  font-size: $font-size-large;
+  font-size: 1.6rem;
   line-height: 1.125;
   color: $primary-color;
   background-color: rgba($secondary-color, 0.5);

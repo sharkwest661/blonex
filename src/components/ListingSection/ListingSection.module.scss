@@ -12,7 +12,7 @@
 .wrapper {
   display: flex;
   gap: 20px;
-  padding: 20px 0;
+  padding: 24px 0 24px 20px;
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
     gap: 16px;
@@ -20,7 +20,7 @@
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex-direction: column;
-    padding: 20px 0;
+    padding: 20px 0 !important;
     gap: 0;
   }
 }
