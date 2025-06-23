@@ -1,6 +1,4 @@
-// src/components/UI/index.ts
-// Export components
+// src/components/UI/Select/index.ts
 export { default as Select } from "./Select";
-
-// Export types
+export { default } from "./Select";
 export type { SelectProps, SelectOption } from "./Select";

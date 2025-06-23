@@ -1,4 +1,4 @@
-// src/components/SectionTitle/SectionTitle.module.scss
+// src/components/SectionTitle/SectionTitle.module.scss (updated)
 @import "../../styles/variables.scss";
 
 .title_bg {
@@ -6,96 +6,119 @@
 }
 
 .title {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -moz-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -moz-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
   min-height: 55px;
   font-family: $font-family-bold;
-  font-size: 2.4rem;
+  font-size: 1.5rem; // 24px equivalent with 16px base
   line-height: 1.17;
   color: $primary-color;
   background-color: $secondary-color;
+
+  a {
+    font-family: $font-family-main;
+  }
 }
 
 .title--left {
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 0 20px;
-  font-size: 2.2rem;
+  font-size: 1.375rem; // 22px equivalent with 16px base
 }
 
 .title--center {
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -moz-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
   padding: 0 20px;
-  font-size: 2.2rem;
+  font-size: 1.375rem;
 }
 
 .title--right {
   justify-content: flex-end;
   padding: 0 20px;
-  font-size: 2.2rem;
+  font-size: 1.375rem;
 }
 
-// Responsive handling for very small screens
-@media screen and (max-width: 565px) {
+.center_vertical {
+  display: flex !important;
+  align-items: center;
+}
+
+.title__icon {
+  margin-right: 10px;
+}
+
+// Form and sort select styles
+.sort__form {
+  margin-right: 5px;
+  margin-left: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.sort__select {
+  min-width: 150px;
+  background-color: $white !important;
+}
+
+// Button styles
+.btn {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  padding: 0;
+  background-color: transparent;
+  color: $primary-color;
+  font-size: 1.125rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+
+  img {
+    margin-right: 10px;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: transparent;
+    color: $primary-color;
+    text-decoration: none;
+  }
+}
+
+// Responsive adjustments
+@media screen and (max-width: 1200px) {
+  .sort__form {
+    margin-right: 5px;
+    margin-left: auto;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
   .title {
-    font-size: $font-size-xl; // Use existing variable for smaller screens
+    font-size: $font-size-xl;
   }
 
   .title--left,
   .title--center,
   .title--right {
-    font-size: $font-size-large; // Use existing variable
-    padding: 0 15px; // Less horizontal padding
-  }
-}
-
-@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-  .title {
-    font-size: $font-size-xl; // Use existing variable
-  }
-
-  .title--left,
-  .title--center,
-  .title--right {
-    font-size: $font-size-large; // Use existing variable
+    font-size: $font-size-large;
     padding: 0 16px;
   }
 }
 
-// Alternative mobile layout class (from original)
+// Alternative mobile layout class
 .title--left- {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -moz-box-orient: vertical;
-  -moz-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   padding: 10px 20px 0;
 }
 
 .title--rounded {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
+}
+
+.noPadding {
+  padding: 0 !important;
 }

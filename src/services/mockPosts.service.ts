@@ -73,27 +73,64 @@ export class MockPostsService {
     );
   }
 
+  // Add sorting capability to these methods
+  static sortPosts(posts: Post[], sortBy?: string): Post[] {
+    if (!sortBy) return posts;
+
+    return [...posts].sort((a, b) => {
+      // Handle direction (ascending or descending)
+      const isDesc = sortBy.startsWith("-");
+      const field = isDesc ? sortBy.substring(1) : sortBy;
+      const direction = isDesc ? -1 : 1;
+
+      switch (field) {
+        case "created_at":
+          // Assuming newer posts have higher IDs
+          return (
+            direction *
+            (parseInt(a.id.split("-")[1]) - parseInt(b.id.split("-")[1]))
+          );
+        case "price":
+          return direction * (a.price - b.price);
+        default:
+          return 0;
+      }
+    });
+  }
+
   // Simulate API delay
-  static async getVipPostsAsync(count: number = 20): Promise<Post[]> {
+  static async getVipPostsAsync(
+    count: number = 20,
+    sortBy?: string
+  ): Promise<Post[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(this.getVipPosts(count));
+        const posts = this.getVipPosts(count);
+        resolve(this.sortPosts(posts, sortBy));
       }, 1000);
     });
   }
 
-  static async getRecentPostsAsync(count: number = 20): Promise<Post[]> {
+  static async getRecentPostsAsync(
+    count: number = 20,
+    sortBy?: string
+  ): Promise<Post[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(this.getRecentPosts(count));
+        const posts = this.getRecentPosts(count);
+        resolve(this.sortPosts(posts, sortBy));
       }, 800);
     });
   }
 
-  static async getPremiumPostsAsync(count: number = 20): Promise<Post[]> {
+  static async getPremiumPostsAsync(
+    count: number = 20,
+    sortBy?: string
+  ): Promise<Post[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(this.getPremiumPosts(count));
+        const posts = this.getPremiumPosts(count);
+        resolve(this.sortPosts(posts, sortBy));
       }, 600);
     });
   }

@@ -1,15 +1,23 @@
 // src/components/HomePage/HomePageContent.tsx
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { ListingSection } from "@/components/ListingSection";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { useVipPosts, useRecentPosts, usePremiumPosts } from "@/hooks/usePosts";
 
 export const HomePageContent: React.FC = () => {
+  // State to track current sort value for recent posts
+  const [recentPostsSort, setRecentPostsSort] = useState("-created_at");
+
   // Fetch data using React Query hooks
   const vipPosts = useVipPosts(20);
-  const recentPosts = useRecentPosts(20);
+  const recentPosts = useRecentPosts(20, { sortBy: recentPostsSort });
   const premiumPosts = usePremiumPosts(20);
+
+  // Handle sort change
+  const handleSortChange = (value: string) => {
+    setRecentPostsSort(value);
+  };
 
   return (
     <>
@@ -66,6 +74,7 @@ export const HomePageContent: React.FC = () => {
           altText: "Advertisement Banner",
           href: "#",
         }}
+        onSortChange={handleSortChange}
       />
 
       {/* Full Width Banner 2 */}

@@ -1,0 +1,54 @@
+// src/components/UI/Select/Select.module.scss
+@import "../../../styles/variables.scss";
+
+.select {
+  width: 100%;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  color: $primary-color;
+
+  // Put global selectors inside the local .select class
+  :global(.react-select__menu) {
+    animation: dropdownAnimation 0.2s ease;
+  }
+}
+
+// Sort variant for section titles
+.select--sort {
+  min-width: 150px;
+
+  @media screen and (max-width: $breakpoint-md) {
+    min-width: 120px;
+
+    // Nest global selectors inside local classes
+    :global(.react-select__single-value) {
+      font-size: 0.75rem !important; // 12px for mobile
+    }
+  }
+}
+
+// Filter variant for filter sections
+.select--filter {
+  width: 100%;
+
+  // Nest global selectors inside local classes
+  :global(.react-select__control) {
+    border: 1px solid rgba($primary-color, 0.2) !important;
+    border-radius: $border-radius;
+
+    &:hover {
+      border-color: rgba($primary-color, 0.4) !important;
+    }
+  }
+}
+
+@keyframes dropdownAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

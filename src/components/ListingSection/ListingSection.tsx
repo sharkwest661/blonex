@@ -14,6 +14,7 @@ export interface ListingSectionProps {
   title: SectionTitleProps;
   posts: PostGridProps;
   advertisement?: AdvertisementProps;
+  onSortChange?: (value: string) => void;
   className?: string;
 }
 
@@ -21,14 +22,13 @@ export const ListingSection: React.FC<ListingSectionProps> = ({
   title,
   posts,
   advertisement,
+  onSortChange,
   className,
 }) => {
   return (
     <section className={`${styles.listingSection} ${className || ""}`}>
       {/* Section Title */}
-      <div className="title_bg">
-        <SectionTitle {...title} noPadding={true} />
-      </div>
+      <SectionTitle {...title} onSortChange={onSortChange} />
 
       {/* Main Content */}
       <Container>
