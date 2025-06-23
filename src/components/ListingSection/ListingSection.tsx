@@ -27,9 +27,7 @@ export const ListingSection: React.FC<ListingSectionProps> = ({
     <section className={`${styles.listingSection} ${className || ""}`}>
       {/* Section Title */}
       <div className="title_bg">
-        <Container>
-          <SectionTitle {...title} noPadding={true} />
-        </Container>
+        <SectionTitle {...title} noPadding={true} />
       </div>
 
       {/* Main Content */}
