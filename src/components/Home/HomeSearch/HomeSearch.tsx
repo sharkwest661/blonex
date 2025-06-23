@@ -1,4 +1,3 @@
-// src/components/Home/HomeSearch/HomeSearch.tsx
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -13,57 +12,96 @@ interface HomeSearchProps {
   onSearch?: (query: string) => void;
   placeholder?: string;
   className?: string;
-  variant?: "default" | "small" | "top"; // Added variant prop
+  variant?: "default" | "small" | "top";
 }
 
-// Custom hook for typing animation with pause support
+// Custom hook for typing animation, with corrected timing logic
 const useTypingAnimation = (
   phrases: string[],
-  speed: number = 40,
-  isPaused: boolean = false
+  options: {
+    typeSpeed?: number;
+    backSpeed?: number;
+    backDelay?: number; // Pause after typing completes
+    isPaused?: boolean;
+  }
 ) => {
+  const {
+    typeSpeed = 40,
+    backSpeed = 20,
+    backDelay = 700,
+    isPaused = false,
+  } = options;
+
   const [currentPhrase, setCurrentPhrase] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
+  const humanizer = (speed: number) =>
+    Math.round(Math.random() * (speed / 2)) + speed;
+
   useEffect(() => {
-    if (phrases.length === 0 || isPaused) return;
+    // Stop and clear if paused (e.g., on focus)
+    if (isPaused) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setCurrentPhrase("");
+      return;
+    }
 
-    const animate = () => {
-      const fullPhrase = phrases[currentIndex % phrases.length];
+    const handleTyping = () => {
+      const fullPhrase = phrases[phraseIndex % phrases.length];
+      let timeout: number;
 
       if (isDeleting) {
-        setCurrentPhrase(fullPhrase.substring(0, currentPhrase.length - 1));
+        // --- DELETING LOGIC ---
+        setCurrentPhrase((prev) => prev.substring(0, prev.length - 1));
+        timeout = humanizer(backSpeed);
       } else {
-        setCurrentPhrase(fullPhrase.substring(0, currentPhrase.length + 1));
+        // --- TYPING LOGIC ---
+        setCurrentPhrase((prev) => fullPhrase.substring(0, prev.length + 1));
+        timeout = humanizer(typeSpeed);
       }
 
-      let timeout = speed;
+      timeoutRef.current = setTimeout(handleTyping, timeout);
+    };
 
-      if (isDeleting) {
-        timeout = speed / 2;
-      }
-
-      if (!isDeleting && currentPhrase === fullPhrase) {
-        timeout = 2000; // Pause at complete phrase
+    // --- PAUSING & STATE CHANGE LOGIC ---
+    if (
+      !isDeleting &&
+      currentPhrase === phrases[phraseIndex % phrases.length]
+    ) {
+      // Finished typing a phrase, now pause before deleting
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
         setIsDeleting(true);
-      } else if (isDeleting && currentPhrase === "") {
+      }, backDelay);
+    } else if (isDeleting && currentPhrase === "") {
+      // Finished deleting, now pause before typing the next phrase
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
         setIsDeleting(false);
-        setCurrentIndex((prev) => prev + 1);
-      }
+        setPhraseIndex((prev) => prev + 1);
+      }, 500); // Short pause before next word
+    } else {
+      // Default typing/deleting loop
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(
+        handleTyping,
+        isDeleting ? backSpeed : typeSpeed
+      );
+    }
 
-      timeoutRef.current = setTimeout(animate, timeout);
-    };
-
-    timeoutRef.current = setTimeout(animate, speed);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [currentPhrase, currentIndex, isDeleting, phrases, speed, isPaused]);
+    return () => clearTimeout(timeoutRef.current);
+  }, [
+    currentPhrase,
+    isDeleting,
+    phraseIndex,
+    phrases,
+    typeSpeed,
+    backSpeed,
+    backDelay,
+    isPaused,
+  ]);
 
   return currentPhrase;
 };
@@ -82,10 +120,8 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Debounce the search query
   const debouncedQuery = useDebounce(query, 300);
 
-  // Typing animation phrases (only for default variant)
   const typingPhrases = [
     "bolbol axtar",
     "iPhone 12",
@@ -96,26 +132,26 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
     "və sairə...",
   ];
 
-  // Pass isFocused as isPaused parameter to pause animation when focused
+  // Animation options assigned to a variable for clarity
+  const animationOptions = {
+    typeSpeed: 40,
+    backSpeed: 20,
+    backDelay: 1000, // Changed from 2000 to 1000
+    isPaused: isFocused || query.length > 0,
+  };
+
   const animatedPlaceholder = useTypingAnimation(
     variant === "default" ? typingPhrases : [],
-    40,
-    isFocused
+    animationOptions
   );
 
-  // React Query for search suggestions (only for default variant)
-  const {
-    data: suggestions = [],
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: suggestions = [] } = useQuery({
     queryKey: ["searchSuggestions", debouncedQuery],
     queryFn: () => searchService.getSearchSuggestions(debouncedQuery),
     enabled: debouncedQuery.length > 1 && variant === "default",
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
-  // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
@@ -123,7 +159,6 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
     setShowSuggestions(value.length > 0 && variant === "default");
   };
 
-  // Handle search submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
@@ -133,48 +168,12 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
     }
   };
 
-  // Handle suggestion click
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
     setQuery(suggestion.text);
-    setShowSuggestions(false);
     onSearch?.(suggestion.text);
-    inputRef.current?.blur();
+    setShowSuggestions(false);
   };
 
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!showSuggestions || suggestions.length === 0) return;
-
-    switch (e.key) {
-      case "ArrowDown":
-        e.preventDefault();
-        setSelectedIndex((prev) =>
-          prev < suggestions.length - 1 ? prev + 1 : 0
-        );
-        break;
-      case "ArrowUp":
-        e.preventDefault();
-        setSelectedIndex((prev) =>
-          prev > 0 ? prev - 1 : suggestions.length - 1
-        );
-        break;
-      case "Enter":
-        e.preventDefault();
-        if (selectedIndex >= 0 && suggestions[selectedIndex]) {
-          handleSuggestionClick(suggestions[selectedIndex]);
-        } else {
-          handleSubmit(e);
-        }
-        break;
-      case "Escape":
-        setShowSuggestions(false);
-        setSelectedIndex(-1);
-        inputRef.current?.blur();
-        break;
-    }
-  };
-
-  // Handle clicks outside to close suggestions
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -182,17 +181,12 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
         !searchRef.current.contains(event.target as Node)
       ) {
         setShowSuggestions(false);
-        setSelectedIndex(-1);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Get appropriate CSS classes based on variant
   const getSearchClasses = () => {
     const baseClass = styles.search;
     const variantClass =
@@ -200,73 +194,42 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
     return `${baseClass} ${variantClass} ${className || ""}`.trim();
   };
 
-  const getButtonClasses = () => {
-    const baseClass = styles.search__btn;
-    const variantClass =
-      variant === "small" ? styles["search__btn--small"] : "";
-    return `${baseClass} ${variantClass}`.trim();
-  };
-
   return (
     <div ref={searchRef} className={getSearchClasses()}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} role="search">
         <div className={styles.search__group}>
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            onFocus={() => {
-              setIsFocused(true);
-              if (query.length > 0 && variant === "default") {
-                setShowSuggestions(true);
-              }
-            }}
+            onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             placeholder={
-              variant === "default"
-                ? animatedPlaceholder || placeholder || "Axtar..."
+              variant === "default" && !query
+                ? animatedPlaceholder
                 : placeholder || "Axtar..."
             }
             className={styles.search__input}
             autoComplete="off"
-            aria-label="Axtarış"
-            aria-expanded={showSuggestions}
-            aria-haspopup="listbox"
-            role="combobox"
           />
-
           <div className={styles.search__append}>
             <button
               type="submit"
-              className={getButtonClasses()}
+              className={`${styles.search__btn} ${
+                variant === "small" ? styles["search__btn--small"] : ""
+              }`.trim()}
               aria-label="Axtar"
               disabled={!query.trim()}
-            >
-              {/* Button styling and icon handled by CSS background-image */}
-            </button>
+            ></button>
           </div>
         </div>
       </form>
 
-      {/* Search Suggestions - Only show for default variant */}
       {variant === "default" && showSuggestions && query.length > 0 && (
         <div className={styles.suggestions}>
-          {isLoading && (
-            <div className={styles.suggestions__loading}>Axtarılır...</div>
-          )}
-
-          {error && (
-            <div className={styles.suggestions__error}>Xəta baş verdi</div>
-          )}
-
-          {suggestions.length > 0 && !isLoading && (
-            <ul
-              className={styles.suggestions__list}
-              role="listbox"
-              aria-label="Axtarış təklifləri"
-            >
+          {suggestions.length > 0 && (
+            <ul className={styles.suggestions__list}>
               {suggestions.map((suggestion, index) => (
                 <li
                   key={suggestion.id}
@@ -276,37 +239,12 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
                       : ""
                   }`}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  role="option"
-                  aria-selected={index === selectedIndex}
                 >
-                  <div className={styles.suggestions__content}>
-                    <span className={styles.suggestions__text}>
-                      {suggestion.text}
-                    </span>
-                    {suggestion.category && (
-                      <span className={styles.suggestions__category}>
-                        {suggestion.category}
-                      </span>
-                    )}
-                  </div>
-                  <div className={styles.suggestions__type}>
-                    {suggestion.type === "product" && "Məhsul"}
-                    {suggestion.type === "category" && "Kateqoriya"}
-                    {suggestion.type === "location" && "Yer"}
-                  </div>
+                  {suggestion.text}
                 </li>
               ))}
             </ul>
           )}
-
-          {suggestions.length === 0 &&
-            !isLoading &&
-            !error &&
-            debouncedQuery && (
-              <div className={styles.suggestions__empty}>
-                Heç bir nəticə tapılmadı
-              </div>
-            )}
         </div>
       )}
     </div>
