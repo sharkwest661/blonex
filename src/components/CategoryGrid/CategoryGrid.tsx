@@ -1,10 +1,10 @@
-// src/components/CategoryGrid/CategoryGrid.tsx
+// src/components/CategoryGrid/CategoryGrid.tsx (Semantically Corrected)
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { Category } from "@/types/category.types";
 import { useCategories } from "@/hooks/useCategories";
-import CategoryItem from "./CategoryItem/CategoryItem";
-import CategoryButton from "./CategoryButton/CategoryButton";
 import styles from "./CategoryGrid.module.scss";
 
 interface CategoryGridProps {
@@ -59,33 +59,42 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
   // Handle loading state
   if (isLoading) {
     return (
-      <div className={`${styles.category} ${className || ""}`}>
+      <nav
+        className={`${styles.category} ${className || ""}`}
+        aria-label="Kateqoriyalar"
+      >
         <div className={styles.category__loading}>
           Kateqoriyalar yüklənir...
         </div>
-      </div>
+      </nav>
     );
   }
 
   // Handle error state
   if (error) {
     return (
-      <div className={`${styles.category} ${className || ""}`}>
+      <nav
+        className={`${styles.category} ${className || ""}`}
+        aria-label="Kateqoriyalar"
+      >
         <div className={styles.category__error}>
           Kateqoriyalar yüklənərkən xəta baş verdi: {error.message}
         </div>
-      </div>
+      </nav>
     );
   }
 
   // Handle empty state
   if (!categories || categories.length === 0) {
     return (
-      <div className={`${styles.category} ${className || ""}`}>
+      <nav
+        className={`${styles.category} ${className || ""}`}
+        aria-label="Kateqoriyalar"
+      >
         <div className={styles.category__empty}>
           Heç bir kateqoriya tapılmadı
         </div>
-      </div>
+      </nav>
     );
   }
 
@@ -104,40 +113,54 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
     isMobile && showAllButton && sortedCategories.length > 4 && !showAll;
 
   return (
-    <section className={`${styles.category} ${className || ""}`}>
-      <div className={styles.category__list}>
-        <div
-          className={`${styles.category__inner} ${
-            isMobile && showAll ? styles["show-all"] : ""
-          }`}
-        >
-          {sortedCategories.map((category, index) => {
-            // Show/hide logic: on mobile, hide items after index 3 unless showAll is true
-            const shouldHide = isMobile && !showAll && index >= 4;
+    <nav
+      className={`${styles.category} ${className || ""}`}
+      aria-label="Kateqoriyalar"
+    >
+      <ul className={styles.category__list} role="list">
+        {sortedCategories.map((category, index) => {
+          // Show/hide logic: on mobile, hide items after index 3 unless showAll is true
+          const shouldHide = isMobile && !showAll && index >= 4;
 
-            // Build class name for the item wrapper
-            const itemWrapperClass = `${styles.category__item} ${
-              shouldHide ? styles["d-none"] : ""
-            }`;
+          if (shouldHide) {
+            return null;
+          }
 
-            return (
-              <div key={category.id} className={itemWrapperClass}>
-                <CategoryItem category={category} />
-              </div>
-            );
-          })}
-        </div>
-      </div>
+          return (
+            <li key={category.id} role="listitem">
+              <Link
+                href={category.href}
+                className={styles.category__item}
+                aria-label={`${category.name} kateqoriyasına get`}
+              >
+                <Image
+                  src={category.icon}
+                  alt=""
+                  width={32}
+                  height={32}
+                  priority={true}
+                  role="presentation"
+                />
+                {category.name}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
 
       {/* Show button only on mobile when there are more than 4 categories and not showing all */}
       {shouldShowButton && (
-        <CategoryButton
+        <button
+          type="button"
+          className={`${styles.btn} ${styles.category__btn}`}
           onClick={handleToggleShow}
-          isExpanded={showAll}
-          className={styles.category__btn}
-        />
+          aria-expanded={showAll}
+          aria-label="Bütün kateqoriyaları göstər"
+        >
+          Bütün kateqoriyalar
+        </button>
       )}
-    </section>
+    </nav>
   );
 };
 

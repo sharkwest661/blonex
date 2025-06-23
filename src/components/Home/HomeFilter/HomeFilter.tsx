@@ -1,8 +1,7 @@
-// src/components/Home/HomeFilter/HomeFilter.tsx
+// src/components/Home/HomeFilter/HomeFilter.tsx (Semantically Corrected)
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import Container from "@/components/Layout/Container/Container";
 import HomeSearch from "../HomeSearch/HomeSearch";
 import styles from "./HomeFilter.module.scss";
 
@@ -20,12 +19,15 @@ export const HomeFilter: React.FC<HomeFilterProps> = ({ className }) => {
   };
 
   return (
-    <section className={`${styles.homeFilters} ${className || ""}`}>
-      <Container>
-        <section className={styles.searchSection}>
-          <div className={styles.searchContainer}>
-            <div className={styles.searchRow}>
-              <div className={styles.searchBar}>
+    <section
+      className={`${styles.homeFilters} ${className || ""}`}
+      aria-label="Axtarış və filterlər"
+    >
+      <div className={styles.main_container}>
+        <div className={styles.containerFluid}>
+          <div className={`${styles.containerFluid} ${styles.forpadding0}`}>
+            <div className={styles.row}>
+              <div className={styles.dekstopSearchBar}>
                 <HomeSearch
                   onSearch={handleSearch}
                   placeholder="Bolbol-da axtar..."
@@ -33,8 +35,8 @@ export const HomeFilter: React.FC<HomeFilterProps> = ({ className }) => {
               </div>
             </div>
           </div>
-        </section>
-      </Container>
+        </div>
+      </div>
     </section>
   );
 };

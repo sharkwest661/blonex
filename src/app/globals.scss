@@ -1,3 +1,4 @@
+// src/app/globals.scss (Fixed)
 // Import external dependencies first
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css");
 
@@ -45,6 +46,19 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+// Global main and section styles to match original
+main {
+  padding: 25px 0 50px !important;
+}
+
+section {
+  padding-bottom: 50px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding-bottom: 40px;
+  }
 }
 
 .main_container {

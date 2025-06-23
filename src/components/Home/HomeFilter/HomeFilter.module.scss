@@ -1,44 +1,63 @@
 // src/components/Home/HomeFilter/HomeFilter.module.scss
 @import "../../../styles/variables.scss";
 
-.homeFilters {
-  padding: 40px 0;
-  background-color: $background-color;
+.main_container {
+  width: 1600px;
+  max-width: 95%;
+  margin: 0 auto;
+}
+
+.containerFluid {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 20px 0;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
   }
 }
 
-.searchSection {
-  display: block;
+.forpadding0 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 
+.row {
+  clear: left;
+  margin-right: -20px !important;
+  margin-left: -20px !important;
+}
+
+.homeFilters {
+  padding-bottom: 0 !important;
+}
+
+.dMdBlock {
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     display: block;
   }
 }
 
-.searchContainer {
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0;
+.neqlSearch {
+  margin-bottom: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 0 16px;
+  .main_container {
+    max-width: 100%;
   }
 }
 
-.searchRow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
+.dekstopSearchBar {
+  max-width: 690px !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  margin-bottom: 20px !important;
 
-.searchBar {
-  width: 100%;
-  max-width: 690px;
-  display: flex;
-  justify-content: center;
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    margin-bottom: 20px !important;
+  }
 }
