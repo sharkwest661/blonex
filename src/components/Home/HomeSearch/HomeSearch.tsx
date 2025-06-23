@@ -87,16 +87,19 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
 
   // Typing animation phrases (only for default variant)
   const typingPhrases = [
-    "iPhone, Samsung, Xiaomi...",
-    "Avtomobil, mətbəx dəsti...",
-    "Ev, mənzil, ofis...",
-    "İş elanları...",
+    "bolbol axtar",
+    "iPhone 12",
+    "Pərdə",
+    "Maşın təkəri",
+    "Xiaomi Mi9T",
+    "Rəqs dərsləri",
+    "və sairə...",
   ];
 
   // Pass isFocused as isPaused parameter to pause animation when focused
   const animatedPlaceholder = useTypingAnimation(
     variant === "default" ? typingPhrases : [],
-    100,
+    40,
     isFocused
   );
 

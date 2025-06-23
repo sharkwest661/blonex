@@ -46,21 +46,18 @@ const Footer: React.FC = () => {
             </a>
           </div>
           <div className={styles.footer__navbar}>
-            <Link href="/about" className={styles.footer__navlink}>
+            <a href="" className={styles.footer__navlink}>
+              Reklam yerləşdirmək
+            </a>
+            <a href="" className={styles.footer__navlink}>
               Haqqımızda
-            </Link>
-            <Link href="/contact" className={styles.footer__navlink}>
-              Əlaqə
-            </Link>
-            <Link href="/rules" className={styles.footer__navlink}>
-              Qaydalar
-            </Link>
-            <Link
-              href="/business"
+            </a>
+            <a
+              href=""
               className={`${styles.footer__navlink} ${styles["footer__navlink--secondary"]}`}
             >
-              Biznes
-            </Link>
+              Mağaza qeydiyyatı
+            </a>
           </div>
         </div>
 
