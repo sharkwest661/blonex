@@ -1,3 +1,4 @@
+// src/components/CategoryGrid/CategoryGrid.module.scss
 @import "../../styles/variables.scss";
 
 // Main category container
@@ -7,72 +8,172 @@
   }
 }
 
-// Show all state for mobile grid layout
-.show-all {
-  // Applied to category__inner when showing all categories on mobile
-  // The actual styling is handled by the &.show-all selector above
-}
-
+// Category list - flex container
 .category__list {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
 
+// Category inner container - also flex
 .category__inner {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   margin-bottom: 24px;
   padding: 10px 10px 15px;
-  // Removed white background and box shadow per user request
 
-  // Tablet view - 3 columns (from original code)
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  // Mobile view - flex wrap layout (matches original design)
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: flex;
-    flex-wrap: wrap;
     padding: 10px 0;
     margin-bottom: 16px;
   }
 }
 
+// Show all state for mobile - when button is clicked
+.category__inner.show-all {
+  // Additional styles when showing all categories on mobile
+}
+
+// Base category item styles
 .category__item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   padding: 14px 5px;
+  text-decoration: none;
+  color: inherit;
+  transition: 0.3s ease;
+  border-radius: 8px;
+  cursor: pointer;
 
-  // Desktop: 6 columns (16.666667% each)
+  &:hover,
+  &:focus {
+    color: $primary-color;
+    background-color: rgba($primary-color, 0.05);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+}
+
+// Desktop: 6 columns (16.666667% each)
+.category__item:not(.category__item--sub) {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 16.666667%;
+  -moz-box-flex: 0;
+  -ms-flex: 0 0 16.666667%;
   flex: 0 0 16.666667%;
   max-width: 16.666667%;
+}
 
-  // Tablet: 4 columns (25% each) - between 768px-991px
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: #{$breakpoint-md}) {
+// Tablet: 4 columns (25% each) - between 768px-991px
+@media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: #{$breakpoint-md}) {
+  .category__item:not(.category__item--sub) {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 25%;
+    -moz-box-flex: 0;
+    -ms-flex: 0 0 25%;
     flex: 0 0 25%;
     max-width: 25%;
   }
+}
 
-  // Mobile: 2 items visible (50% each) in horizontal scroll, or full width in grid when showing all
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+// Mobile: 2 columns (50% each) - 767px and below
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .category__item:not(.category__item--sub) {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 50%;
+    -moz-box-flex: 0;
+    -ms-flex: 0 0 50%;
     flex: 0 0 50%;
     max-width: 50%;
-    padding: 14px 0;
-
-    // When showing all categories, items should work in grid layout
-    &.show-all {
-      flex: none;
-      max-width: none;
-      width: 100%;
-      padding: 8px;
-    }
   }
 
+  .category__item {
+    padding: 14px 0;
+  }
+}
+
+// Category icon styles
+.category__icon {
+  margin-right: 10px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
   img {
-    margin-right: 10px;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+  }
+}
+
+// Category name
+.category__name {
+  font-size: $font-size-base;
+  font-family: $font-family-main;
+  font-weight: 500;
+  line-height: 1.2;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+// Category count
+.category__count {
+  margin-left: auto;
+  font-size: $font-size-small;
+  color: $text-light;
+  background-color: rgba($primary-color, 0.1);
+  padding: 2px 6px;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none;
   }
 }
 
@@ -106,7 +207,21 @@
 
 // Full width item
 .category__item--full {
-  grid-column: 1/-1;
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+// Show all state for individual items on mobile
+.category__item--show-all {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    // When showing all categories, maintain the flex layout
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 50%;
+    -moz-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
 }
 
 // Category button (show more) - only visible on mobile when needed

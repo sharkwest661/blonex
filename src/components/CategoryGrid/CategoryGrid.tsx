@@ -94,15 +94,12 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
     (a, b) => (a.order || 0) - (b.order || 0)
   );
 
-  // Handle button click - force re-render by updating state
+  // Handle button click
   const handleToggleShow = () => {
-    console.log("Button clicked, showAll before:", showAll);
-    console.log("isMobile:", isMobile);
     setShowAll(true);
-    console.log("Setting showAll to true");
   };
 
-  // Determine button visibility
+  // Determine button visibility - show button on mobile when there are more than 4 categories and not showing all
   const shouldShowButton =
     isMobile && showAllButton && sortedCategories.length > 4 && !showAll;
 
@@ -117,16 +114,16 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
           {sortedCategories.map((category, index) => {
             // Show/hide logic: on mobile, hide items after index 3 unless showAll is true
             const shouldHide = isMobile && !showAll && index >= 4;
-            const itemClassName = `${styles.category__item} ${
-              isMobile && showAll ? styles["category__item--show-all"] : ""
-            } ${shouldHide ? styles["d-none"] : ""}`;
+
+            // Build class name for the item wrapper
+            const itemWrapperClass = `${styles.category__item} ${
+              shouldHide ? styles["d-none"] : ""
+            }`;
 
             return (
-              <CategoryItem
-                key={category.id}
-                category={category}
-                className={itemClassName}
-              />
+              <div key={category.id} className={itemWrapperClass}>
+                <CategoryItem category={category} />
+              </div>
             );
           })}
         </div>

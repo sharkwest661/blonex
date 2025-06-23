@@ -7,14 +7,13 @@ import styles from "./CategoryItem.module.scss";
 
 interface CategoryItemProps {
   category: Category;
-  className?: string;
 }
 
-const CategoryItem: React.FC<CategoryItemProps> = ({ category, className }) => {
+const CategoryItem: React.FC<CategoryItemProps> = ({ category }) => {
   return (
     <Link
       href={category.href}
-      className={`${styles.category__item} ${className || ""}`}
+      className={styles.category__item}
       aria-label={`${category.name} kateqoriyasına bax`}
     >
       <div className={styles.category__icon}>

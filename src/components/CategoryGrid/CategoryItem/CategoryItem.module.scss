@@ -1,36 +1,24 @@
+// src/components/CategoryGrid/CategoryItem/CategoryItem.module.scss
 @import "../../../styles/variables.scss";
 
+// Remove all the layout/flex styles since they're now in CategoryGrid.module.scss
+// This component only handles the individual item styling, not the layout
+
 .category__item {
+  // Only keep the non-layout styles here
   display: flex;
   align-items: center;
-  padding: 14px 5px;
   text-decoration: none;
   color: inherit;
   transition: 0.3s ease;
   border-radius: 8px;
-
-  // Desktop: 6 columns (16.666667% flex)
-  flex: 0 0 16.666667%;
-  max-width: 16.666667%;
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) and (min-width: #{$breakpoint-md}) {
-    // Tablet: 4 columns (25% flex)
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    // Mobile: 2 columns (50% flex)
-    flex: 0 0 50%;
-    max-width: 50%;
-    padding: 14px 0;
-  }
 
   &:hover,
   &:focus {
     color: $primary-color;
     background-color: rgba($primary-color, 0.05);
     transform: translateY(-2px);
+    text-decoration: none;
   }
 
   &:focus {
@@ -46,7 +34,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative; // For Next.js Image positioning
+  position: relative;
 
   // Next.js Image component styling
   img {
