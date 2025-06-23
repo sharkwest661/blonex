@@ -1,13 +1,13 @@
+// src/components/Layout/Header/Header.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import clsx from "clsx";
+import { Container } from "@/components/Layout/Container";
 import TopBar from "./TopBar/TopBar";
 import MobileMenu from "./MobileMenu/MobileMenu";
 import styles from "./Header.module.scss";
-import Container from "@/components/Layout/Container/Container";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,12 +33,12 @@ const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <Container>
+      <Container noPadding>
         <TopBar />
       </Container>
 
       <div className={styles.navbar_bg}>
-        <Container>
+        <Container noPadding>
           <nav className={styles.navbar}>
             {/* Mobile Menu Toggle - Only visible on mobile */}
             <MobileMenu
@@ -68,19 +68,13 @@ const Header: React.FC = () => {
               <div className={styles.header__links}>
                 <Link
                   href="/favorites"
-                  className={clsx(
-                    styles.header__link,
-                    styles["header__link--favorites"]
-                  )}
+                  className={`${styles.header__link} ${styles["header__link--favorites"]}`}
                 >
                   Seçdiklərim
                 </Link>
                 <Link
                   href="/profile"
-                  className={clsx(
-                    styles.header__link,
-                    styles["header__link--login"]
-                  )}
+                  className={`${styles.header__link} ${styles["header__link--login"]}`}
                 >
                   Şəxsi kabinet
                 </Link>

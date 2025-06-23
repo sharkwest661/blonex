@@ -1,5 +1,5 @@
-"use client";
 // src/components/HomePage/HomePageContent.tsx
+"use client";
 import React from "react";
 import { ListingSection } from "@/components/ListingSection";
 import { FullWidthBanner } from "@/components/FullWidthBanner";

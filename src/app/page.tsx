@@ -1,23 +1,37 @@
-// src/app/page.tsx (Semantically Corrected)
+// src/app/page.tsx
 import React from "react";
+import { Container } from "@/components/Layout/Container";
 import { HomeFilter } from "@/components/Home";
 import CategoryGrid from "@/components/CategoryGrid/CategoryGrid";
 import HomePageContent from "@/components/HomePage/HomePageContent";
 
 const HomePage: React.FC = () => {
   return (
-    <main style={{ padding: "25px 0 50px" }}>
-      {/* Search and Filters Section */}
-      <HomeFilter />
+    <>
+      <Container>
+        <section id="home_filters_sec">
+          <Container fluid noPadding>
+            <section className="d-md-block" id="neql_search">
+              <Container>
+                <Container fluid className="forpadding0">
+                  <div className="row" id="dekstop_search_bar_row">
+                    <div className="" id="dekstop_search_bar">
+                      <HomeFilter />
+                    </div>
+                  </div>
+                </Container>
+              </Container>
+            </section>
 
-      {/* Categories Navigation Section */}
-      <section aria-label="Kateqoriyalar">
-        <CategoryGrid />
-      </section>
+            {/* Categories Navigation Section */}
+            <CategoryGrid />
+          </Container>
+        </section>
+      </Container>
 
       {/* Main Content Sections */}
       <HomePageContent />
-    </main>
+    </>
   );
 };
 

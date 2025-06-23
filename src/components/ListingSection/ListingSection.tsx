@@ -1,6 +1,6 @@
 // src/components/ListingSection/ListingSection.tsx
 import React from "react";
-import Container from "@/components/Layout/Container/Container";
+import { Container } from "@/components/Layout/Container";
 import SectionTitle, {
   type SectionTitleProps,
 } from "@/components/SectionTitle/SectionTitle";
@@ -26,7 +26,9 @@ export const ListingSection: React.FC<ListingSectionProps> = ({
   return (
     <section className={`${styles.listingSection} ${className || ""}`}>
       {/* Section Title */}
-      <SectionTitle {...title} />
+      <div className="title_bg">
+        <SectionTitle {...title} />
+      </div>
 
       {/* Main Content */}
       <Container>
@@ -39,7 +41,9 @@ export const ListingSection: React.FC<ListingSectionProps> = ({
           {/* Advertisement Sidebar */}
           {advertisement && (
             <div className={styles.sidebar}>
-              <Advertisement {...advertisement} />
+              <div className="sticky-top reklam">
+                <Advertisement {...advertisement} />
+              </div>
             </div>
           )}
         </div>
