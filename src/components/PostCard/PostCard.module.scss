@@ -1,6 +1,12 @@
 // src/components/PostCard/PostCard.module.scss
 @import "../../styles/variables.scss";
 
+// PostCard-specific font sizes (scaled to match original 67.5% base)
+$post-title-size: 1.08rem; // Equivalent to 1.6rem in original
+$post-subtitle-size: 0.94rem; // Equivalent to 1.4rem in original
+$post-meta-size: 0.81rem; // Equivalent to 1.2rem in original
+$post-price-size: 1.08rem; // Equivalent to 1.6rem in original
+
 // Main post card container
 .post__item {
   border-radius: $border-radius;
@@ -11,6 +17,9 @@
   overflow: hidden;
   transition: 0.3s;
   z-index: -1 !important;
+  height: 100%; // Fill grid cell completely
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     box-shadow: 0px 0px 0px 0px $primary-color,
@@ -45,6 +54,7 @@
   width: 100%;
   aspect-ratio: 1.34/1;
   z-index: 0 !important;
+  flex: 0 0 auto; // Don't allow flex grow/shrink
 
   > img {
     width: 100%;
@@ -225,6 +235,9 @@
   position: relative;
   color: rgba(0, 0, 0, 0.5);
   padding-top: 4px !important;
+  flex: 1 0 auto; // Grow to fill remaining space
+  display: flex;
+  flex-direction: column;
 
   p {
     margin-bottom: 3px !important;
@@ -241,6 +254,9 @@
 
 .post__content {
   padding: 0 5px;
+  flex: 1 0 auto; // Grow to fill space
+  display: flex;
+  flex-direction: column;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     padding: 0 5px;
@@ -252,8 +268,6 @@
   display: block;
   height: 21px;
   margin: 5px 0 0;
-  font-family: $font-family-bold;
-  font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.125;
   color: $primary-color;
@@ -274,8 +288,6 @@
 .other_post_title {
   display: block;
   margin: 5px 0 0;
-  font-family: $font-family-bold;
-  font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.125;
   color: $primary-color;
@@ -305,11 +317,19 @@
   }
 }
 
+.post__title,
+.other_post_title {
+  font-family: $font-family-bold;
+  font-size: $post-title-size;
+  height: 2.5em; // Fixed height for 2 lines of text
+  margin-bottom: 0.5em;
+}
+
 .post__title2 {
   display: block;
-  height: 17px;
+  height: 1.25em; // Fixed height for 1 line
   margin: 0 0 5px;
-  font-size: 1.4rem;
+  font-size: $post-subtitle-size;
   font-weight: 500 !important;
   color: $primary-color;
   overflow: hidden;
@@ -328,7 +348,7 @@
 
 .post__meta {
   margin-bottom: 5px !important;
-  font-size: $font-size-small;
+  font-size: $post-meta-size;
   color: rgba(0, 0, 0, 0.5);
 }
 
@@ -337,6 +357,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto; // Push to bottom
+  flex: 0 0 auto; // Don't grow
+  min-height: 30px; // Consistent height
   // No padding - matches original d-flex justify-content-between structure
 }
 
@@ -344,7 +367,7 @@
 .post__price {
   padding: 2px 4px;
   font-family: $font-family-bold;
-  font-size: 1.6rem;
+  font-size: $post-price-size;
   line-height: 1.125;
   color: $primary-color;
   background-color: rgba($secondary-color, 0.5);
