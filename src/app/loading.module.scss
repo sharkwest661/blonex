@@ -1,0 +1,39 @@
+// src/app/loading.module.scss
+@import "../styles/variables.scss";
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.loadingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; // Equivalent to space-y-4
+}
+
+.spinner {
+  width: 48px; // Equivalent to w-12
+  height: 48px; // Equivalent to h-12
+  border-radius: 50%; // Equivalent to rounded-full
+  border-bottom: 2px solid $primary-color; // Using our variable instead of border-blue-600
+  animation: spin 1s linear infinite;
+}
+
+.loadingText {
+  color: $text-light; // Using our variable instead of text-gray-600
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
