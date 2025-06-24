@@ -268,11 +268,3 @@
 .dFlex {
   display: flex;
 }
-
-// Accessibility
-button:focus,
-input:focus,
-select:focus {
-  outline: 2px solid $secondary-color;
-  outline-offset: 2px;
-}

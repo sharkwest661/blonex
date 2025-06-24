@@ -129,3 +129,11 @@ section {
   display: block;
   width: 100%;
 }
+
+// In styles/globals.scss
+button:focus,
+input:focus,
+select:focus {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
+}

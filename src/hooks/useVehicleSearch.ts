@@ -1,5 +1,5 @@
-// src/hooks/useVehicleSearch.ts
-import { useQuery } from "@tanstack/react-query";
+// src/hooks/useVehicleSearch.ts - FIXED VERSION
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState, useCallback, useEffect } from "react";
 import {
   useVehicleFilterStore,
@@ -62,28 +62,31 @@ export const useVehicleSearch = () => {
         },
         limit
       ),
-    keepPreviousData: true, // Keep previous results while fetching new ones
+    // ✅ FIXED: Replace keepPreviousData with placeholderData in v5
+    placeholderData: keepPreviousData,
     staleTime: 1 * 60 * 1000, // 1 minute
   });
 
   // Get total count from the mock service
   const totalCount = 125; // This would come from the API in a real application
 
-  // Calculate total pages
+  // Calculate pagination info
   const totalPages = Math.ceil(totalCount / limit);
+  const hasNextPage = page < totalPages;
+  const hasPreviousPage = page > 1;
 
-  // Handle page change
+  // Pagination functions
   const nextPage = useCallback(() => {
-    if (page < totalPages) {
+    if (hasNextPage) {
       setPage((prev) => prev + 1);
     }
-  }, [page, totalPages]);
+  }, [hasNextPage]);
 
-  const prevPage = useCallback(() => {
-    if (page > 1) {
+  const previousPage = useCallback(() => {
+    if (hasPreviousPage) {
       setPage((prev) => prev - 1);
     }
-  }, [page]);
+  }, [hasPreviousPage]);
 
   const goToPage = useCallback(
     (pageNumber: number) => {
@@ -94,29 +97,42 @@ export const useVehicleSearch = () => {
     [totalPages]
   );
 
-  // Handle limit change
   const changeLimit = useCallback((newLimit: number) => {
     setLimit(newLimit);
     setPage(1); // Reset to first page when changing limit
   }, []);
 
+  // Manual refetch function that preserves current filters
+  const refetchWithCurrentFilters = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
   return {
+    // Data
     listings,
+    totalCount,
+
+    // Loading states
     isLoading,
     isFetching,
-    error,
-    refetch,
-    pagination: {
-      page,
-      limit,
-      totalPages,
-      totalCount,
-      nextPage,
-      prevPage,
-      goToPage,
-      changeLimit,
-    },
-    filters,
+    error: error as Error | null,
+
+    // Pagination
+    page,
+    limit,
+    totalPages,
+    hasNextPage,
+    hasPreviousPage,
+
+    // Actions
+    nextPage,
+    previousPage,
+    goToPage,
+    changeLimit,
+    refetch: refetchWithCurrentFilters,
+
+    // Current filters (for display/debugging)
+    currentFilters: filters,
   };
 };
 
