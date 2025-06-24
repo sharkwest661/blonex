@@ -1,0 +1,278 @@
+@import "../../../styles/variables.scss";
+
+.desctopFilters {
+  background-color: $white;
+  border-radius: $border-radius;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Form group widths
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.forWidth20 {
+  width: calc(20% - 12px);
+
+  @media (max-width: 1200px) {
+    width: calc(25% - 12px);
+  }
+
+  @media (max-width: 992px) {
+    width: calc(33.33% - 10px);
+  }
+}
+
+.forWidthBig {
+  width: calc(25% - 12px);
+
+  @media (max-width: 1200px) {
+    width: calc(33.33% - 10px);
+  }
+
+  @media (max-width: 992px) {
+    width: calc(50% - 8px);
+  }
+}
+
+.forWidthSmall {
+  width: calc(15% - 13px);
+
+  @media (max-width: 1200px) {
+    width: calc(25% - 12px);
+  }
+
+  @media (max-width: 992px) {
+    width: calc(33.33% - 10px);
+  }
+}
+
+// Dropdown styles
+.dropdown {
+  width: 100%;
+  position: relative;
+}
+
+.dropdownGroup {
+  display: flex;
+  gap: 10px;
+
+  .dropdown {
+    flex: 1;
+  }
+}
+
+// Input ranges
+.unersalInputs {
+  display: flex;
+  gap: 10px;
+
+  label {
+    flex: 1;
+    position: relative;
+
+    input {
+      width: 100%;
+      height: 44px;
+      border: 1px solid rgba($primary-color, 0.2);
+      border-radius: $border-radius;
+      padding: 12px;
+      padding-bottom: 24px;
+      font-size: $font-size-base;
+
+      &:focus {
+        outline: none;
+        border-color: $secondary-color;
+      }
+    }
+
+    p {
+      position: absolute;
+      bottom: 5px;
+      left: 12px;
+      margin: 0;
+      font-size: $font-size-small;
+      color: $text-light;
+    }
+  }
+}
+
+// Radio button group for car condition
+.forCar {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    input[type="radio"] {
+      margin-right: 8px;
+      accent-color: $primary-color;
+    }
+
+    label {
+      margin: 0;
+      font-size: $font-size-base;
+      color: $text-color;
+      cursor: pointer;
+    }
+  }
+}
+
+// Checkbox group for credit/barter
+.forCredit {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+      accent-color: $primary-color;
+    }
+
+    label {
+      margin: 0;
+      font-size: $font-size-base;
+      color: $text-color;
+      cursor: pointer;
+    }
+  }
+}
+
+// Additional filters section
+.additionalFilters {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba($primary-color, 0.1);
+}
+
+.additionalChekingsHero {
+  width: 100%;
+}
+
+.additionalChekingsTitle {
+  font-size: $font-size-base;
+  font-weight: 600;
+  color: $primary-color;
+  margin-bottom: 15px;
+}
+
+.additionalChekings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+// Filter buttons
+.descFiltersBtns {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.filterResetBtn {
+  height: 46px;
+  padding: 0 20px;
+  background-color: transparent;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  color: $primary-color;
+  font-size: $font-size-base;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+  }
+}
+
+.filterElseBtn {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  padding: 0 20px;
+  background-color: transparent;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  color: $primary-color;
+  font-size: $font-size-base;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  p {
+    margin: 0;
+    margin-right: 10px;
+  }
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+  }
+}
+
+.filterShowBtn {
+  height: 46px;
+  padding: 0 30px;
+  background-color: $secondary-color;
+  border: none;
+  border-radius: $border-radius;
+  color: $primary-color;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: auto;
+
+  &:hover {
+    background-color: darken($secondary-color, 5%);
+    transform: translateY(-1px);
+  }
+}
+
+// Utility classes
+.dFlex {
+  display: flex;
+}
+
+// Accessibility
+button:focus,
+input:focus,
+select:focus {
+  outline: 2px solid $secondary-color;
+  outline-offset: 2px;
+}

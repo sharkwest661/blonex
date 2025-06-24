@@ -1,0 +1,91 @@
+@import "../../styles/variables.scss";
+
+.pageTitle {
+  font-size: $font-size-xl;
+  font-family: $font-family-bold;
+  color: $primary-color;
+  margin: 20px 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-large;
+    margin: 16px 0;
+  }
+}
+
+// Desktop Filters
+.desktopFilters {
+  display: block;
+  margin-bottom: 30px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none;
+  }
+}
+
+// Mobile Filters
+.mobileFilters {
+  display: none;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+.filters767 {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.filters767Inner {
+  flex: 1;
+  height: 50px;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.filterLink {
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+
+  i {
+    font-size: 20px;
+    color: $primary-color;
+  }
+
+  p {
+    font-size: $font-size-base;
+    color: $primary-color;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+// Brands Section
+.brandsSection {
+  margin-bottom: 30px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-bottom: 20px;
+  }
+}
+
+// Content Sections
+.section {
+  margin-bottom: 40px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-bottom: 30px;
+  }
+}

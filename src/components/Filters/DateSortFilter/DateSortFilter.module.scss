@@ -1,0 +1,189 @@
+// src/components/Filters/DateSortFilter/DateSortFilter.module.scss
+@import "../../../styles/variables.scss";
+
+// Filter trigger - mobile only
+.filters767 {
+  display: flex;
+
+  @media screen and (min-width: $breakpoint-md) {
+    display: none; // Hide on desktop
+  }
+}
+
+.filters767Inner {
+  height: 50px;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  cursor: pointer;
+
+  a {
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    align-items: center;
+
+    svg {
+      color: $primary-color;
+    }
+
+    p {
+      font-size: $font-size-base;
+      color: $primary-color;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+}
+
+// Background overlay
+.dateFilterBg {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.24);
+  z-index: 998;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+// Filter overlay
+.dateFilterOverlay {
+  position: fixed;
+  height: 400px;
+  background: $white;
+  bottom: 0;
+  z-index: 999;
+  padding: 0;
+  margin: 0;
+  left: 0;
+  right: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+
+  &.open {
+    transform: translateY(0);
+  }
+}
+
+// Header
+.dateFilterHeader {
+  margin: 15px 0;
+  text-align: center;
+  position: relative;
+}
+
+.dateFilterHeaderInner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dateFilterHeaderText {
+  color: $primary-color;
+  margin: 0 auto;
+  font-family: $font-family-bold;
+  font-weight: 700;
+}
+
+.dateFilterHeaderIcon {
+  font-size: $font-size-small;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $primary-color;
+  right: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+    border-radius: 50%;
+  }
+}
+
+// Body
+.dateFilterBody {
+  padding: 0 15px;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+
+    &:hover .dateFilterSelect {
+      background-color: rgba($primary-color, 0.05);
+    }
+  }
+}
+
+// Filter options
+.dateFilterSelect {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 0 8px;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+}
+
+.dateFilterSelectName {
+  padding: 12px 0;
+  color: $text-color;
+  font-size: $font-size-base;
+}
+
+.dateFilterSelectRadio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.selected {
+  .dateFilterSelectRadio {
+    border-color: $primary-color;
+
+    &::before {
+      content: "";
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 10px;
+      background-color: $primary-color;
+      border-radius: 50%;
+    }
+  }
+
+  .dateFilterSelectName {
+    font-weight: 500;
+    color: $primary-color;
+  }
+}
