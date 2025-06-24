@@ -15,6 +15,7 @@ import {
   Send,
 } from "lucide-react";
 import styles from "./MobileMenu.module.scss";
+import { CATEGORIES } from "@/constants";
 
 interface Category {
   id: string;
@@ -33,110 +34,11 @@ interface MobileMenuProps {
   userPhone?: string;
 }
 
-const defaultCategories: Category[] = [
-  {
-    id: "1",
-    name: "Nəqliyyat",
-    icon: "/assets/images/categories/transport.svg",
-    href: "/neqliyyat",
-  },
-  {
-    id: "2",
-    name: "Daşınmaz Əmlak",
-    icon: "/assets/images/categories/real-estate.svg",
-    href: "/dashinmaz-emlak",
-  },
-  {
-    id: "3",
-    name: "Geyim",
-    icon: "/assets/images/categories/clothing.svg",
-    href: "/geyim",
-  },
-  {
-    id: "4",
-    name: "Uşaq aləmi",
-    icon: "/assets/images/categories/kids.svg",
-    href: "/usaq-alemi",
-  },
-  {
-    id: "5",
-    name: "Kosmetika və sağlamlıq",
-    icon: "/assets/images/categories/beauty.svg",
-    href: "/kosmetika",
-  },
-  {
-    id: "6",
-    name: "İş Elanları",
-    icon: "/assets/images/categories/jobs.svg",
-    href: "/is-elanlari",
-  },
-  {
-    id: "7",
-    name: "Elektronika",
-    icon: "/assets/images/categories/electronics.svg",
-    href: "/elektronika",
-  },
-  {
-    id: "8",
-    name: "Ev və bağ üçün",
-    icon: "/assets/images/categories/home-garden.svg",
-    href: "/ev-bag",
-  },
-  {
-    id: "9",
-    name: "Ərzaq",
-    icon: "/assets/images/categories/food.svg",
-    href: "/erzaq",
-  },
-  {
-    id: "10",
-    name: "Heyvan, Bitki",
-    icon: "/assets/images/categories/pets.svg",
-    href: "/heyvan-bitki",
-  },
-  {
-    id: "11",
-    name: "İdman, musiqi, hobbi",
-    icon: "/assets/images/categories/sports.svg",
-    href: "/idman-musiqi",
-  },
-  {
-    id: "12",
-    name: "Digər",
-    icon: "/assets/images/categories/other.svg",
-    href: "/diger",
-  },
-  {
-    id: "13",
-    name: "Xidmətlər",
-    icon: "/assets/images/categories/services.svg",
-    href: "/xidmetler",
-  },
-  {
-    id: "14",
-    name: "Pulsuz",
-    icon: "/assets/images/categories/free.svg",
-    href: "/pulsuz",
-  },
-  {
-    id: "15",
-    name: "Super Fürsət",
-    icon: "/assets/images/categories/super-deal.svg",
-    href: "/super-furset",
-  },
-  {
-    id: "16",
-    name: "Mağaza və şirkətlər",
-    icon: "/assets/images/categories/stores.svg",
-    href: "/magazalar",
-  },
-];
-
 export const MobileMenu: React.FC<MobileMenuProps> = ({
   isOpen,
   onToggle,
   onClose,
-  categories = defaultCategories,
+  categories = CATEGORIES,
   isAuthenticated = false,
   userPhone = "012 555 65 00",
 }) => {
