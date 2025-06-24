@@ -106,7 +106,10 @@ export const useVehicleFilterStore = create<VehicleFilterState>()(
       setPriceRange: (minPrice: number | null, maxPrice: number | null) =>
         set({ minPrice, maxPrice }),
 
-      setFilter: (key, value) => set({ [key]: value }),
+      setFilter: <K extends keyof VehicleFilterState>(
+        key: K,
+        value: VehicleFilterState[K]
+      ) => set({ [key]: value } as Pick<VehicleFilterState, K>),
 
       resetFilters: () => set(initialState),
 
