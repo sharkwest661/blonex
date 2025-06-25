@@ -1,65 +1,158 @@
-// src/stores/useFilterStore.ts
 import { create } from "zustand";
 
+// Types
+import type { Mark, Model, Color, FuelType, BodyType, City } from "@/types";
+
 interface FilterState {
-  // Sorting
-  sortBy: string;
-  setSortBy: (sortBy: string) => void;
+  // Search state
+  searchTerm: string;
 
-  // Price range
-  minPrice: number | null;
-  maxPrice: number | null;
-  setPriceRange: (min: number | null, max: number | null) => void;
+  // Filter values
+  selectedMark: Mark | null;
+  selectedModel: Model | null;
+  priceRange: { min: string; max: string };
+  selectedColor: Color | null;
+  selectedFuelType: FuelType | null;
+  selectedBodyType: BodyType | null;
+  engineSizeRange: { min: string; max: string };
+  yearRange: { min: string; max: string };
+  selectedTransmission: string | null;
+  selectedCity: City | null;
+  carCondition: "all" | "new" | "used";
+  mileageRange: { min: string; max: string };
+  selectedDrive: string | null;
+  selectedSeats: string | null;
+  powerRange: { min: string; max: string };
+  isCredit: boolean;
+  isBarter: boolean;
+  selectedFeatures: number[];
 
-  // Location filters
-  location: string | null;
-  setLocation: (location: string | null) => void;
-
-  // Search query
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-
-  // Category filters (for vehicle category)
-  vehicleType: string[];
-  setVehicleType: (types: string[]) => void;
-
-  // Clear all filters
-  clearFilters: () => void;
+  // Actions
+  setSearchTerm: (searchTerm: string) => void;
+  setSelectedMark: (mark: Mark | null) => void;
+  setSelectedModel: (model: Model | null) => void;
+  setPriceRange: (range: { min: string; max: string }) => void;
+  setSelectedColor: (color: Color | null) => void;
+  setSelectedFuelType: (fuelType: FuelType | null) => void;
+  setSelectedBodyType: (bodyType: BodyType | null) => void;
+  setEngineSizeRange: (range: { min: string; max: string }) => void;
+  setYearRange: (range: { min: string; max: string }) => void;
+  setSelectedTransmission: (transmission: string | null) => void;
+  setSelectedCity: (city: City | null) => void;
+  setCarCondition: (condition: "all" | "new" | "used") => void;
+  setMileageRange: (range: { min: string; max: string }) => void;
+  setSelectedDrive: (drive: string | null) => void;
+  setSelectedSeats: (seats: string | null) => void;
+  setPowerRange: (range: { min: string; max: string }) => void;
+  setIsCredit: (isCredit: boolean) => void;
+  setIsBarter: (isBarter: boolean) => void;
+  toggleFeature: (featureId: number) => void;
+  resetFilters: () => void;
 }
 
 export const useFilterStore = create<FilterState>((set) => ({
-  // Default values
-  sortBy: "date",
-  minPrice: null,
-  maxPrice: null,
-  location: null,
-  searchQuery: "",
-  vehicleType: [],
+  // Initial state
+  searchTerm: "",
+  selectedMark: null,
+  selectedModel: null,
+  priceRange: { min: "", max: "" },
+  selectedColor: null,
+  selectedFuelType: null,
+  selectedBodyType: null,
+  engineSizeRange: { min: "", max: "" },
+  yearRange: { min: "", max: "" },
+  selectedTransmission: null,
+  selectedCity: null,
+  carCondition: "all",
+  mileageRange: { min: "", max: "" },
+  selectedDrive: null,
+  selectedSeats: null,
+  powerRange: { min: "", max: "" },
+  isCredit: false,
+  isBarter: false,
+  selectedFeatures: [],
 
   // Actions
-  setSortBy: (sortBy) => set({ sortBy }),
+  setSearchTerm: (searchTerm) => set({ searchTerm }),
 
-  setPriceRange: (min, max) =>
-    set({
-      minPrice: min,
-      maxPrice: max,
+  setSelectedMark: (mark) =>
+    set((state) => {
+      // Reset model when mark changes
+      if (state.selectedMark?.id !== mark?.id) {
+        return { selectedMark: mark, selectedModel: null };
+      }
+      return { selectedMark: mark };
     }),
 
-  setLocation: (location) => set({ location }),
+  setSelectedModel: (model) => set({ selectedModel: model }),
 
-  setSearchQuery: (searchQuery) => set({ searchQuery }),
+  setPriceRange: (range) => set({ priceRange: range }),
 
-  setVehicleType: (types) => set({ vehicleType: types }),
+  setSelectedColor: (color) => set({ selectedColor: color }),
 
-  clearFilters: () =>
+  setSelectedFuelType: (fuelType) => set({ selectedFuelType: fuelType }),
+
+  setSelectedBodyType: (bodyType) => set({ selectedBodyType: bodyType }),
+
+  setEngineSizeRange: (range) => set({ engineSizeRange: range }),
+
+  setYearRange: (range) => set({ yearRange: range }),
+
+  setSelectedTransmission: (transmission) =>
+    set({ selectedTransmission: transmission }),
+
+  setSelectedCity: (city) => set({ selectedCity: city }),
+
+  setCarCondition: (condition) => set({ carCondition: condition }),
+
+  setMileageRange: (range) => set({ mileageRange: range }),
+
+  setSelectedDrive: (drive) => set({ selectedDrive: drive }),
+
+  setSelectedSeats: (seats) => set({ selectedSeats: seats }),
+
+  setPowerRange: (range) => set({ powerRange: range }),
+
+  setIsCredit: (isCredit) => set({ isCredit }),
+
+  setIsBarter: (isBarter) => set({ isBarter }),
+
+  toggleFeature: (featureId) =>
+    set((state) => {
+      const isSelected = state.selectedFeatures.includes(featureId);
+
+      if (isSelected) {
+        return {
+          selectedFeatures: state.selectedFeatures.filter(
+            (id) => id !== featureId
+          ),
+        };
+      } else {
+        return {
+          selectedFeatures: [...state.selectedFeatures, featureId],
+        };
+      }
+    }),
+
+  resetFilters: () =>
     set({
-      sortBy: "date",
-      minPrice: null,
-      maxPrice: null,
-      location: null,
-      searchQuery: "",
-      vehicleType: [],
+      selectedMark: null,
+      selectedModel: null,
+      priceRange: { min: "", max: "" },
+      selectedColor: null,
+      selectedFuelType: null,
+      selectedBodyType: null,
+      engineSizeRange: { min: "", max: "" },
+      yearRange: { min: "", max: "" },
+      selectedTransmission: null,
+      selectedCity: null,
+      carCondition: "all",
+      mileageRange: { min: "", max: "" },
+      selectedDrive: null,
+      selectedSeats: null,
+      powerRange: { min: "", max: "" },
+      isCredit: false,
+      isBarter: false,
+      selectedFeatures: [],
     }),
 }));
-
-export default useFilterStore;

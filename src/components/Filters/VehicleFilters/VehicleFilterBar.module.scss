@@ -1,727 +1,825 @@
-// Optimized 3-Filter VehicleFilterBar.module.scss
 @import "../../../styles/variables.scss";
 
-.desktopFilters {
-  background-color: $white;
-  border-radius: $border-radius;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  margin-bottom: 20px;
-}
-
-/* FILTER ROW - Base styling for all rows */
-.filterRow {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
-  
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-  }
-}
-
-/* FILTER GROUP - Standard select dropdowns (1/3 width) */
-.filterGroup {
-  flex: 1;
-  min-width: 160px;
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    min-width: 140px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    min-width: 120px;
-    flex: 1 1 calc(50% - 5px);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex: 1 1 100%;
-    min-width: 100%;
-  }
-}
-
-/* PRICE GROUP - Row 3 (full width group) */
-.priceGroup {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
+.mainContainer {
   width: 100%;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-}
-
-.priceInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 120px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    min-width: 100px;
-    font-size: $font-size-small;
-    padding: 10px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex: 1 1 calc(50% - 4px);
-  }
-}
-
-.priceSeparator {
-  font-size: $font-size-base;
-  color: $text-light;
-  font-weight: 500;
-  flex-shrink: 0;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-.currency {
-  font-size: $font-size-base;
-  color: $primary-color;
-  font-weight: 600;
-  flex-shrink: 0;
-  min-width: 40px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* YEAR GROUP - Row 4 (1/2 width) */
-.yearGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 180px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    min-width: 160px;
-    flex: 1 1 calc(60% - 5px);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex: 1 1 100%;
-    min-width: 100%;
-    margin-bottom: 10px;
-  }
-}
-
-.yearInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 70px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-    min-width: 60px;
-  }
-}
-
-.yearSeparator {
-  font-size: $font-size-base;
-  color: $text-light;
-  font-weight: 500;
-  flex-shrink: 0;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* CONDITION GROUP - Row 4 (1/2 width) */
-.conditionGroup {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  flex: 1;
-  min-width: 140px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 12px;
-    flex: 1 1 calc(40% - 5px);
-    min-width: 120px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex: 1 1 100%;
-    justify-content: center;
-  }
-}
-
-.radio {
-  display: flex;
-  align-items: center;
-  font-size: $font-size-base;
-  color: $primary-color;
-  cursor: pointer;
-  gap: 6px;
-
-  input[type="radio"] {
-    accent-color: $primary-color;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-
-    &:focus {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
-    }
-  }
-
-  span {
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  &:hover {
-    color: darken($primary-color, 10%);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* PAYMENT GROUP - Row 5 (2/3 width) */
-.paymentGroup {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 2;
-  min-width: 180px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 15px;
-    flex: 1 1 calc(70% - 5px);
-    min-width: 160px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex: 1 1 100%;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  font-size: $font-size-base;
-  color: $primary-color;
-  cursor: pointer;
-  gap: 8px;
-
-  input[type="checkbox"] {
-    accent-color: $primary-color;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-
-    &:focus {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
-    }
-  }
-
-  span {
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  &:hover {
-    color: darken($primary-color, 10%);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* ADVANCED ROWS - Row 6+ */
-.advancedRow {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 12px;
-  padding: 12px 15px;
-  background-color: rgba($primary-color, 0.02);
-  border-radius: $border-radius;
-  border: 1px solid rgba($primary-color, 0.1);
-
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    gap: 12px;
-    padding: 10px 12px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 10px;
-    flex-wrap: wrap;
-    padding: 8px 10px;
-  }
-}
-
-/* MILEAGE GROUP - Advanced Row 1 (2/3 width) */
-.mileageGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 2;
-  min-width: 200px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(60% - 5px);
-    min-width: 180px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex: 1 1 100%;
-    min-width: 100%;
-    margin-bottom: 8px;
-  }
-}
-
-.mileageInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 80px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-    min-width: 70px;
-  }
-}
-
-.mileageSeparator {
-  font-size: $font-size-base;
-  color: $text-light;
-  font-weight: 500;
-  flex-shrink: 0;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* ENGINE GROUP - Advanced Row 2 (1/2 width) */
-.engineGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 180px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(50% - 5px);
-    min-width: 160px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex: 1 1 100%;
-    min-width: 100%;
-    margin-bottom: 8px;
-  }
-}
-
-.engineInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 70px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-    min-width: 60px;
-  }
-}
-
-.engineSeparator {
-  font-size: $font-size-base;
-  color: $text-light;
-  font-weight: 500;
-  flex-shrink: 0;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* POWER GROUP - Advanced Row 2 (1/2 width) */
-.powerGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 180px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(50% - 5px);
-    min-width: 160px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex: 1 1 100%;
-    min-width: 100%;
-  }
-}
-
-.powerInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 70px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-    min-width: 60px;
-  }
-}
-
-.powerSeparator {
-  font-size: $font-size-base;
-  color: $text-light;
-  font-weight: 500;
-  flex-shrink: 0;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* UNIT LABELS */
-.unit {
-  font-size: $font-size-base;
-  color: $primary-color;
-  font-weight: 500;
-  flex-shrink: 0;
-  min-width: 30px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    min-width: 25px;
-  }
-}
-
-/* ADVANCED TOGGLE */
-.advancedToggle {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0 15px;
-}
-
-.toggleButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  padding: 8px 16px;
-  font-size: $font-size-base;
-  color: $primary-color;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: rgba($primary-color, 0.05);
-    border-color: $primary-color;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 6px 12px;
-  }
-}
-
-.arrow {
-  font-size: $font-size-small;
-  transition: transform 0.2s ease;
-
-  &.up {
-    transform: rotate(180deg);
-  }
-
-  &.down {
-    transform: rotate(0deg);
-  }
-}
-
-/* ACTIONS ROW */
-.actionsRow {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  padding-top: 20px;
-  margin-top: 15px;
-  border-top: 1px solid rgba($primary-color, 0.1);
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    justify-content: stretch;
-    
-    button {
-      flex: 1;
-    }
-  }
-}
-
-.clearButton {
-  padding: 10px 20px;
-  border: 1px solid rgba($primary-color, 0.3);
-  border-radius: $border-radius;
-  background-color: transparent;
-  color: $primary-color;
-  font-size: $font-size-base;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 100px;
-
-  &:hover {
-    background-color: rgba($primary-color, 0.1);
-    border-color: $primary-color;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 8px 16px;
-  }
-}
-
-.searchButton {
-  padding: 10px 24px;
-  border: none;
-  border-radius: $border-radius;
-  background-color: $primary-color;
-  color: $white;
-  font-size: $font-size-base;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 120px;
-
-  &:hover {
-    background-color: darken($primary-color, 8%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.4);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 8px 20px;
-  }
-}
-
-/* LEGACY SUPPORT - Remove these as you migrate */
-.dropdown {
-  width: 100%;
+  max-width: 1410px;
+  margin: 0 auto;
+  padding: 0 15px;
   position: relative;
 }
 
-.dropdownGroup {
-  display: flex;
-  gap: 10px;
+/* Date filter overlay */
+.dateFilterBg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
 
-  .dropdown {
-    flex: 1;
+  &.active {
+    display: block;
   }
 }
 
-/* EXTRA SMALL SCREENS */
-@media screen and (max-width: 480px) {
-  .desktopFilters {
-    padding: 15px;
+.dateFilterOverlay {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  max-width: 400px;
+  height: 100%;
+  background-color: $filter-bg-color;
+  z-index: 1000;
+  transition: right 0.3s ease;
+  padding-top: 0px;
+
+  &.active {
+    right: 0;
+  }
+}
+
+.dateFilterHeader {
+  padding: 15px;
+  border-bottom: 1px solid $filter-border-color;
+
+  &Inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .filterRow {
-    gap: 8px;
-    margin-bottom: 8px;
+  &Text {
+    font-size: $font-size-large;
+    font-weight: 600;
   }
 
-  .advancedRow {
-    gap: 6px;
-    padding: 6px 8px;
-    margin-bottom: 8px;
-  }
+  &Icon {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  .actionsRow {
-    flex-direction: column;
-    gap: 8px;
-    padding-top: 15px;
-
-    button {
-      width: 100%;
+    i {
+      font-size: $font-size-base;
     }
+  }
+}
+
+.dateFilterBody {
+  padding: 15px;
+
+  a {
+    text-decoration: none;
+    color: $filter-text-color;
+  }
+}
+
+.dateFilterSelect {
+  padding: 15px;
+  border-radius: $border-radius;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $filter-gray-color;
+  }
+
+  &.selected {
+    background-color: $filter-primary-light;
+  }
+
+  &Name {
+    font-size: $font-size-base;
+  }
+
+  &Radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid $primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: $primary-color;
+      display: none;
+    }
+  }
+
+  &.selected &Radio::after {
+    display: block;
+  }
+}
+
+/* Search section */
+.mobxSearch {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.search {
+  position: relative;
+  width: 100%;
+
+  &Group {
+    display: flex;
+    position: relative;
+  }
+
+  &Input {
+    width: 100%;
+    height: 45px;
+    border: 1px solid $filter-border-color;
+    border-radius: $border-radius;
+    padding: 0 45px 0 15px;
+    font-size: $font-size-base;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+
+  &Append {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-right: 15px;
+  }
+
+  &Btn {
+    width: 20px;
+    height: 20px;
+    background-image: url("/assets/images/search.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/* Category title */
+.titleCategory {
+  font-size: $font-size-xl;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: $filter-text-color;
+}
+
+/* Desktop filters */
+.desctopFilters {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+}
+
+.formGroup {
+  padding: 0 10px;
+  margin-bottom: 20px;
+}
+
+.forWidth20 {
+  width: 20%;
+
+  @media (max-width: $breakpoint-lg) {
+    width: 33.333%;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    width: 50%;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    width: 100%;
+  }
+}
+
+.forWidthBig {
+  width: 25%;
+
+  @media (max-width: $breakpoint-lg) {
+    width: 33.333%;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    width: 50%;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    width: 100%;
+  }
+}
+
+.forWidthSmall {
+  width: 15%;
+
+  @media (max-width: $breakpoint-lg) {
+    width: 33.333%;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    width: 50%;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    width: 100%;
+  }
+}
+
+.grow1 {
+  flex-grow: 1;
+}
+
+/* Order classes for flexbox ordering */
+@for $i from 1 through 20 {
+  .order#{$i} {
+    order: $i;
+  }
+}
+
+.dropdown {
+  position: relative;
+  width: 100%;
+
+  &Button {
+    width: 100%;
+    height: 45px;
+    border: 1px solid $filter-border-color;
+    border-radius: $border-radius;
+    padding: 0 35px 0 15px;
+    text-align: left;
+    font-size: $font-size-base;
+    background-color: $filter-bg-color;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+
+    &.active {
+      color: $primary-color;
+      font-weight: 600;
+    }
+
+    &.empty {
+      color: $filter-gray-color;
+      cursor: not-allowed;
+    }
+  }
+
+  .dropArrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $filter-gray-color;
+    pointer-events: none;
+  }
+
+  &ListHero {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: $filter-bg-color;
+    border: 1px solid $filter-border-color;
+    border-radius: $border-radius;
+    margin-top: 5px;
+    z-index: 10;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  &List {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  &Item {
+    padding: 10px 15px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $light-gray;
+    }
+
+    &.active {
+      background-color: $primary-color-light;
+      color: $primary-color;
+    }
+  }
+}
+
+/* Universal inputs (min-max) */
+.unersalInputs {
+  display: flex;
+  gap: 10px;
+
+  label {
+    position: relative;
+    flex: 1;
+
+    input {
+      width: 100%;
+      height: 45px;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      padding: 0 15px;
+      font-size: $font-size-base;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+
+    p {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      margin: 0;
+      color: $gray;
+      font-size: $font-size-base;
+      pointer-events: none;
+      transition: all 0.2s;
+    }
+
+    input:focus + p,
+    input:not(:placeholder-shown) + p {
+      top: 5px;
+      font-size: $font-size-small;
+    }
+  }
+}
+
+/* Car type radio buttons */
+.forCar {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  height: 45px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: 0 15px;
+  align-items: center;
+
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    input {
+      margin-right: 5px;
+    }
+  }
+}
+
+/* Engine volume and year groups */
+.litrGroup,
+.yearGroup {
+  display: flex;
+  gap: 10px;
+
+  .formGroup {
+    flex: 1;
+    padding: 0;
+  }
+}
+
+/* Credit and barter checkboxes */
+.forCredit {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  height: 45px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: 0 15px;
+  align-items: center;
+
+  div {
+    display: flex;
+    align-items: center;
+
+    input {
+      margin-right: 5px;
+    }
+  }
+}
+
+/* Additional features section */
+.additionalChekingsHero {
+  width: 100%;
+  padding: 0 10px;
+  margin-bottom: 20px;
+  display: none;
+
+  &.show {
+    display: block;
+  }
+}
+
+.additionalChekingsTitle {
+  font-size: $font-size-base;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.additionalChekings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.additionalCheckingItem {
+  display: flex;
+  align-items: center;
+  width: calc(25% - 12px);
+
+  @media (max-width: $breakpoint-lg) {
+    width: calc(33.333% - 12px);
+  }
+
+  @media (max-width: $breakpoint-md) {
+    width: calc(50% - 8px);
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    width: 100%;
+  }
+
+  input {
+    margin-right: 5px;
+  }
+}
+
+/* Filter action buttons */
+.descFiltersBtns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filterResetBtn {
+  padding: 10px 20px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  background-color: transparent;
+  color: $filter-text-color;
+  font-size: $font-size-base;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $light-gray;
+  }
+}
+
+.filterElseBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 20px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  background-color: transparent;
+  color: $text-color;
+  font-size: $font-size-base;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $light-gray;
+  }
+
+  i {
+    margin-left: 5px;
+  }
+}
+
+.filterShowBtn {
+  padding: 10px 30px;
+  background-color: $primary-color;
+  border-radius: $border-radius;
+  color: $white;
+  font-size: $font-size-base;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+/* Mobile styles */
+.after767 {
+  display: none;
+
+  @media (max-width: $breakpoint-md) {
+    display: block;
+    margin-bottom: 15px;
+  }
+}
+
+.mark767ShowBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  cursor: pointer;
+
+  &Title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.neqliyyat767 {
+  display: none;
+
+  @media (max-width: $breakpoint-md) {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+}
+
+.afterMark767,
+.afterModel767 {
+  flex: 1;
+  position: relative;
+  padding: 15px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  cursor: pointer;
+  margin-right: 10px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &.active {
+    border-color: $primary-color;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  label {
+    display: block;
+    font-size: $font-size-small;
+    color: $gray;
+    margin-bottom: 5px;
+  }
+
+  p {
+    margin: 0;
+    font-weight: 600;
+    color: $text-color;
+  }
+
+  .markArrowDown,
+  .modelArrowDown {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $gray;
+  }
+
+  .markResetXmark,
+  .modelResetXmark {
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $primary-color;
+    cursor: pointer;
+  }
+}
+
+.filters767 {
+  display: none;
+
+  @media (max-width: $breakpoint-md) {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  &Inner {
+    flex: 1;
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      text-decoration: none;
+      color: $text-color;
+      font-size: $font-size-base;
+    }
+  }
+}
+
+/* Mobile dropdowns */
+.mark767Dropdown,
+.model767Dropdown {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $white;
+  z-index: 1001;
+
+  &.active {
+    display: block;
+  }
+}
+
+.mark767Header,
+.model767Header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid $border-color;
+
+  i {
+    margin-right: 15px;
+    font-size: $font-size-large;
+    cursor: pointer;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: $font-size-large;
+  }
+}
+
+.selectBoxList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+}
+
+.selectBoxItem {
+  padding: 15px;
+  border-bottom: 1px solid $border-color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $light-gray;
+  }
+
+  &.active {
+    background-color: $primary-color-light;
+    color: $primary-color;
+  }
+}
+
+/* Brands section */
+.markSection {
+  margin-bottom: 30px;
+}
+
+.brands {
+  padding: 20px 0;
+
+  &Heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: $font-size-large;
+      font-weight: 700;
+    }
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+      font-size: $font-size-base;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &Grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &Item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    text-decoration: none;
+    color: $text-color;
+    font-size: $font-size-base;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+    }
+
+    span {
+      color: $gray;
+    }
+  }
+}
+
+// Utility classes
+.dnone {
+  display: none !important;
+}
+
+.dFlex {
+  display: flex !important;
+}
+
+// Hide specific elements on mobile
+@media (max-width: $breakpoint-md) {
+  .desctopFilters,
+  .descFiltersBtns {
+    display: none;
+  }
+}
+
+// Show specific elements only on mobile
+@media (min-width: $breakpoint-md) {
+  .after767,
+  .neqliyyat767,
+  .filters767 {
+    display: none;
   }
 }

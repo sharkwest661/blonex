@@ -1,3 +1,1 @@
-// src/components/Filters/VehicleFilters/index.ts
-export { default as VehicleFilterBar } from "./VehicleFilterBar";
-export { default } from "./VehicleFilterBar";
+export { VehicleFilterBar } from "./VehicleFilterBar";
