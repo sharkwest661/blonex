@@ -1,4 +1,4 @@
-// Updated VehicleFilterBar.module.scss with improved organization
+// Granular VehicleFilterBar.module.scss with smaller focused rows
 @import "../../../styles/variables.scss";
 
 .desktopFilters {
@@ -9,35 +9,17 @@
   margin-bottom: 20px;
 }
 
-/* PRIMARY ROW - Most Important Filters */
-.primaryRow {
+/* FILTER ROW - Base styling for all rows */
+.filterRow {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba($primary-color, 0.1);
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    gap: 12px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 10px;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-  }
-}
-
-/* SECONDARY ROW - Vehicle Specifications */
-.secondaryRow {
-  display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 15px;
   margin-bottom: 15px;
 
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
     gap: 12px;
     margin-bottom: 12px;
@@ -45,387 +27,152 @@
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
   }
 }
 
-/* ADVANCED ROW - Less Common Filters */
-.advancedRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: rgba($primary-color, 0.02);
-  border-radius: $border-radius;
-  border: 1px solid rgba($primary-color, 0.1);
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    gap: 12px;
-    margin-bottom: 15px;
-    padding: 12px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 10px;
-    padding: 10px;
-  }
-}
-
-/* FILTER GROUP - Basic Container */
+/* FILTER GROUP - Standard select dropdowns */
 .filterGroup {
   flex: 1;
-  min-width: 160px;
-  max-width: 200px;
+  min-width: 180px;
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    min-width: 140px;
-    max-width: 180px;
+    min-width: 160px;
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    min-width: 120px;
+    min-width: 140px;
     flex: 1 1 calc(50% - 5px);
   }
-}
 
-/* PRICE GROUP */
-.priceGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 2;
-  min-width: 240px;
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    min-width: 200px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
     flex: 1 1 100%;
     min-width: 100%;
   }
 }
 
+/* PRICE INPUTS - Row 2 */
 .priceInput {
   flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 80px;
+  min-width: 120px;
 
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
+  input {
+    width: 100%;
+    height: 44px;
+    padding: 12px;
+    border: 1px solid rgba($primary-color, 0.2);
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    color: $primary-color;
 
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-    min-width: 70px;
-  }
-}
-
-/* YEAR GROUP */
-.yearGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 160px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(50% - 5px);
-  }
-}
-
-.yearInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 60px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-  }
-}
-
-/* MILEAGE GROUP */
-.mileageGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 180px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(50% - 5px);
-  }
-}
-
-.mileageInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 70px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-  }
-}
-
-/* ENGINE GROUP */
-.engineGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 160px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(50% - 5px);
-  }
-}
-
-.engineInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 60px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-  }
-}
-
-/* POWER GROUP */
-.powerGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 160px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(50% - 5px);
-  }
-}
-
-.powerInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 60px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-    padding: 10px;
-  }
-}
-
-/* SEPARATORS AND UNITS */
-.separator {
-  font-size: $font-size-base;
-  color: $text-light;
-  flex-shrink: 0;
-  font-weight: 500;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-.currency,
-.unit {
-  font-size: $font-size-base;
-  color: $primary-color;
-  font-weight: 500;
-  flex-shrink: 0;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* PAYMENT OPTIONS */
-.paymentOptions {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  min-width: 140px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 15px;
-    flex: 1 1 100%;
-  }
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  font-size: $font-size-base;
-  color: $primary-color;
-  cursor: pointer;
-  gap: 8px;
-
-  input[type="checkbox"] {
-    accent-color: $primary-color;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
+    &::placeholder {
+      color: $text-light;
+      font-size: $font-size-small;
+    }
 
     &:focus {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
     }
   }
 
-  span {
-    font-weight: 500;
-  }
-
-  &:hover {
-    color: darken($primary-color, 10%);
-  }
-
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
+    min-width: 100px;
+    flex: 1 1 calc(50% - 5px);
+
+    input {
+      font-size: $font-size-small;
+      padding: 10px;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+    min-width: 100%;
   }
 }
 
-/* CONDITION GROUP */
+/* YEAR INPUTS - Row 4 */
+.yearInput {
+  flex: 1;
+  min-width: 100px;
+
+  input {
+    width: 100%;
+    height: 44px;
+    padding: 12px;
+    border: 1px solid rgba($primary-color, 0.2);
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    color: $primary-color;
+
+    &::placeholder {
+      color: $text-light;
+      font-size: $font-size-small;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    min-width: 90px;
+    flex: 1 1 calc(33.33% - 7px);
+
+    input {
+      font-size: $font-size-small;
+      padding: 10px;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 calc(50% - 5px);
+  }
+}
+
+/* CONDITION GROUP - Row 5 */
 .conditionGroup {
   display: flex;
   align-items: center;
   gap: 20px;
   flex: 1;
-  min-width: 140px;
+  min-width: 160px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     gap: 15px;
+    flex: 1 1 calc(50% - 5px);
+    min-width: 140px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
     flex: 1 1 100%;
+    justify-content: center;
+    margin-bottom: 10px;
   }
 }
 
@@ -451,6 +198,7 @@
 
   span {
     font-weight: 500;
+    white-space: nowrap;
   }
 
   &:hover {
@@ -462,11 +210,257 @@
   }
 }
 
+/* PAYMENT GROUP - Row 5 */
+.paymentGroup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  min-width: 160px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 15px;
+    flex: 1 1 calc(50% - 5px);
+    min-width: 140px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-base;
+  color: $primary-color;
+  cursor: pointer;
+  gap: 8px;
+
+  input[type="checkbox"] {
+    accent-color: $primary-color;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+  }
+
+  span {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+/* ADVANCED ROW - Row 6 */
+.advancedRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: rgba($primary-color, 0.02);
+  border-radius: $border-radius;
+  border: 1px solid rgba($primary-color, 0.1);
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 12px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 8px;
+    padding: 10px;
+  }
+}
+
+/* MILEAGE INPUTS - Advanced Row */
+.mileageInput {
+  flex: 1;
+  min-width: 120px;
+
+  input {
+    width: 100%;
+    height: 44px;
+    padding: 12px;
+    border: 1px solid rgba($primary-color, 0.2);
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    color: $primary-color;
+
+    &::placeholder {
+      color: $text-light;
+      font-size: $font-size-small;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    flex: 1 1 calc(33.33% - 8px);
+    min-width: 110px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 100px;
+
+    input {
+      font-size: $font-size-small;
+      padding: 10px;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+  }
+}
+
+/* ENGINE INPUTS - Advanced Row */
+.engineInput {
+  flex: 1;
+  min-width: 120px;
+
+  input {
+    width: 100%;
+    height: 44px;
+    padding: 12px;
+    border: 1px solid rgba($primary-color, 0.2);
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    color: $primary-color;
+
+    &::placeholder {
+      color: $text-light;
+      font-size: $font-size-small;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    flex: 1 1 calc(33.33% - 8px);
+    min-width: 110px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 100px;
+
+    input {
+      font-size: $font-size-small;
+      padding: 10px;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+  }
+}
+
+/* POWER INPUTS - Advanced Row */
+.powerInput {
+  flex: 1;
+  min-width: 120px;
+
+  input {
+    width: 100%;
+    height: 44px;
+    padding: 12px;
+    border: 1px solid rgba($primary-color, 0.2);
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    color: $primary-color;
+
+    &::placeholder {
+      color: $text-light;
+      font-size: $font-size-small;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    flex: 1 1 calc(33.33% - 8px);
+    min-width: 110px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 100px;
+
+    input {
+      font-size: $font-size-small;
+      padding: 10px;
+    }
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+  }
+}
+
 /* ADVANCED TOGGLE */
 .advancedToggle {
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
+  margin-top: 10px;
 }
 
 .toggleButton {
@@ -516,7 +510,8 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding-top: 15px;
+  padding-top: 20px;
+  margin-top: 10px;
   border-top: 1px solid rgba($primary-color, 0.1);
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
@@ -588,21 +583,7 @@
   }
 }
 
-/* BACKWARD COMPATIBILITY - Remove these old classes as you update */
-.filterRow {
-  // Remove old filterRow usage and migrate to new structure
-}
-
-.formGroup {
-  // Remove old formGroup usage and migrate to filterGroup
-}
-
-.forWidth20,
-.forWidthBig,
-.forWidthSmall {
-  // Remove old width classes and use new responsive system
-}
-
+/* LEGACY SUPPORT - Remove these as you migrate */
 .dropdown {
   width: 100%;
   position: relative;
@@ -617,56 +598,28 @@
   }
 }
 
-// Keep existing styles for compatibility during migration
-.unersalInputs {
-  display: flex;
-  gap: 10px;
+// Add breakpoint for very small screens
+@media screen and (max-width: 480px) {
+  .desktopFilters {
+    padding: 15px;
+  }
 
-  label {
-    flex: 1;
-    position: relative;
-    min-width: 0;
+  .filterRow {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
 
-    input {
+  .advancedRow {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .actionsRow {
+    flex-direction: column;
+    gap: 8px;
+
+    button {
       width: 100%;
-      height: 44px;
-      border: 1px solid rgba($primary-color, 0.2);
-      border-radius: $border-radius;
-      padding: 12px;
-      padding-bottom: 24px;
-      font-size: $font-size-base;
-      color: $primary-color;
-      min-width: 120px;
-
-      &::placeholder {
-        color: $text-light;
-        font-size: $font-size-small;
-      }
-
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-      }
-
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-
-      &[type="number"] {
-        -moz-appearance: textfield;
-      }
-    }
-
-    p {
-      position: absolute;
-      bottom: 5px;
-      left: 12px;
-      margin: 0;
-      font-size: $font-size-small;
-      color: $text-light;
     }
   }
 }
