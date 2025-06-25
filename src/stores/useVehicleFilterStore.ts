@@ -1,4 +1,4 @@
-// src/stores/useVehicleFilterStore.ts
+// src/stores/useVehicleFilterStore.ts - FIXED VERSION
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -85,15 +85,21 @@ const initialState = {
   equipment: [],
 };
 
-// Create the store with persistence
-export const useVehicleFilterStore = create<VehicleFilterState>()(
+// ✅ FIX: Create the store with stable actions to prevent infinite renders
+const useVehicleFilterStore = create<VehicleFilterState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Initial state
       ...initialState,
 
-      // Actions
-      setSortBy: (sortBy: string) => set({ sortBy }),
+      // ✅ FIX: Stable setSortBy that prevents infinite loops
+      setSortBy: (sortBy: string) => {
+        const currentState = get();
+        // Only update if value is different to prevent infinite re-renders
+        if (currentState.sortBy !== sortBy) {
+          set({ sortBy });
+        }
+      },
 
       setMake: (make: string | null) =>
         set({
@@ -109,7 +115,13 @@ export const useVehicleFilterStore = create<VehicleFilterState>()(
       setFilter: <K extends keyof VehicleFilterState>(
         key: K,
         value: VehicleFilterState[K]
-      ) => set({ [key]: value } as Pick<VehicleFilterState, K>),
+      ) => {
+        const currentState = get();
+        // Only update if value is different
+        if (currentState[key] !== value) {
+          set({ [key]: value } as Pick<VehicleFilterState, K>);
+        }
+      },
 
       resetFilters: () => set(initialState),
 
@@ -121,7 +133,12 @@ export const useVehicleFilterStore = create<VehicleFilterState>()(
           return { equipment };
         }),
 
-      setCondition: (condition: VehicleCondition) => set({ condition }),
+      setCondition: (condition: VehicleCondition) => {
+        const currentState = get();
+        if (currentState.condition !== condition) {
+          set({ condition });
+        }
+      },
 
       toggleCredit: () => set((state) => ({ hasCredit: !state.hasCredit })),
 
@@ -146,4 +163,6 @@ export const useVehicleFilterStore = create<VehicleFilterState>()(
   )
 );
 
+// ✅ FIX: Export both named and default to prevent import issues
+export { useVehicleFilterStore };
 export default useVehicleFilterStore;

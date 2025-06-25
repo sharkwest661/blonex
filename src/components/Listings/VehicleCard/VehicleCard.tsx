@@ -1,48 +1,12 @@
+// src/components/Listings/VehicleCard/VehicleCard.tsx - FIXED VERSION
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Clock, MapPin, Fuel, ArrowRight } from "lucide-react";
 import { useFavoritesStore } from "@/stores/useFavoritesStore";
+import type { VehicleCardProps } from "@/types/vehicle.types";
 import styles from "./VehicleCard.module.scss";
-
-export interface VehicleFeature {
-  type: "barter" | "credit";
-  icon: string;
-  tooltip: string;
-  enabled: boolean;
-}
-
-export interface VehicleData {
-  id: string;
-  title: string;
-  subtitle?: string;
-  price: number;
-  currency: string;
-  location: string;
-  date: string;
-  imageUrl: string;
-  type: "vip" | "premium" | "recent";
-  features: VehicleFeature[];
-  href: string;
-  hasVipBadge?: boolean;
-  hasPremiumBadge?: boolean;
-
-  // Vehicle-specific properties
-  year?: number;
-  make?: string;
-  model?: string;
-  mileage?: number;
-  engineSize?: number;
-  transmission?: string;
-  fuelType?: string;
-}
-
-interface VehicleCardProps {
-  vehicle: VehicleData;
-  className?: string;
-  onFavoriteToggle?: (id: string, isFavorite: boolean) => void;
-}
 
 export const VehicleCard: React.FC<VehicleCardProps> = ({
   vehicle,

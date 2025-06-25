@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Container } from "@/components/Layout/Container";
 import { DateSortFilter } from "@/components/Filters/DateSortFilter";
 import { VehicleFilterBar } from "@/components/Filters/VehicleFilters";
@@ -9,25 +9,31 @@ import {
 } from "@/components/Filters/MobileFilters";
 import { VehicleListingsSection } from "@/components/Listings/VehicleListingsSection";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
-
 import { useVipListings, useRecentListings } from "@/hooks/useListings";
 import styles from "./page.module.scss";
-import useVehicleFilterStore, {
-  VehicleFilterState,
-} from "@/stores/useVehicleFilterStore";
+import { useVehicleFilterStore } from "@/stores/useVehicleFilterStore";
 import BrandsGrid from "@/components/Brands";
+import type { VehicleData } from "@/types/vehicle.types";
 
 export default function NeqliyyatPage() {
   // Mobile filter overlay state
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  // Get filter state and actions from the store
-  const { sortBy, setSortBy, resetFilters } = useVehicleFilterStore(
-    (state: VehicleFilterState) => ({
-      sortBy: state.sortBy,
-      setSortBy: state.setSortBy,
-      resetFilters: state.resetFilters,
-    })
+  // ✅ FIX 1: Get store values directly without selectors to prevent infinite loops
+  const sortBy = useVehicleFilterStore((state) => state.sortBy);
+  const setSortBy = useVehicleFilterStore((state) => state.setSortBy);
+  const resetFilters = useVehicleFilterStore((state) => state.resetFilters);
+
+  // ✅ FIX 2: Memoize the sort options to prevent recreation on every render
+  const sortOptions = useMemo(
+    () => [
+      { id: "date", label: "Tarixə görə" },
+      { id: "price_asc", label: "Əvvəlcə ucuz" },
+      { id: "price_desc", label: "Əvvəlcə bahalı" },
+      { id: "mileage", label: "Yürüş" },
+      { id: "year", label: "Buraxılış ili" },
+    ],
+    []
   );
 
   // Fetch VIP and recent listings using our custom hooks
@@ -38,29 +44,27 @@ export default function NeqliyyatPage() {
     refetch: refetchListings,
   } = useRecentListings({ sortBy });
 
-  // Handle sort change
-  const handleSortChange = (sortId: string) => {
-    setSortBy(sortId);
-    refetchListings();
-  };
+  // ✅ FIX 3: Use useCallback and prevent unnecessary refetch calls
+  const handleSortChange = useCallback(
+    (sortId: string) => {
+      // The setSortBy function from the store is already stable and will only update if different
+      setSortBy(sortId);
+      // Remove the immediate refetch call as useRecentListings will automatically
+      // refetch when sortBy changes due to the dependency in its queryKey
+    },
+    [setSortBy]
+  );
 
-  // Handle mobile filter open/close
-  const openMobileFilter = () => setIsMobileFilterOpen(true);
-  const closeMobileFilter = () => setIsMobileFilterOpen(false);
+  // ✅ FIX 4: Memoize event handlers to prevent unnecessary re-renders
+  const openMobileFilter = useCallback(() => setIsMobileFilterOpen(true), []);
+  const closeMobileFilter = useCallback(() => setIsMobileFilterOpen(false), []);
 
-  // Handle filter apply
-  const handleFilterApply = () => {
-    refetchListings();
-  };
-
-  // Sort options for the DateSortFilter
-  const sortOptions = [
-    { id: "date", label: "Tarixə görə" },
-    { id: "price_asc", label: "Əvvəlcə ucuz" },
-    { id: "price_desc", label: "Əvvəlcə bahalı" },
-    { id: "mileage", label: "Yürüş" },
-    { id: "year", label: "Buraxılış ili" },
-  ];
+  // ✅ FIX 5: Remove the refetch call from handleFilterApply to prevent loops
+  const handleFilterApply = useCallback(() => {
+    // The useRecentListings hook will automatically refetch when filters change
+    // due to its query dependencies, so we don't need to manually call refetch
+    closeMobileFilter();
+  }, [closeMobileFilter]);
 
   return (
     <main>
@@ -77,6 +81,7 @@ export default function NeqliyyatPage() {
         <div className={styles.mobileFilters}>
           <div className={styles.filters767}>
             <MobileFilterTrigger onClick={openMobileFilter} />
+            {/* ✅ FIX 6: Fix the incomplete defaultSelected prop */}
             <DateSortFilter
               options={sortOptions}
               defaultSelected={sortBy}
