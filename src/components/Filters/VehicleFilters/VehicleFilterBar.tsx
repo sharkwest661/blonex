@@ -62,7 +62,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
   const handlePriceChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
       const value = e.target.value ? Math.max(0, parseInt(e.target.value)) : 0;
-
+      
       if (type === "min") {
         setPriceRange(value, maxPrice || 0);
       } else {
@@ -76,7 +76,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
   const handleYearChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
       const value = e.target.value ? parseInt(e.target.value) : 0;
-
+      
       if (type === "min") {
         setFilter("minYear", value);
       } else {
@@ -90,7 +90,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
   const handleMileageChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
       const value = e.target.value ? Math.max(0, parseInt(e.target.value)) : 0;
-
+      
       if (type === "min") {
         setFilter("minMileage", value);
       } else {
@@ -129,8 +129,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
               make
                 ? {
                     value: make,
-                    label:
-                      makeOptions.find((o) => o.value === make)?.label || make,
+                    label: makeOptions.find((o) => o.value === make)?.label || make,
                   }
                 : null
             }
@@ -151,8 +150,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
                 ? {
                     value: model,
                     label:
-                      currentModelOptions.find((o) => o.value === model)
-                        ?.label || model,
+                      currentModelOptions.find((o) => o.value === model)?.label || model,
                   }
                 : null
             }
@@ -170,8 +168,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
               city
                 ? {
                     value: city,
-                    label:
-                      cityOptions.find((o) => o.value === city)?.label || city,
+                    label: cityOptions.find((o) => o.value === city)?.label || city,
                   }
                 : null
             }
@@ -191,9 +188,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
               fuelType
                 ? {
                     value: fuelType,
-                    label:
-                      fuelOptions.find((o) => o.value === fuelType)?.label ||
-                      fuelType,
+                    label: fuelOptions.find((o) => o.value === fuelType)?.label || fuelType,
                   }
                 : null
             }
@@ -210,9 +205,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
               bodyType
                 ? {
                     value: bodyType,
-                    label:
-                      bodyOptions.find((o) => o.value === bodyType)?.label ||
-                      bodyType,
+                    label: bodyOptions.find((o) => o.value === bodyType)?.label || bodyType,
                   }
                 : null
             }
@@ -230,8 +223,8 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
                 ? {
                     value: transmission,
                     label:
-                      transmissionOptions.find((o) => o.value === transmission)
-                        ?.label || transmission,
+                      transmissionOptions.find((o) => o.value === transmission)?.label ||
+                      transmission,
                   }
                 : null
             }
@@ -354,11 +347,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
           type="button"
         >
           {showAdvanced ? "Ətraflı axtarışı gizlət" : "Ətraflı axtarış"}
-          <span
-            className={`${styles.arrow} ${
-              showAdvanced ? styles.up : styles.down
-            }`}
-          >
+          <span className={`${styles.arrow} ${showAdvanced ? styles.up : styles.down}`}>
             ▼
           </span>
         </button>
@@ -376,9 +365,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
                   color
                     ? {
                         value: color,
-                        label:
-                          colorOptions.find((o) => o.value === color)?.label ||
-                          color,
+                        label: colorOptions.find((o) => o.value === color)?.label || color,
                       }
                     : null
                 }
