@@ -12,28 +12,49 @@ import { MockPostsService } from "@/services/mockPosts.service";
  * Combines state from filter store with query functionality
  */
 export const useVehicleSearch = () => {
-  // Get filter state from the vehicle filter store
-  const filters = useVehicleFilterStore((state: VehicleFilterState) => ({
-    make: state.make,
-    model: state.model,
-    minPrice: state.minPrice,
-    maxPrice: state.maxPrice,
-    color: state.color,
-    fuelType: state.fuelType,
-    bodyType: state.bodyType,
-    minEngineSize: state.minEngineSize,
-    maxEngineSize: state.maxEngineSize,
-    minYear: state.minYear,
-    maxYear: state.maxYear,
-    transmission: state.transmission,
-    city: state.city,
-    condition: state.condition,
-    minMileage: state.minMileage,
-    maxMileage: state.maxMileage,
-    hasCredit: state.hasCredit,
-    hasBarter: state.hasBarter,
-    sortBy: state.sortBy,
-  }));
+  // Get filter state fields individually from the vehicle filter store
+  const make = useVehicleFilterStore((state) => state.make);
+  const model = useVehicleFilterStore((state) => state.model);
+  const minPrice = useVehicleFilterStore((state) => state.minPrice);
+  const maxPrice = useVehicleFilterStore((state) => state.maxPrice);
+  const color = useVehicleFilterStore((state) => state.color);
+  const fuelType = useVehicleFilterStore((state) => state.fuelType);
+  const bodyType = useVehicleFilterStore((state) => state.bodyType);
+  const minEngineSize = useVehicleFilterStore((state) => state.minEngineSize);
+  const maxEngineSize = useVehicleFilterStore((state) => state.maxEngineSize);
+  const minYear = useVehicleFilterStore((state) => state.minYear);
+  const maxYear = useVehicleFilterStore((state) => state.maxYear);
+  const transmission = useVehicleFilterStore((state) => state.transmission);
+  const city = useVehicleFilterStore((state) => state.city);
+  const condition = useVehicleFilterStore((state) => state.condition);
+  const minMileage = useVehicleFilterStore((state) => state.minMileage);
+  const maxMileage = useVehicleFilterStore((state) => state.maxMileage);
+  const hasCredit = useVehicleFilterStore((state) => state.hasCredit);
+  const hasBarter = useVehicleFilterStore((state) => state.hasBarter);
+  const sortBy = useVehicleFilterStore((state) => state.sortBy);
+
+  // Compose filters object
+  const filters = {
+    make,
+    model,
+    minPrice,
+    maxPrice,
+    color,
+    fuelType,
+    bodyType,
+    minEngineSize,
+    maxEngineSize,
+    minYear,
+    maxYear,
+    transmission,
+    city,
+    condition,
+    minMileage,
+    maxMileage,
+    hasCredit,
+    hasBarter,
+    sortBy,
+  };
 
   // Pagination state
   const [page, setPage] = useState(1);

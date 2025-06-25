@@ -108,30 +108,29 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   // Get filter state and actions from the store
-  const {
-    make,
-    model,
-    minPrice,
-    maxPrice,
-    minYear,
-    maxYear,
-    color,
-    fuelType,
-    bodyType,
-    transmission,
-    city,
-    condition,
-    hasCredit,
-    hasBarter,
-    setMake,
-    setModel,
-    setPriceRange,
-    setFilter,
-    setCondition,
-    resetFilters,
-    toggleCredit,
-    toggleBarter,
-  } = useVehicleFilterStore();
+  const make = useVehicleFilterStore((state) => state.make);
+  const model = useVehicleFilterStore((state) => state.model);
+  const minPrice = useVehicleFilterStore((state) => state.minPrice);
+  const maxPrice = useVehicleFilterStore((state) => state.maxPrice);
+  const minYear = useVehicleFilterStore((state) => state.minYear);
+  const maxYear = useVehicleFilterStore((state) => state.maxYear);
+  const color = useVehicleFilterStore((state) => state.color);
+  const fuelType = useVehicleFilterStore((state) => state.fuelType);
+  const bodyType = useVehicleFilterStore((state) => state.bodyType);
+  const transmission = useVehicleFilterStore((state) => state.transmission);
+  const city = useVehicleFilterStore((state) => state.city);
+  const condition = useVehicleFilterStore((state) => state.condition);
+  const hasCredit = useVehicleFilterStore((state) => state.hasCredit);
+  const hasBarter = useVehicleFilterStore((state) => state.hasBarter);
+
+  const setMake = useVehicleFilterStore((state) => state.setMake);
+  const setModel = useVehicleFilterStore((state) => state.setModel);
+  const setPriceRange = useVehicleFilterStore((state) => state.setPriceRange);
+  const setFilter = useVehicleFilterStore((state) => state.setFilter);
+  const setCondition = useVehicleFilterStore((state) => state.setCondition);
+  const resetFilters = useVehicleFilterStore((state) => state.resetFilters);
+  const toggleCredit = useVehicleFilterStore((state) => state.toggleCredit);
+  const toggleBarter = useVehicleFilterStore((state) => state.toggleBarter);
 
   // Get current model options based on selected make
   const currentModelOptions =
