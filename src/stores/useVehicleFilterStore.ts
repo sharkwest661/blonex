@@ -1,22 +1,16 @@
-// src/stores/useVehicleFilterStore.ts - FIXED VERSION
+// src/stores/useVehicleFilterStore.ts - HYDRATION FIX
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { useEffect, useState } from "react";
 
 export type VehicleCondition = "all" | "new" | "used";
 
 export interface VehicleFilterState {
-  // Sort options
   sortBy: string;
-
-  // Make/model filters
   make: string | null;
   model: string | null;
-
-  // Price range
   minPrice: number | null;
   maxPrice: number | null;
-
-  // Vehicle specifics
   color: string | null;
   fuelType: string | null;
   bodyType: string | null;
@@ -33,12 +27,8 @@ export interface VehicleFilterState {
   seatsCount: string | null;
   minPower: number | null;
   maxPower: number | null;
-
-  // Features
   hasCredit: boolean;
   hasBarter: boolean;
-
-  // Car equipment/features
   equipment: string[];
 
   // Actions
@@ -57,7 +47,6 @@ export interface VehicleFilterState {
   toggleBarter: () => void;
 }
 
-// Default/initial state values
 const initialState = {
   sortBy: "date",
   make: null,
@@ -85,17 +74,27 @@ const initialState = {
   equipment: [],
 };
 
-// ✅ FIX: Create the store with stable actions to prevent infinite renders
-const useVehicleFilterStore = create<VehicleFilterState>()(
+// ✅ FIX: SSR-safe storage
+const createSSRSafeStorage = () => {
+  if (typeof window === "undefined") {
+    // Server-side: return mock storage
+    return {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+    };
+  }
+  // Client-side: return real localStorage
+  return localStorage;
+};
+
+export const useVehicleFilterStore = create<VehicleFilterState>()(
   persist(
     (set, get) => ({
-      // Initial state
       ...initialState,
 
-      // ✅ FIX: Stable setSortBy that prevents infinite loops
       setSortBy: (sortBy: string) => {
         const currentState = get();
-        // Only update if value is different to prevent infinite re-renders
         if (currentState.sortBy !== sortBy) {
           set({ sortBy });
         }
@@ -117,7 +116,6 @@ const useVehicleFilterStore = create<VehicleFilterState>()(
         value: VehicleFilterState[K]
       ) => {
         const currentState = get();
-        // Only update if value is different
         if (currentState[key] !== value) {
           set({ [key]: value } as Pick<VehicleFilterState, K>);
         }
@@ -146,23 +144,40 @@ const useVehicleFilterStore = create<VehicleFilterState>()(
     }),
     {
       name: "vehicle-filters",
-      // Only store specific fields to avoid storage bloat
-      partialize: (state) => ({
-        sortBy: state.sortBy,
-        make: state.make,
-        model: state.model,
-        minPrice: state.minPrice,
-        maxPrice: state.maxPrice,
-        condition: state.condition,
-        minYear: state.minYear,
-        maxYear: state.maxYear,
-        hasCredit: state.hasCredit,
-        hasBarter: state.hasBarter,
-      }),
+      storage: createJSONStorage(() => createSSRSafeStorage()),
+      // ✅ FIX: Skip hydration to prevent mismatch
+      skipHydration: true,
     }
   )
 );
 
-// ✅ FIX: Export both named and default to prevent import issues
-export { useVehicleFilterStore };
+// ✅ FIX: Custom hook for hydration-safe usage
+export const useVehicleFilterStoreHydrated = () => {
+  const [hydrated, setHydrated] = useState(false);
+  const store = useVehicleFilterStore();
+
+  useEffect(() => {
+    // Rehydrate the store on client side
+    useVehicleFilterStore.persist.rehydrate();
+    setHydrated(true);
+  }, []);
+
+  return hydrated
+    ? store
+    : {
+        ...initialState,
+        // Provide no-op functions during SSR
+        setSortBy: () => {},
+        setMake: () => {},
+        setModel: () => {},
+        setPriceRange: () => {},
+        setFilter: () => {},
+        resetFilters: () => {},
+        toggleFeature: () => {},
+        setCondition: () => {},
+        toggleCredit: () => {},
+        toggleBarter: () => {},
+      };
+};
+
 export default useVehicleFilterStore;

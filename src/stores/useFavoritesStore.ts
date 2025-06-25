@@ -1,9 +1,10 @@
-// src/stores/useFavoritesStore.ts
+// src/stores/useFavoritesStore.ts - HYDRATION FIX
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { useEffect, useState } from "react";
 
 interface FavoritesState {
-  favorites: string[]; // Array of post IDs
+  favorites: string[];
   toggleFavorite: (postId: string) => void;
   addFavorite: (postId: string) => void;
   removeFavorite: (postId: string) => void;
@@ -11,6 +12,18 @@ interface FavoritesState {
   getFavoritesCount: () => number;
   clearFavorites: () => void;
 }
+
+// ✅ FIX: SSR-safe storage
+const createSSRSafeStorage = () => {
+  if (typeof window === "undefined") {
+    return {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+    };
+  }
+  return localStorage;
+};
 
 export const useFavoritesStore = create<FavoritesState>()(
   persist(
@@ -20,7 +33,6 @@ export const useFavoritesStore = create<FavoritesState>()(
       toggleFavorite: (postId: string) => {
         set((state) => {
           const isCurrentlyFavorite = state.favorites.includes(postId);
-
           if (isCurrentlyFavorite) {
             return {
               favorites: state.favorites.filter((id) => id !== postId),
@@ -63,25 +75,13 @@ export const useFavoritesStore = create<FavoritesState>()(
       },
     }),
     {
-      name: "bolbol-favorites", // Storage key
-      storage: createJSONStorage(() => {
-        // For SSR compatibility, check if we're in the browser
-        if (typeof window !== "undefined") {
-          return localStorage;
-        }
-        // Return a mock storage for SSR
-        return {
-          getItem: () => null,
-          setItem: () => {},
-          removeItem: () => {},
-        };
-      }),
-      // Optional: Add version for migration support
+      name: "bolbol-favorites",
+      storage: createJSONStorage(() => createSSRSafeStorage()),
+      // ✅ FIX: Skip hydration to prevent mismatch
+      skipHydration: true,
       version: 1,
-      // Optional: Migrate function for future updates
       migrate: (persistedState: any, version: number) => {
         if (version === 0) {
-          // Migration logic for version 0 to 1
           return persistedState;
         }
         return persistedState;
@@ -90,13 +90,48 @@ export const useFavoritesStore = create<FavoritesState>()(
   )
 );
 
-// Export individual hook functions for convenience
-export const useFavorites = () => useFavoritesStore((state) => state.favorites);
-export const useToggleFavorite = () =>
-  useFavoritesStore((state) => state.toggleFavorite);
-export const useIsFavorite = (postId: string) =>
-  useFavoritesStore((state) => state.isFavorite(postId));
-export const useFavoritesCount = () =>
-  useFavoritesStore((state) => state.getFavoritesCount());
+// ✅ FIX: Hydration-safe hook
+export const useFavoritesStoreHydrated = () => {
+  const [hydrated, setHydrated] = useState(false);
+  const store = useFavoritesStore();
+
+  useEffect(() => {
+    useFavoritesStore.persist.rehydrate();
+    setHydrated(true);
+  }, []);
+
+  return hydrated
+    ? store
+    : {
+        favorites: [],
+        toggleFavorite: () => {},
+        addFavorite: () => {},
+        removeFavorite: () => {},
+        isFavorite: () => false,
+        getFavoritesCount: () => 0,
+        clearFavorites: () => {},
+      };
+};
+
+// Export individual hydration-safe hooks
+export const useFavorites = () => {
+  const { favorites } = useFavoritesStoreHydrated();
+  return favorites;
+};
+
+export const useToggleFavorite = () => {
+  const { toggleFavorite } = useFavoritesStoreHydrated();
+  return toggleFavorite;
+};
+
+export const useIsFavorite = (postId: string) => {
+  const { isFavorite } = useFavoritesStoreHydrated();
+  return isFavorite(postId);
+};
+
+export const useFavoritesCount = () => {
+  const { getFavoritesCount } = useFavoritesStoreHydrated();
+  return getFavoritesCount();
+};
 
 export default useFavoritesStore;

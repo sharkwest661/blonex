@@ -1,6 +1,7 @@
-/* ===== 13. src/app/neqliyyat/page.tsx ===== */
+/* ===== FIXED src/app/neqliyyat/page.tsx ===== */
 "use client";
 import React, { useState, useCallback, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { Container } from "@/components/Layout/Container";
 import { DateSortFilter } from "@/components/Filters/DateSortFilter";
 import { VehicleFilterBar } from "@/components/Filters/VehicleFilters";
@@ -12,16 +13,20 @@ import { VehicleListingsSection } from "@/components/Listings/VehicleListingsSec
 import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { useVipListings, useRecentListings } from "@/hooks/useListings";
 import styles from "./page.module.scss";
-import { useVehicleFilterStore } from "@/stores/useVehicleFilterStore";
-import BrandsGrid from "@/components/Brands";
+import { useVehicleFilterStoreHydrated } from "@/stores/useVehicleFilterStore";
 import type { VehicleData } from "@/types/vehicle.types";
+
+// ✅ FIX: Dynamically import BrandsGrid to prevent SSR issues
+const BrandsGrid = dynamic(() => import("@/components/Brands"), {
+  ssr: false,
+  loading: () => <div className={styles.brandsLoading}>Loading brands...</div>,
+});
 
 export default function NeqliyyatPage() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  const sortBy = useVehicleFilterStore((state) => state.sortBy);
-  const setSortBy = useVehicleFilterStore((state) => state.setSortBy);
-  const resetFilters = useVehicleFilterStore((state) => state.resetFilters);
+  // ✅ FIX: Use hydration-safe store hook
+  const { sortBy, setSortBy, resetFilters } = useVehicleFilterStoreHydrated();
 
   const sortOptions = useMemo(
     () => [

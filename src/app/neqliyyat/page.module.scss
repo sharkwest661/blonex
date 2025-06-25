@@ -1,4 +1,4 @@
-/* ===== 14. src/app/neqliyyat/page.module.scss ===== */
+/* ===== UPDATED src/app/neqliyyat/page.module.scss ===== */
 @import "../../styles/variables.scss";
 
 .pageTitle {
@@ -75,6 +75,24 @@
   margin-bottom: 30px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-bottom: 20px;
+  }
+}
+
+// ✅ FIX: Add loading state for brands
+.brandsLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  color: $primary-color;
+  font-size: $font-size-base;
+  margin-bottom: 30px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    height: 120px;
     margin-bottom: 20px;
   }
 }
