@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import styles from "./MobileMenu.module.scss";
 import { CATEGORIES } from "@/constants";
+import { themeColors } from "@/constants/themeVariables";
 
 interface Category {
   id: string;
@@ -91,7 +92,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           aria-label="Menyunu aç/bağla"
           aria-expanded={isOpen}
         >
-          <Menu size={24} />
+          <Menu size={24} color={themeColors.secondary} />
         </button>
       )}
 
