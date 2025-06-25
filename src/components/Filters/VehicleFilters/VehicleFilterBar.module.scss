@@ -1,4 +1,4 @@
-/* ===== 9. src/components/Filters/VehicleFilters/VehicleFilterBar.module.scss ===== */
+// Updated VehicleFilterBar.module.scss with improved organization
 @import "../../../styles/variables.scss";
 
 .desktopFilters {
@@ -6,69 +6,607 @@
   border-radius: $border-radius;
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
 }
 
-.filterRow {
+/* PRIMARY ROW - Most Important Filters */
+.primaryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba($primary-color, 0.1);
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    gap: 12px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+/* SECONDARY ROW - Vehicle Specifications */
+.secondaryRow {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
   margin-bottom: 15px;
 
-  &:last-child {
-    margin-bottom: 0;
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 10px;
   }
 }
 
-.formGroup {
+/* ADVANCED ROW - Less Common Filters */
+.advancedRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: rgba($primary-color, 0.02);
+  border-radius: $border-radius;
+  border: 1px solid rgba($primary-color, 0.1);
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    gap: 12px;
+    margin-bottom: 15px;
+    padding: 12px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 10px;
+    padding: 10px;
+  }
+}
+
+/* FILTER GROUP - Basic Container */
+.filterGroup {
+  flex: 1;
+  min-width: 160px;
+  max-width: 200px;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    min-width: 140px;
+    max-width: 180px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    min-width: 120px;
+    flex: 1 1 calc(50% - 5px);
+  }
+}
+
+/* PRICE GROUP */
+.priceGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 2;
+  min-width: 240px;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    min-width: 200px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+}
+
+.priceInput {
+  flex: 1;
+  height: 44px;
+  padding: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $primary-color;
+  min-width: 80px;
+
+  &::placeholder {
+    color: $text-light;
+    font-size: $font-size-small;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 10px;
+    min-width: 70px;
+  }
+}
+
+/* YEAR GROUP */
+.yearGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 160px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 calc(50% - 5px);
+  }
+}
+
+.yearInput {
+  flex: 1;
+  height: 44px;
+  padding: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $primary-color;
+  min-width: 60px;
+
+  &::placeholder {
+    color: $text-light;
+    font-size: $font-size-small;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 10px;
+  }
+}
+
+/* MILEAGE GROUP */
+.mileageGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 180px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 calc(50% - 5px);
+  }
+}
+
+.mileageInput {
+  flex: 1;
+  height: 44px;
+  padding: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $primary-color;
+  min-width: 70px;
+
+  &::placeholder {
+    color: $text-light;
+    font-size: $font-size-small;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 10px;
+  }
+}
+
+/* ENGINE GROUP */
+.engineGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 160px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 calc(50% - 5px);
+  }
+}
+
+.engineInput {
+  flex: 1;
+  height: 44px;
+  padding: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $primary-color;
+  min-width: 60px;
+
+  &::placeholder {
+    color: $text-light;
+    font-size: $font-size-small;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 10px;
+  }
+}
+
+/* POWER GROUP */
+.powerGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 160px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 calc(50% - 5px);
+  }
+}
+
+.powerInput {
+  flex: 1;
+  height: 44px;
+  padding: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $primary-color;
+  min-width: 60px;
+
+  &::placeholder {
+    color: $text-light;
+    font-size: $font-size-small;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 10px;
+  }
+}
+
+/* SEPARATORS AND UNITS */
+.separator {
+  font-size: $font-size-base;
+  color: $text-light;
+  flex-shrink: 0;
+  font-weight: 500;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+.currency,
+.unit {
+  font-size: $font-size-base;
+  color: $primary-color;
+  font-weight: 500;
+  flex-shrink: 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+/* PAYMENT OPTIONS */
+.paymentOptions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  min-width: 140px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 15px;
+    flex: 1 1 100%;
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-base;
+  color: $primary-color;
+  cursor: pointer;
+  gap: 8px;
+
+  input[type="checkbox"] {
+    accent-color: $primary-color;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+  }
+
+  span {
+    font-weight: 500;
+  }
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+/* CONDITION GROUP */
+.conditionGroup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  min-width: 140px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 15px;
+    flex: 1 1 100%;
+  }
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-base;
+  color: $primary-color;
+  cursor: pointer;
+  gap: 8px;
+
+  input[type="radio"] {
+    accent-color: $primary-color;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+  }
+
+  span {
+    font-weight: 500;
+  }
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+/* ADVANCED TOGGLE */
+.advancedToggle {
+  display: flex;
+  justify-content: center;
   margin-bottom: 15px;
 }
 
-.forWidth20 {
-  width: calc(20% - 12px);
-
-  @media (max-width: 1200px) {
-    width: calc(25% - 12px);
-  }
-
-  @media (max-width: 992px) {
-    width: calc(33.33% - 10px);
-  }
-}
-
-.forWidthBig {
-  width: calc(25% - 12px);
-
-  @media (max-width: 1200px) {
-    width: calc(33.33% - 10px);
-  }
-
-  @media (max-width: 992px) {
-    width: calc(50% - 8px);
-  }
-}
-
-.forWidthSmall {
-  width: calc(15% - 13px);
-
-  @media (max-width: 1200px) {
-    width: calc(25% - 12px);
-  }
-
-  @media (max-width: 992px) {
-    width: calc(33.33% - 10px);
-  }
-}
-
-.dFlex {
+.toggleButton {
   display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  padding: 8px 16px;
+  font-size: $font-size-base;
+  color: $primary-color;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+    border-color: $primary-color;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 6px 12px;
+  }
+}
+
+.arrow {
+  font-size: $font-size-small;
+  transition: transform 0.2s ease;
+
+  &.up {
+    transform: rotate(180deg);
+  }
+
+  &.down {
+    transform: rotate(0deg);
+  }
+}
+
+/* ACTIONS ROW */
+.actionsRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 15px;
+  border-top: 1px solid rgba($primary-color, 0.1);
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    justify-content: stretch;
+
+    button {
+      flex: 1;
+    }
+  }
+}
+
+.clearButton {
+  padding: 10px 20px;
+  border: 1px solid rgba($primary-color, 0.3);
+  border-radius: $border-radius;
+  background-color: transparent;
+  color: $primary-color;
+  font-size: $font-size-base;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1);
+    border-color: $primary-color;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 8px 16px;
+  }
+}
+
+.searchButton {
+  padding: 10px 24px;
+  border: none;
+  border-radius: $border-radius;
+  background-color: $primary-color;
+  color: $white;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+
+  &:hover {
+    background-color: darken($primary-color, 8%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 8px 20px;
+  }
+}
+
+/* BACKWARD COMPATIBILITY - Remove these old classes as you update */
+.filterRow {
+  // Remove old filterRow usage and migrate to new structure
+}
+
+.formGroup {
+  // Remove old formGroup usage and migrate to filterGroup
+}
+
+.forWidth20,
+.forWidthBig,
+.forWidthSmall {
+  // Remove old width classes and use new responsive system
 }
 
 .dropdown {
   width: 100%;
   position: relative;
 }
-
-/* NO GLOBAL SELECTORS - All react-select styling handled in CSS-in-JS */
 
 .dropdownGroup {
   display: flex;
@@ -79,6 +617,7 @@
   }
 }
 
+// Keep existing styles for compatibility during migration
 .unersalInputs {
   display: flex;
   gap: 10px;
@@ -128,139 +667,6 @@
       margin: 0;
       font-size: $font-size-small;
       color: $text-light;
-    }
-  }
-}
-
-.forCar {
-  display: flex;
-  align-items: center;
-  height: 44px;
-  padding: 0 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-
-  div {
-    display: flex;
-    align-items: center;
-    margin-right: 24px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-
-    input[type="radio"] {
-      margin-right: 8px;
-      accent-color: $primary-color;
-      cursor: pointer;
-
-      &:focus {
-        outline: 2px solid $primary-color;
-        outline-offset: 2px;
-      }
-    }
-
-    label {
-      margin: 0;
-      font-size: $font-size-base;
-      color: $text-color;
-      cursor: pointer;
-
-      &:hover {
-        color: $primary-color;
-      }
-    }
-  }
-}
-
-.forCredit {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  height: 44px;
-  padding: 0 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-
-  div {
-    display: flex;
-    align-items: center;
-    margin-right: 24px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-
-    input[type="checkbox"] {
-      margin-right: 8px;
-      accent-color: $primary-color;
-      cursor: pointer;
-
-      &:focus {
-        outline: 2px solid $primary-color;
-        outline-offset: 2px;
-      }
-    }
-
-    label {
-      margin: 0;
-      font-size: $font-size-base;
-      color: $text-color;
-      cursor: pointer;
-
-      &:hover {
-        color: $primary-color;
-      }
-    }
-  }
-}
-
-.barter,
-.kredit {
-  display: flex;
-  align-items: center;
-}
-
-@media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-  .unersalInputs {
-    label {
-      input {
-        min-width: 100px;
-        font-size: $font-size-small;
-      }
-    }
-  }
-
-  .forCar,
-  .forCredit {
-    div {
-      margin-right: 16px;
-
-      label {
-        font-size: $font-size-small;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-  .filterRow {
-    gap: 10px;
-  }
-
-  .unersalInputs {
-    gap: 8px;
-
-    label {
-      input {
-        min-width: 90px;
-        padding: 10px 8px 20px;
-      }
-
-      p {
-        font-size: 10px;
-        left: 8px;
-      }
     }
   }
 }

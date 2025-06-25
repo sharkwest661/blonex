@@ -1,6 +1,6 @@
-// ===== 8. src/components/Filters/VehicleFilters/VehicleFilterBar.tsx =====
+// Updated VehicleFilterBar.tsx with improved organization
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Select } from "@/components/UI/Select";
 import { useVehicleFilterStore } from "@/stores/useVehicleFilterStore";
@@ -22,6 +22,7 @@ interface VehicleFilterBarProps {
 
 const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
   const router = useRouter();
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   // Get filter values from store
   const make = useVehicleFilterStore((state) => state.make);
@@ -49,6 +50,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
   const setCondition = useVehicleFilterStore((state) => state.setCondition);
   const toggleCredit = useVehicleFilterStore((state) => state.toggleCredit);
   const toggleBarter = useVehicleFilterStore((state) => state.toggleBarter);
+  const resetFilters = useVehicleFilterStore((state) => state.resetFilters);
 
   // Get current model options based on selected make
   const currentModelOptions =
@@ -56,58 +58,24 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
       ? modelOptions[make as keyof typeof modelOptions]
       : [];
 
-  // Handle price input changes with proper clamping
+  // Handle price input changes
   const handlePriceChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
-      let value = e.target.value ? parseInt(e.target.value) : null;
-
-      // Clamp price to be greater than 0
-      if (value !== null && value <= 0) {
-        value = 1; // Set minimum price to 1
-      }
+      const value = e.target.value ? Math.max(0, parseInt(e.target.value)) : 0;
 
       if (type === "min") {
-        setPriceRange(value, maxPrice);
+        setPriceRange(value, maxPrice || 0);
       } else {
-        setPriceRange(minPrice, value);
+        setPriceRange(minPrice || 0, value);
       }
     },
-    [setPriceRange, minPrice, maxPrice]
+    [minPrice, maxPrice, setPriceRange]
   );
 
-  // Handle mileage inputs with validation
-  const handleMileageChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
-      let value = e.target.value ? parseInt(e.target.value) : null;
-
-      // Ensure mileage is not negative
-      if (value !== null && value < 0) {
-        value = 0;
-      }
-
-      if (type === "min") {
-        setFilter("minMileage", value);
-      } else {
-        setFilter("maxMileage", value);
-      }
-    },
-    [setFilter]
-  );
-
-  // Handle year inputs with validation
+  // Handle year input changes
   const handleYearChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
-      let value = e.target.value ? parseInt(e.target.value) : null;
-      const currentYear = new Date().getFullYear();
-
-      // Validate year range
-      if (value !== null) {
-        if (value < 1900) {
-          value = 1900;
-        } else if (value > currentYear) {
-          value = currentYear;
-        }
-      }
+      const value = e.target.value ? parseInt(e.target.value) : 0;
 
       if (type === "min") {
         setFilter("minYear", value);
@@ -118,7 +86,20 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
     [setFilter]
   );
 
-  // Handle condition radio buttons
+  // Handle mileage input changes
+  const handleMileageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
+      const value = e.target.value ? Math.max(0, parseInt(e.target.value)) : 0;
+
+      if (type === "min") {
+        setFilter("minMileage", value);
+      } else {
+        setFilter("maxMileage", value);
+      }
+    },
+    [setFilter]
+  );
+
   const handleConditionChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setCondition(e.target.value as VehicleCondition);
@@ -126,122 +107,253 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
     [setCondition]
   );
 
-  // Handle search button click
   const handleSearch = useCallback(() => {
-    console.log("Search with filters:", useVehicleFilterStore.getState());
+    // Trigger search/navigation with current filters
     router.push("/neqliyyat/search");
   }, [router]);
 
   return (
     <div className={`${styles.desktopFilters} ${className || ""}`}>
-      {/* Row 1 - Always visible filters */}
-      <div className={styles.filterRow}>
-        {/* Make Dropdown */}
-        <div className={`${styles.formGroup} ${styles.forWidth20}`}>
-          <div className={styles.dropdown}>
-            <Select
-              options={makeOptions}
-              value={
-                make
-                  ? {
-                      value: make,
-                      label:
-                        makeOptions.find((o) => o.value === make)?.label ||
-                        make,
-                    }
-                  : null
-              }
-              onChange={(value) => setMake(value)}
-              placeholder="Marka"
-              variant="filter"
-            />
-          </div>
+      {/* PRIMARY ROW - Most Important Filters */}
+      <div className={styles.primaryRow}>
+        {/* Brand/Make */}
+        <div className={styles.filterGroup}>
+          <Select
+            options={makeOptions}
+            value={
+              make
+                ? {
+                    value: make,
+                    label:
+                      makeOptions.find((o) => o.value === make)?.label || make,
+                  }
+                : null
+            }
+            onChange={(value) => {
+              setMake(value);
+              setModel(""); // Reset model when make changes
+            }}
+            placeholder="Marka"
+            variant="filter"
+          />
         </div>
 
-        {/* Model Dropdown */}
-        <div className={`${styles.formGroup} ${styles.forWidth20}`}>
-          <div className={styles.dropdown}>
-            <Select
-              options={currentModelOptions}
-              value={
-                model
-                  ? {
-                      value: model,
-                      label:
-                        currentModelOptions.find((o) => o.value === model)
-                          ?.label || model,
-                    }
-                  : null
-              }
-              onChange={(value) => setModel(value)}
-              placeholder="Model"
-              variant="filter"
-              isDisabled={!make}
-            />
-          </div>
+        {/* Model */}
+        <div className={styles.filterGroup}>
+          <Select
+            options={currentModelOptions}
+            value={
+              model && currentModelOptions.length > 0
+                ? {
+                    value: model,
+                    label:
+                      currentModelOptions.find((o) => o.value === model)
+                        ?.label || model,
+                  }
+                : null
+            }
+            onChange={(value) => setModel(value)}
+            placeholder="Model"
+            variant="filter"
+            isDisabled={!make || currentModelOptions.length === 0}
+          />
+        </div>
+
+        {/* City */}
+        <div className={styles.filterGroup}>
+          <Select
+            options={cityOptions}
+            value={
+              city
+                ? {
+                    value: city,
+                    label:
+                      cityOptions.find((o) => o.value === city)?.label || city,
+                  }
+                : null
+            }
+            onChange={(value) => setFilter("city", value)}
+            placeholder="Şəhər"
+            variant="filter"
+          />
         </div>
 
         {/* Price Range */}
-        <div className={`${styles.formGroup} ${styles.forWidthBig}`}>
-          <div className={styles.unersalInputs}>
-            <label htmlFor="price_input_min">
-              <input
-                type="number"
-                id="price_input_min"
-                value={minPrice || ""}
-                onChange={(e) => handlePriceChange(e, "min")}
-                min="1"
-                placeholder="Min qiymət"
-              />
-              <p>Qiymət, min</p>
-            </label>
-            <label htmlFor="price_input_max">
-              <input
-                type="number"
-                id="price_input_max"
-                value={maxPrice || ""}
-                onChange={(e) => handlePriceChange(e, "max")}
-                min="1"
-                placeholder="Max qiymət"
-              />
-              <p>maks</p>
-            </label>
-          </div>
+        <div className={styles.priceGroup}>
+          <input
+            type="number"
+            placeholder="Min qiymət"
+            value={minPrice || ""}
+            onChange={(e) => handlePriceChange(e, "min")}
+            className={styles.priceInput}
+            min="0"
+          />
+          <span className={styles.separator}>-</span>
+          <input
+            type="number"
+            placeholder="Max qiymət"
+            value={maxPrice || ""}
+            onChange={(e) => handlePriceChange(e, "max")}
+            className={styles.priceInput}
+            min="0"
+          />
+          <span className={styles.currency}>AZN</span>
+        </div>
+
+        {/* Payment Options */}
+        <div className={styles.paymentOptions}>
+          <label className={styles.checkbox}>
+            <input
+              type="checkbox"
+              checked={hasCredit}
+              onChange={toggleCredit}
+            />
+            <span>Kredit</span>
+          </label>
+          <label className={styles.checkbox}>
+            <input
+              type="checkbox"
+              checked={hasBarter}
+              onChange={toggleBarter}
+            />
+            <span>Barter</span>
+          </label>
+        </div>
+      </div>
+
+      {/* SECONDARY ROW - Vehicle Specifications */}
+      <div className={styles.secondaryRow}>
+        {/* Fuel Type */}
+        <div className={styles.filterGroup}>
+          <Select
+            options={fuelOptions}
+            value={
+              fuelType
+                ? {
+                    value: fuelType,
+                    label:
+                      fuelOptions.find((o) => o.value === fuelType)?.label ||
+                      fuelType,
+                  }
+                : null
+            }
+            onChange={(value) => setFilter("fuelType", value)}
+            placeholder="Yanacaq növü"
+            variant="filter"
+          />
+        </div>
+
+        {/* Body Type */}
+        <div className={styles.filterGroup}>
+          <Select
+            options={bodyOptions}
+            value={
+              bodyType
+                ? {
+                    value: bodyType,
+                    label:
+                      bodyOptions.find((o) => o.value === bodyType)?.label ||
+                      bodyType,
+                  }
+                : null
+            }
+            onChange={(value) => setFilter("bodyType", value)}
+            placeholder="Ban növü"
+            variant="filter"
+          />
+        </div>
+
+        {/* Transmission */}
+        <div className={styles.filterGroup}>
+          <Select
+            options={transmissionOptions}
+            value={
+              transmission
+                ? {
+                    value: transmission,
+                    label:
+                      transmissionOptions.find((o) => o.value === transmission)
+                        ?.label || transmission,
+                  }
+                : null
+            }
+            onChange={(value) => setFilter("transmission", value)}
+            placeholder="Sürətlər qutusu"
+            variant="filter"
+          />
         </div>
 
         {/* Year Range */}
-        <div className={`${styles.formGroup} ${styles.forWidthBig}`}>
-          <div className={styles.unersalInputs}>
-            <label htmlFor="year_input_min">
-              <input
-                type="number"
-                id="year_input_min"
-                value={minYear || ""}
-                onChange={(e) => handleYearChange(e, "min")}
-                min="1900"
-                max={new Date().getFullYear()}
-                placeholder="Min il"
-              />
-              <p>Buraxılış ili, min</p>
-            </label>
-            <label htmlFor="year_input_max">
-              <input
-                type="number"
-                id="year_input_max"
-                value={maxYear || ""}
-                onChange={(e) => handleYearChange(e, "max")}
-                min="1900"
-                max={new Date().getFullYear()}
-                placeholder="Max il"
-              />
-              <p>maks</p>
-            </label>
-          </div>
+        <div className={styles.yearGroup}>
+          <input
+            type="number"
+            placeholder="Min il"
+            value={minYear || ""}
+            onChange={(e) => handleYearChange(e, "min")}
+            className={styles.yearInput}
+            min="1900"
+            max="2030"
+          />
+          <span className={styles.separator}>-</span>
+          <input
+            type="number"
+            placeholder="Max il"
+            value={maxYear || ""}
+            onChange={(e) => handleYearChange(e, "max")}
+            className={styles.yearInput}
+            min="1900"
+            max="2030"
+          />
         </div>
 
-        {/* Color Dropdown */}
-        <div className={`${styles.formGroup} ${styles.forWidthSmall}`}>
-          <div className={styles.dropdown}>
+        {/* Condition */}
+        <div className={styles.conditionGroup}>
+          <label className={styles.radio}>
+            <input
+              type="radio"
+              name="condition"
+              value="new"
+              checked={condition === "new"}
+              onChange={handleConditionChange}
+            />
+            <span>Yeni</span>
+          </label>
+          <label className={styles.radio}>
+            <input
+              type="radio"
+              name="condition"
+              value="used"
+              checked={condition === "used"}
+              onChange={handleConditionChange}
+            />
+            <span>İşlənmiş</span>
+          </label>
+        </div>
+      </div>
+
+      {/* ADVANCED FILTERS TOGGLE */}
+      <div className={styles.advancedToggle}>
+        <button
+          className={styles.toggleButton}
+          onClick={() => setShowAdvanced(!showAdvanced)}
+          type="button"
+        >
+          {showAdvanced ? "Ətraflı axtarışı gizlət" : "Ətraflı axtarış"}
+          <span
+            className={`${styles.arrow} ${
+              showAdvanced ? styles.up : styles.down
+            }`}
+          >
+            ▼
+          </span>
+        </button>
+      </div>
+
+      {/* ADVANCED ROW - Less Common Filters */}
+      {showAdvanced && (
+        <div className={styles.advancedRow}>
+          {/* Color */}
+          <div className={styles.filterGroup}>
             <Select
               options={colorOptions}
               value={
@@ -259,197 +371,85 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
               variant="filter"
             />
           </div>
-        </div>
-      </div>
 
-      {/* Row 2 - Always visible filters */}
-      <div className={styles.filterRow}>
-        {/* Fuel Type Dropdown */}
-        <div className={`${styles.formGroup} ${styles.forWidth20}`}>
-          <div className={styles.dropdown}>
-            <Select
-              options={fuelOptions}
-              value={
-                fuelType
-                  ? {
-                      value: fuelType,
-                      label:
-                        fuelOptions.find((o) => o.value === fuelType)?.label ||
-                        fuelType,
-                    }
-                  : null
-              }
-              onChange={(value) => setFilter("fuelType", value)}
-              placeholder="Yanacaq növü"
-              variant="filter"
+          {/* Mileage Range */}
+          <div className={styles.mileageGroup}>
+            <input
+              type="number"
+              placeholder="Min yürüş"
+              value={minMileage || ""}
+              onChange={(e) => handleMileageChange(e, "min")}
+              className={styles.mileageInput}
+              min="0"
             />
-          </div>
-        </div>
-
-        {/* Body Type Dropdown */}
-        <div className={`${styles.formGroup} ${styles.forWidth20}`}>
-          <div className={styles.dropdown}>
-            <Select
-              options={bodyOptions}
-              value={
-                bodyType
-                  ? {
-                      value: bodyType,
-                      label:
-                        bodyOptions.find((o) => o.value === bodyType)?.label ||
-                        bodyType,
-                    }
-                  : null
-              }
-              onChange={(value) => setFilter("bodyType", value)}
-              placeholder="Ban növü"
-              variant="filter"
+            <span className={styles.separator}>-</span>
+            <input
+              type="number"
+              placeholder="Max yürüş"
+              value={maxMileage || ""}
+              onChange={(e) => handleMileageChange(e, "max")}
+              className={styles.mileageInput}
+              min="0"
             />
+            <span className={styles.unit}>km</span>
           </div>
-        </div>
 
-        {/* Transmission Dropdown */}
-        <div className={`${styles.formGroup} ${styles.forWidth20}`}>
-          <div className={styles.dropdown}>
-            <Select
-              options={transmissionOptions}
-              value={
-                transmission
-                  ? {
-                      value: transmission,
-                      label:
-                        transmissionOptions.find(
-                          (o) => o.value === transmission
-                        )?.label || transmission,
-                    }
-                  : null
-              }
-              onChange={(value) => setFilter("transmission", value)}
-              placeholder="Sürətlər qutusu"
-              variant="filter"
+          {/* Engine Volume - You can add these to your store */}
+          <div className={styles.engineGroup}>
+            <input
+              type="number"
+              placeholder="Min həcm"
+              className={styles.engineInput}
+              step="0.1"
+              min="0"
             />
-          </div>
-        </div>
-
-        {/* City Dropdown */}
-        <div className={`${styles.formGroup} ${styles.forWidth20}`}>
-          <div className={styles.dropdown}>
-            <Select
-              options={cityOptions}
-              value={
-                city
-                  ? {
-                      value: city,
-                      label:
-                        cityOptions.find((o) => o.value === city)?.label ||
-                        city,
-                    }
-                  : null
-              }
-              onChange={(value) => setFilter("city", value)}
-              placeholder="Şəhər"
-              variant="filter"
+            <span className={styles.separator}>-</span>
+            <input
+              type="number"
+              placeholder="Max həcm"
+              className={styles.engineInput}
+              step="0.1"
+              min="0"
             />
+            <span className={styles.unit}>L</span>
+          </div>
+
+          {/* Engine Power - You can add these to your store */}
+          <div className={styles.powerGroup}>
+            <input
+              type="number"
+              placeholder="Min güc"
+              className={styles.powerInput}
+              min="0"
+            />
+            <span className={styles.separator}>-</span>
+            <input
+              type="number"
+              placeholder="Max güc"
+              className={styles.powerInput}
+              min="0"
+            />
+            <span className={styles.unit}>a.g.</span>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Row 3 - Always visible filters */}
-      <div className={styles.filterRow}>
-        {/* Vehicle Condition */}
-        <div className={`${styles.formGroup} ${styles.forWidthBig}`}>
-          <div className={styles.forCar}>
-            <div className={styles.allCar}>
-              <input
-                type="radio"
-                name="condition"
-                id="condition_all"
-                value="all"
-                checked={condition === "all"}
-                onChange={handleConditionChange}
-              />
-              <label htmlFor="condition_all">Hamısı</label>
-            </div>
-            <div className={styles.newCar}>
-              <input
-                type="radio"
-                name="condition"
-                id="condition_new"
-                value="new"
-                checked={condition === "new"}
-                onChange={handleConditionChange}
-              />
-              <label htmlFor="condition_new">Yeni</label>
-            </div>
-            <div className={styles.oldCar}>
-              <input
-                type="radio"
-                name="condition"
-                id="condition_used"
-                value="used"
-                checked={condition === "used"}
-                onChange={handleConditionChange}
-              />
-              <label htmlFor="condition_used">Sürülmüş</label>
-            </div>
-          </div>
-        </div>
-
-        {/* Mileage Range */}
-        <div className={`${styles.formGroup} ${styles.forWidthSmall}`}>
-          <div className={styles.unersalInputs}>
-            <label htmlFor="mileage_input_min">
-              <input
-                type="number"
-                id="mileage_input_min"
-                value={minMileage || ""}
-                onChange={(e) => handleMileageChange(e, "min")}
-                min="0"
-                placeholder="Min yürüş"
-              />
-              <p>Yürüş, min</p>
-            </label>
-            <label htmlFor="mileage_input_max">
-              <input
-                type="number"
-                id="mileage_input_max"
-                value={maxMileage || ""}
-                onChange={(e) => handleMileageChange(e, "max")}
-                min="0"
-                placeholder="Max yürüş"
-              />
-              <p>maks</p>
-            </label>
-          </div>
-        </div>
-
-        {/* Credit/Barter Checkboxes */}
-        <div
-          className={`${styles.formGroup} ${styles.forWidthSmall} ${styles.dFlex}`}
+      {/* SEARCH ACTIONS */}
+      <div className={styles.actionsRow}>
+        <button
+          className={styles.clearButton}
+          onClick={resetFilters}
+          type="button"
         >
-          <div className={styles.forCredit}>
-            <div className={styles.barter}>
-              <input
-                type="checkbox"
-                name="kredit"
-                id="kredit"
-                checked={hasCredit}
-                onChange={toggleCredit}
-              />
-              <label htmlFor="kredit">Kredit</label>
-            </div>
-            <div className={styles.kredit}>
-              <input
-                type="checkbox"
-                name="barter"
-                id="barter"
-                checked={hasBarter}
-                onChange={toggleBarter}
-              />
-              <label htmlFor="barter">Barter</label>
-            </div>
-          </div>
-        </div>
+          Təmizlə
+        </button>
+        <button
+          className={styles.searchButton}
+          onClick={handleSearch}
+          type="button"
+        >
+          Axtar
+        </button>
       </div>
     </div>
   );
