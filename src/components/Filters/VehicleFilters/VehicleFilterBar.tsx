@@ -1,4 +1,4 @@
-// Updated VehicleFilterBar.tsx with improved organization
+// Optimized 3-Filter VehicleFilterBar.tsx
 "use client";
 import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -108,15 +108,20 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
   );
 
   const handleSearch = useCallback(() => {
-    // Trigger search/navigation with current filters
     router.push("/neqliyyat/search");
   }, [router]);
 
+  // Status options for row 5
+  const statusOptions = [
+    { value: "all", label: "Hamısı" },
+    { value: "active", label: "Aktiv" },
+    { value: "sold", label: "Satılıb" },
+  ];
+
   return (
     <div className={`${styles.desktopFilters} ${className || ""}`}>
-      {/* PRIMARY ROW - Most Important Filters */}
-      <div className={styles.primaryRow}>
-        {/* Brand/Make */}
+      {/* ROW 1: Vehicle Identity (3 dropdowns) */}
+      <div className={styles.filterRow}>
         <div className={styles.filterGroup}>
           <Select
             options={makeOptions}
@@ -138,7 +143,6 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
           />
         </div>
 
-        {/* Model */}
         <div className={styles.filterGroup}>
           <Select
             options={currentModelOptions}
@@ -159,7 +163,6 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
           />
         </div>
 
-        {/* City */}
         <div className={styles.filterGroup}>
           <Select
             options={cityOptions}
@@ -177,53 +180,10 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
             variant="filter"
           />
         </div>
-
-        {/* Price Range */}
-        <div className={styles.priceGroup}>
-          <input
-            type="number"
-            placeholder="Min qiymət"
-            value={minPrice || ""}
-            onChange={(e) => handlePriceChange(e, "min")}
-            className={styles.priceInput}
-            min="0"
-          />
-          <span className={styles.separator}>-</span>
-          <input
-            type="number"
-            placeholder="Max qiymət"
-            value={maxPrice || ""}
-            onChange={(e) => handlePriceChange(e, "max")}
-            className={styles.priceInput}
-            min="0"
-          />
-          <span className={styles.currency}>AZN</span>
-        </div>
-
-        {/* Payment Options */}
-        <div className={styles.paymentOptions}>
-          <label className={styles.checkbox}>
-            <input
-              type="checkbox"
-              checked={hasCredit}
-              onChange={toggleCredit}
-            />
-            <span>Kredit</span>
-          </label>
-          <label className={styles.checkbox}>
-            <input
-              type="checkbox"
-              checked={hasBarter}
-              onChange={toggleBarter}
-            />
-            <span>Barter</span>
-          </label>
-        </div>
       </div>
 
-      {/* SECONDARY ROW - Vehicle Specifications */}
-      <div className={styles.secondaryRow}>
-        {/* Fuel Type */}
+      {/* ROW 2: Vehicle Specs (3 dropdowns) */}
+      <div className={styles.filterRow}>
         <div className={styles.filterGroup}>
           <Select
             options={fuelOptions}
@@ -243,7 +203,6 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
           />
         </div>
 
-        {/* Body Type */}
         <div className={styles.filterGroup}>
           <Select
             options={bodyOptions}
@@ -263,7 +222,6 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
           />
         </div>
 
-        {/* Transmission */}
         <div className={styles.filterGroup}>
           <Select
             options={transmissionOptions}
@@ -282,8 +240,34 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
             variant="filter"
           />
         </div>
+      </div>
 
-        {/* Year Range */}
+      {/* ROW 3: Price Range (2 big inputs + currency) */}
+      <div className={styles.filterRow}>
+        <div className={styles.priceGroup}>
+          <input
+            type="number"
+            placeholder="Min qiymət"
+            value={minPrice || ""}
+            onChange={(e) => handlePriceChange(e, "min")}
+            className={styles.priceInput}
+            min="0"
+          />
+          <span className={styles.priceSeparator}>-</span>
+          <input
+            type="number"
+            placeholder="Max qiymət"
+            value={maxPrice || ""}
+            onChange={(e) => handlePriceChange(e, "max")}
+            className={styles.priceInput}
+            min="0"
+          />
+          <span className={styles.currency}>AZN</span>
+        </div>
+      </div>
+
+      {/* ROW 4: Year & Condition (2 inputs + radio group) */}
+      <div className={styles.filterRow}>
         <div className={styles.yearGroup}>
           <input
             type="number"
@@ -294,7 +278,7 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
             min="1900"
             max="2030"
           />
-          <span className={styles.separator}>-</span>
+          <span className={styles.yearSeparator}>-</span>
           <input
             type="number"
             placeholder="Max il"
@@ -306,7 +290,6 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
           />
         </div>
 
-        {/* Condition */}
         <div className={styles.conditionGroup}>
           <label className={styles.radio}>
             <input
@@ -331,6 +314,38 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
         </div>
       </div>
 
+      {/* ROW 5: Payment & Status (3 small elements) */}
+      <div className={styles.filterRow}>
+        <div className={styles.paymentGroup}>
+          <label className={styles.checkbox}>
+            <input
+              type="checkbox"
+              checked={hasCredit}
+              onChange={toggleCredit}
+            />
+            <span>Kredit</span>
+          </label>
+          <label className={styles.checkbox}>
+            <input
+              type="checkbox"
+              checked={hasBarter}
+              onChange={toggleBarter}
+            />
+            <span>Barter</span>
+          </label>
+        </div>
+
+        <div className={styles.filterGroup}>
+          <Select
+            options={statusOptions}
+            value={null}
+            onChange={(value) => console.log("Status:", value)}
+            placeholder="Status"
+            variant="filter"
+          />
+        </div>
+      </div>
+
       {/* ADVANCED FILTERS TOGGLE */}
       <div className={styles.advancedToggle}>
         <button
@@ -349,89 +364,91 @@ const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
         </button>
       </div>
 
-      {/* ADVANCED ROW - Less Common Filters */}
+      {/* ROW 6: Advanced Filters (collapsible) */}
       {showAdvanced && (
-        <div className={styles.advancedRow}>
-          {/* Color */}
-          <div className={styles.filterGroup}>
-            <Select
-              options={colorOptions}
-              value={
-                color
-                  ? {
-                      value: color,
-                      label:
-                        colorOptions.find((o) => o.value === color)?.label ||
-                        color,
-                    }
-                  : null
-              }
-              onChange={(value) => setFilter("color", value)}
-              placeholder="Rəng"
-              variant="filter"
-            />
+        <>
+          {/* Advanced Row 1: Color + Mileage */}
+          <div className={styles.advancedRow}>
+            <div className={styles.filterGroup}>
+              <Select
+                options={colorOptions}
+                value={
+                  color
+                    ? {
+                        value: color,
+                        label:
+                          colorOptions.find((o) => o.value === color)?.label ||
+                          color,
+                      }
+                    : null
+                }
+                onChange={(value) => setFilter("color", value)}
+                placeholder="Rəng"
+                variant="filter"
+              />
+            </div>
+
+            <div className={styles.mileageGroup}>
+              <input
+                type="number"
+                placeholder="Min yürüş"
+                value={minMileage || ""}
+                onChange={(e) => handleMileageChange(e, "min")}
+                className={styles.mileageInput}
+                min="0"
+              />
+              <span className={styles.mileageSeparator}>-</span>
+              <input
+                type="number"
+                placeholder="Max yürüş"
+                value={maxMileage || ""}
+                onChange={(e) => handleMileageChange(e, "max")}
+                className={styles.mileageInput}
+                min="0"
+              />
+              <span className={styles.unit}>km</span>
+            </div>
           </div>
 
-          {/* Mileage Range */}
-          <div className={styles.mileageGroup}>
-            <input
-              type="number"
-              placeholder="Min yürüş"
-              value={minMileage || ""}
-              onChange={(e) => handleMileageChange(e, "min")}
-              className={styles.mileageInput}
-              min="0"
-            />
-            <span className={styles.separator}>-</span>
-            <input
-              type="number"
-              placeholder="Max yürüş"
-              value={maxMileage || ""}
-              onChange={(e) => handleMileageChange(e, "max")}
-              className={styles.mileageInput}
-              min="0"
-            />
-            <span className={styles.unit}>km</span>
-          </div>
+          {/* Advanced Row 2: Engine + Power */}
+          <div className={styles.advancedRow}>
+            <div className={styles.engineGroup}>
+              <input
+                type="number"
+                placeholder="Min həcm"
+                className={styles.engineInput}
+                step="0.1"
+                min="0"
+              />
+              <span className={styles.engineSeparator}>-</span>
+              <input
+                type="number"
+                placeholder="Max həcm"
+                className={styles.engineInput}
+                step="0.1"
+                min="0"
+              />
+              <span className={styles.unit}>L</span>
+            </div>
 
-          {/* Engine Volume - You can add these to your store */}
-          <div className={styles.engineGroup}>
-            <input
-              type="number"
-              placeholder="Min həcm"
-              className={styles.engineInput}
-              step="0.1"
-              min="0"
-            />
-            <span className={styles.separator}>-</span>
-            <input
-              type="number"
-              placeholder="Max həcm"
-              className={styles.engineInput}
-              step="0.1"
-              min="0"
-            />
-            <span className={styles.unit}>L</span>
+            <div className={styles.powerGroup}>
+              <input
+                type="number"
+                placeholder="Min güc"
+                className={styles.powerInput}
+                min="0"
+              />
+              <span className={styles.powerSeparator}>-</span>
+              <input
+                type="number"
+                placeholder="Max güc"
+                className={styles.powerInput}
+                min="0"
+              />
+              <span className={styles.unit}>a.g.</span>
+            </div>
           </div>
-
-          {/* Engine Power - You can add these to your store */}
-          <div className={styles.powerGroup}>
-            <input
-              type="number"
-              placeholder="Min güc"
-              className={styles.powerInput}
-              min="0"
-            />
-            <span className={styles.separator}>-</span>
-            <input
-              type="number"
-              placeholder="Max güc"
-              className={styles.powerInput}
-              min="0"
-            />
-            <span className={styles.unit}>a.g.</span>
-          </div>
-        </div>
+        </>
       )}
 
       {/* SEARCH ACTIONS */}

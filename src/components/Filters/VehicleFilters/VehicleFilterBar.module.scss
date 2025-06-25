@@ -1,4 +1,4 @@
-// Updated VehicleFilterBar.module.scss with improved organization
+// Optimized 3-Filter VehicleFilterBar.module.scss
 @import "../../../styles/variables.scss";
 
 .desktopFilters {
@@ -9,34 +9,16 @@
   margin-bottom: 20px;
 }
 
-/* PRIMARY ROW - Most Important Filters */
-.primaryRow {
+/* FILTER ROW - Base styling for all rows */
+.filterRow {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba($primary-color, 0.1);
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    gap: 12px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 10px;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-  }
-}
-
-/* SECONDARY ROW - Vehicle Specifications */
-.secondaryRow {
-  display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 15px;
   margin-bottom: 15px;
+  
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
     gap: 12px;
@@ -45,68 +27,336 @@
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
   }
 }
 
-/* ADVANCED ROW - Less Common Filters */
-.advancedRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: rgba($primary-color, 0.02);
-  border-radius: $border-radius;
-  border: 1px solid rgba($primary-color, 0.1);
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    gap: 12px;
-    margin-bottom: 15px;
-    padding: 12px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 10px;
-    padding: 10px;
-  }
-}
-
-/* FILTER GROUP - Basic Container */
+/* FILTER GROUP - Standard select dropdowns (1/3 width) */
 .filterGroup {
   flex: 1;
   min-width: 160px;
-  max-width: 200px;
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
     min-width: 140px;
-    max-width: 180px;
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     min-width: 120px;
     flex: 1 1 calc(50% - 5px);
   }
-}
 
-/* PRICE GROUP */
-.priceGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 2;
-  min-width: 240px;
-
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    min-width: 200px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
     flex: 1 1 100%;
     min-width: 100%;
   }
 }
 
+/* PRICE GROUP - Row 3 (full width group) */
+.priceGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  width: 100%;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
 .priceInput {
+  flex: 1;
+  height: 44px;
+  padding: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $primary-color;
+  min-width: 120px;
+
+  &::placeholder {
+    color: $text-light;
+    font-size: $font-size-small;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    min-width: 100px;
+    font-size: $font-size-small;
+    padding: 10px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 calc(50% - 4px);
+  }
+}
+
+.priceSeparator {
+  font-size: $font-size-base;
+  color: $text-light;
+  font-weight: 500;
+  flex-shrink: 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+.currency {
+  font-size: $font-size-base;
+  color: $primary-color;
+  font-weight: 600;
+  flex-shrink: 0;
+  min-width: 40px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+/* YEAR GROUP - Row 4 (1/2 width) */
+.yearGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 180px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    min-width: 160px;
+    flex: 1 1 calc(60% - 5px);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+    min-width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+.yearInput {
+  flex: 1;
+  height: 44px;
+  padding: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $primary-color;
+  min-width: 70px;
+
+  &::placeholder {
+    color: $text-light;
+    font-size: $font-size-small;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+    padding: 10px;
+    min-width: 60px;
+  }
+}
+
+.yearSeparator {
+  font-size: $font-size-base;
+  color: $text-light;
+  font-weight: 500;
+  flex-shrink: 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+/* CONDITION GROUP - Row 4 (1/2 width) */
+.conditionGroup {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  min-width: 140px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 12px;
+    flex: 1 1 calc(40% - 5px);
+    min-width: 120px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-base;
+  color: $primary-color;
+  cursor: pointer;
+  gap: 6px;
+
+  input[type="radio"] {
+    accent-color: $primary-color;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+  }
+
+  span {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+/* PAYMENT GROUP - Row 5 (2/3 width) */
+.paymentGroup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 2;
+  min-width: 180px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 15px;
+    flex: 1 1 calc(70% - 5px);
+    min-width: 160px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-base;
+  color: $primary-color;
+  cursor: pointer;
+  gap: 8px;
+
+  input[type="checkbox"] {
+    accent-color: $primary-color;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+  }
+
+  span {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+/* ADVANCED ROWS - Row 6+ */
+.advancedRow {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+  padding: 12px 15px;
+  background-color: rgba($primary-color, 0.02);
+  border-radius: $border-radius;
+  border: 1px solid rgba($primary-color, 0.1);
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    gap: 12px;
+    padding: 10px 12px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 8px 10px;
+  }
+}
+
+/* MILEAGE GROUP - Advanced Row 1 (2/3 width) */
+.mileageGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 2;
+  min-width: 200px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex: 1 1 calc(60% - 5px);
+    min-width: 180px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+    min-width: 100%;
+    margin-bottom: 8px;
+  }
+}
+
+.mileageInput {
   flex: 1;
   height: 44px;
   padding: 12px;
@@ -144,58 +394,19 @@
   }
 }
 
-/* YEAR GROUP */
-.yearGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 160px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(50% - 5px);
-  }
-}
-
-.yearInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
+.mileageSeparator {
   font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 60px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
+  color: $text-light;
+  font-weight: 500;
+  flex-shrink: 0;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     font-size: $font-size-small;
-    padding: 10px;
   }
 }
 
-/* MILEAGE GROUP */
-.mileageGroup {
+/* ENGINE GROUP - Advanced Row 2 (1/2 width) */
+.engineGroup {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -204,10 +415,17 @@
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex: 1 1 calc(50% - 5px);
+    min-width: 160px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+    min-width: 100%;
+    margin-bottom: 8px;
   }
 }
 
-.mileageInput {
+.engineInput {
   flex: 1;
   height: 44px;
   padding: 12px;
@@ -241,69 +459,37 @@
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     font-size: $font-size-small;
     padding: 10px;
+    min-width: 60px;
   }
 }
 
-/* ENGINE GROUP */
-.engineGroup {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 160px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex: 1 1 calc(50% - 5px);
-  }
-}
-
-.engineInput {
-  flex: 1;
-  height: 44px;
-  padding: 12px;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
+.engineSeparator {
   font-size: $font-size-base;
-  color: $primary-color;
-  min-width: 60px;
-
-  &::placeholder {
-    color: $text-light;
-    font-size: $font-size-small;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-  }
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
+  color: $text-light;
+  font-weight: 500;
+  flex-shrink: 0;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     font-size: $font-size-small;
-    padding: 10px;
   }
 }
 
-/* POWER GROUP */
+/* POWER GROUP - Advanced Row 2 (1/2 width) */
 .powerGroup {
   display: flex;
   align-items: center;
   gap: 8px;
   flex: 1;
-  min-width: 160px;
+  min-width: 180px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex: 1 1 calc(50% - 5px);
+    min-width: 160px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex: 1 1 100%;
+    min-width: 100%;
   }
 }
 
@@ -315,7 +501,7 @@
   border-radius: $border-radius;
   font-size: $font-size-base;
   color: $primary-color;
-  min-width: 60px;
+  min-width: 70px;
 
   &::placeholder {
     color: $text-light;
@@ -341,124 +527,32 @@
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     font-size: $font-size-small;
     padding: 10px;
+    min-width: 60px;
   }
 }
 
-/* SEPARATORS AND UNITS */
-.separator {
+.powerSeparator {
   font-size: $font-size-base;
   color: $text-light;
-  flex-shrink: 0;
   font-weight: 500;
+  flex-shrink: 0;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     font-size: $font-size-small;
   }
 }
 
-.currency,
+/* UNIT LABELS */
 .unit {
   font-size: $font-size-base;
   color: $primary-color;
   font-weight: 500;
   flex-shrink: 0;
+  min-width: 30px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     font-size: $font-size-small;
-  }
-}
-
-/* PAYMENT OPTIONS */
-.paymentOptions {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  min-width: 140px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 15px;
-    flex: 1 1 100%;
-  }
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  font-size: $font-size-base;
-  color: $primary-color;
-  cursor: pointer;
-  gap: 8px;
-
-  input[type="checkbox"] {
-    accent-color: $primary-color;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-
-    &:focus {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
-    }
-  }
-
-  span {
-    font-weight: 500;
-  }
-
-  &:hover {
-    color: darken($primary-color, 10%);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
-  }
-}
-
-/* CONDITION GROUP */
-.conditionGroup {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  min-width: 140px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    gap: 15px;
-    flex: 1 1 100%;
-  }
-}
-
-.radio {
-  display: flex;
-  align-items: center;
-  font-size: $font-size-base;
-  color: $primary-color;
-  cursor: pointer;
-  gap: 8px;
-
-  input[type="radio"] {
-    accent-color: $primary-color;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-
-    &:focus {
-      outline: 2px solid $primary-color;
-      outline-offset: 2px;
-    }
-  }
-
-  span {
-    font-weight: 500;
-  }
-
-  &:hover {
-    color: darken($primary-color, 10%);
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    font-size: $font-size-small;
+    min-width: 25px;
   }
 }
 
@@ -466,7 +560,7 @@
 .advancedToggle {
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
+  margin: 20px 0 15px;
 }
 
 .toggleButton {
@@ -516,12 +610,13 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding-top: 15px;
+  padding-top: 20px;
+  margin-top: 15px;
   border-top: 1px solid rgba($primary-color, 0.1);
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     justify-content: stretch;
-
+    
     button {
       flex: 1;
     }
@@ -588,21 +683,7 @@
   }
 }
 
-/* BACKWARD COMPATIBILITY - Remove these old classes as you update */
-.filterRow {
-  // Remove old filterRow usage and migrate to new structure
-}
-
-.formGroup {
-  // Remove old formGroup usage and migrate to filterGroup
-}
-
-.forWidth20,
-.forWidthBig,
-.forWidthSmall {
-  // Remove old width classes and use new responsive system
-}
-
+/* LEGACY SUPPORT - Remove these as you migrate */
 .dropdown {
   width: 100%;
   position: relative;
@@ -617,56 +698,30 @@
   }
 }
 
-// Keep existing styles for compatibility during migration
-.unersalInputs {
-  display: flex;
-  gap: 10px;
+/* EXTRA SMALL SCREENS */
+@media screen and (max-width: 480px) {
+  .desktopFilters {
+    padding: 15px;
+  }
 
-  label {
-    flex: 1;
-    position: relative;
-    min-width: 0;
+  .filterRow {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
 
-    input {
+  .advancedRow {
+    gap: 6px;
+    padding: 6px 8px;
+    margin-bottom: 8px;
+  }
+
+  .actionsRow {
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 15px;
+
+    button {
       width: 100%;
-      height: 44px;
-      border: 1px solid rgba($primary-color, 0.2);
-      border-radius: $border-radius;
-      padding: 12px;
-      padding-bottom: 24px;
-      font-size: $font-size-base;
-      color: $primary-color;
-      min-width: 120px;
-
-      &::placeholder {
-        color: $text-light;
-        font-size: $font-size-small;
-      }
-
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-      }
-
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-
-      &[type="number"] {
-        -moz-appearance: textfield;
-      }
-    }
-
-    p {
-      position: absolute;
-      bottom: 5px;
-      left: 12px;
-      margin: 0;
-      font-size: $font-size-small;
-      color: $text-light;
     }
   }
 }
