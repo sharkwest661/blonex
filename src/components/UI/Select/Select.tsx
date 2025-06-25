@@ -48,61 +48,111 @@ export const Select: React.FC<SelectProps> = ({
     return defaultValue;
   }, [defaultValue, options]);
 
-  // Custom styles for react-select
+  // ✅ Complete CSS-in-JS styling - no more global selectors needed
   const customStyles: StylesConfig = {
     control: (provided, state) => ({
       ...provided,
       minHeight: "44px",
+      minWidth: variant === "filter" ? "100%" : "auto",
       height: variant === "sort" ? "44px" : "auto",
-      border: "none",
+      border: state.isFocused
+        ? "1px solid #013f44"
+        : "1px solid rgba(1, 63, 68, 0.2)",
       borderRadius: "10px",
       boxShadow: state.isFocused ? "0 0 0 2px rgba(1, 63, 68, 0.2)" : "none",
       "&:hover": {
-        border: "none",
+        borderColor: "rgba(1, 63, 68, 0.4)",
       },
       backgroundColor: "#ffffff",
+      cursor: "pointer",
     }),
     indicatorSeparator: () => ({
       display: "none",
     }),
-    dropdownIndicator: (provided) => ({
+    dropdownIndicator: (provided, state) => ({
       ...provided,
-      color: "#013f44",
-      padding: variant === "sort" ? "0 8px" : provided.padding,
+      color: state.isFocused ? "#013f44" : "rgba(1, 63, 68, 0.7)",
+      padding: variant === "sort" ? "0 8px" : "8px",
+      transition: "color 0.2s ease",
+      "&:hover": {
+        color: "#013f44",
+      },
+    }),
+    clearIndicator: (provided) => ({
+      ...provided,
+      color: "rgba(1, 63, 68, 0.7)",
+      "&:hover": {
+        color: "#013f44",
+      },
     }),
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isSelected
-        ? "rgba(255, 230, 0, 0.3)"
+        ? "#013f44"
         : state.isFocused
-        ? "rgba(255, 230, 0, 0.15)"
-        : "white",
-      color: "#013f44",
+        ? "rgba(1, 63, 68, 0.1)"
+        : "#ffffff",
+      color: state.isSelected ? "#ffffff" : "#013f44",
       padding: "8px 12px",
       cursor: "pointer",
+      fontSize: "1rem",
+      fontWeight: state.isSelected ? "500" : "400",
       "&:active": {
-        backgroundColor: "rgba(255, 230, 0, 0.3)",
+        backgroundColor: state.isSelected ? "#013f44" : "rgba(1, 63, 68, 0.2)",
       },
     }),
     menu: (provided) => ({
       ...provided,
       zIndex: 9999,
       marginTop: "4px",
-      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
       borderRadius: "10px",
+      border: "1px solid rgba(1, 63, 68, 0.1)",
+      overflow: "hidden",
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: "0",
+      maxHeight: "200px",
     }),
     valueContainer: (provided) => ({
       ...provided,
-      padding: variant === "sort" ? "0 8px" : provided.padding,
+      padding: variant === "sort" ? "0 8px" : "2px 8px",
+      fontSize:
+        variant === "sort" && window.innerWidth <= 768 ? "0.75rem" : "1rem",
     }),
     singleValue: (provided) => ({
       ...provided,
       color: "#013f44",
-      fontWeight: 500,
+      fontWeight: "500",
+      fontSize:
+        variant === "sort" && window.innerWidth <= 768 ? "0.75rem" : "1rem",
     }),
     placeholder: (provided) => ({
       ...provided,
       color: "#808080",
+      fontSize: "1rem",
+      fontWeight: "400",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: "#013f44",
+      fontSize: "1rem",
+    }),
+    noOptionsMessage: (provided) => ({
+      ...provided,
+      color: "#808080",
+      fontSize: "0.875rem",
+      padding: "8px 12px",
+    }),
+    loadingMessage: (provided) => ({
+      ...provided,
+      color: "#808080",
+      fontSize: "0.875rem",
+      padding: "8px 12px",
     }),
   };
 
@@ -131,6 +181,8 @@ export const Select: React.FC<SelectProps> = ({
         isDisabled={isDisabled}
         styles={customStyles}
         classNamePrefix="react-select"
+        menuPlacement="auto"
+        menuPosition="absolute"
         {...props}
       />
     </div>

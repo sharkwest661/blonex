@@ -1,3 +1,4 @@
+// src/components/Filters/VehicleFilters/VehicleFilterBar.module.scss
 @import "../../../styles/variables.scss";
 
 .desctopFilters {
@@ -59,10 +60,58 @@
   }
 }
 
+// ✅ Ensure dFlex utility class exists
+.dFlex {
+  display: flex;
+}
+
 // Dropdown styles
 .dropdown {
   width: 100%;
   position: relative;
+}
+
+// ✅ FIX 4: Ensure select dropdowns have proper width and styling
+// Use separate global selectors without nesting
+:global(.react-select__control) {
+  min-height: 44px;
+  border: 1px solid rgba($primary-color, 0.2) !important;
+  border-radius: $border-radius;
+}
+
+:global(.react-select__control:hover) {
+  // ✅ FIX 3: Use primary color hover instead of yellow
+  border-color: rgba($primary-color, 0.4) !important;
+}
+
+:global(.react-select__placeholder) {
+  color: $text-light;
+  font-size: $font-size-base;
+  // ✅ Ensure placeholder text is visible
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:global(.react-select__single-value) {
+  color: $primary-color;
+  font-size: $font-size-base;
+}
+
+:global(.react-select__menu) {
+  border-radius: $border-radius;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+:global(.react-select__option:hover) {
+  // ✅ FIX 3: Use primary color hover instead of yellow
+  background-color: rgba($primary-color, 0.1) !important;
+  color: $primary-color !important;
+}
+
+:global(.react-select__option--is-selected) {
+  background-color: $primary-color !important;
+  color: $white !important;
 }
 
 .dropdownGroup {
@@ -74,7 +123,7 @@
   }
 }
 
-// Input ranges
+// Input ranges - ✅ Enhanced for better styling and width
 .unersalInputs {
   display: flex;
   gap: 10px;
@@ -82,6 +131,7 @@
   label {
     flex: 1;
     position: relative;
+    min-width: 0; // Allow flex items to shrink
 
     input {
       width: 100%;
@@ -91,10 +141,32 @@
       padding: 12px;
       padding-bottom: 24px;
       font-size: $font-size-base;
+      color: $primary-color;
+      // ✅ FIX 4: Ensure adequate width for placeholder text
+      min-width: 120px;
+
+      &::placeholder {
+        color: $text-light;
+        font-size: $font-size-small;
+      }
 
       &:focus {
         outline: none;
-        border-color: $secondary-color;
+        // ✅ FIX 3: Use primary color focus instead of yellow
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+
+      // Remove number input arrows on webkit browsers
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      // Remove number input arrows on Firefox
+      &[type="number"] {
+        -moz-appearance: textfield;
       }
     }
 
@@ -129,7 +201,14 @@
 
     input[type="radio"] {
       margin-right: 8px;
+      // ✅ FIX 3: Use primary color for radio buttons
       accent-color: $primary-color;
+      cursor: pointer;
+
+      &:focus {
+        outline: 2px solid $primary-color;
+        outline-offset: 2px;
+      }
     }
 
     label {
@@ -137,6 +216,11 @@
       font-size: $font-size-base;
       color: $text-color;
       cursor: pointer;
+
+      &:hover {
+        // ✅ FIX 3: Use primary color hover
+        color: $primary-color;
+      }
     }
   }
 }
@@ -162,7 +246,14 @@
 
     input[type="checkbox"] {
       margin-right: 8px;
+      // ✅ FIX 3: Use primary color for checkboxes
       accent-color: $primary-color;
+      cursor: pointer;
+
+      &:focus {
+        outline: 2px solid $primary-color;
+        outline-offset: 2px;
+      }
     }
 
     label {
@@ -170,6 +261,11 @@
       font-size: $font-size-base;
       color: $text-color;
       cursor: pointer;
+
+      &:hover {
+        // ✅ FIX 3: Use primary color hover
+        color: $primary-color;
+      }
     }
   }
 }
@@ -185,86 +281,55 @@
   width: 100%;
 }
 
-.additionalChekingsTitle {
-  font-size: $font-size-base;
-  font-weight: 600;
-  color: $primary-color;
-  margin-bottom: 15px;
-}
-
-.additionalChekings {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-// Filter buttons
-.descFiltersBtns {
+// Individual filter sections in additional filters
+.barter,
+.kredit {
   display: flex;
   align-items: center;
-  margin-top: 20px;
-  gap: 15px;
 }
 
-.filterResetBtn {
-  height: 46px;
-  padding: 0 20px;
-  background-color: transparent;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  color: $primary-color;
-  font-size: $font-size-base;
-  cursor: pointer;
-  transition: all 0.2s;
+// Responsive improvements
+@media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+  .unersalInputs {
+    label {
+      input {
+        // Reduce minimum width on smaller screens but keep readable
+        min-width: 100px;
+        font-size: $font-size-small;
+      }
+    }
+  }
 
-  &:hover {
-    background-color: rgba($primary-color, 0.05);
+  .forCar,
+  .forCredit {
+    div {
+      margin-right: 16px;
+
+      label {
+        font-size: $font-size-small;
+      }
+    }
   }
 }
 
-.filterElseBtn {
-  display: flex;
-  align-items: center;
-  height: 46px;
-  padding: 0 20px;
-  background-color: transparent;
-  border: 1px solid rgba($primary-color, 0.2);
-  border-radius: $border-radius;
-  color: $primary-color;
-  font-size: $font-size-base;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  p {
-    margin: 0;
-    margin-right: 10px;
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .filterRow {
+    gap: 10px;
   }
 
-  &:hover {
-    background-color: rgba($primary-color, 0.05);
+  .unersalInputs {
+    gap: 8px;
+
+    label {
+      input {
+        min-width: 90px;
+        padding: 10px 8px 20px;
+      }
+
+      p {
+        font-size: 10px;
+        left: 8px;
+      }
+    }
   }
-}
-
-.filterShowBtn {
-  height: 46px;
-  padding: 0 30px;
-  background-color: $secondary-color;
-  border: none;
-  border-radius: $border-radius;
-  color: $primary-color;
-  font-size: $font-size-base;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-left: auto;
-
-  &:hover {
-    background-color: darken($secondary-color, 5%);
-    transform: translateY(-1px);
-  }
-}
-
-// Utility classes
-.dFlex {
-  display: flex;
 }

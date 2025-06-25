@@ -1,0 +1,426 @@
+// src/components/Filters/MobileFilters/VehicleFilterOverlay.module.scss
+@import "../../../styles/variables.scss";
+
+// ✅ FIX 3: Change hover colors from yellow to primary color throughout
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $white;
+  border-radius: 20px 20px 0 0;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+// Header
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid rgba($primary-color, 0.1);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: $font-size-large;
+  font-family: $font-family-bold;
+  color: $primary-color;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: $primary-color;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+
+  &:hover,
+  &:focus {
+    // ✅ Use primary color instead of yellow
+    background-color: rgba($primary-color, 0.1);
+  }
+}
+
+// Scrollable content
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 20px;
+}
+
+// Filter sections
+.filterSection {
+  border-bottom: 1px solid rgba($primary-color, 0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 0;
+  background: none;
+  border: none;
+  font-size: $font-size-base;
+  font-weight: 500;
+  color: $primary-color;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    // ✅ Use primary color hover instead of yellow
+    color: darken($primary-color, 10%);
+  }
+}
+
+.arrow {
+  transition: transform 0.2s ease;
+
+  &.expanded {
+    transform: rotate(180deg);
+  }
+}
+
+.sectionContent {
+  padding: 0 0 16px;
+}
+
+// Form elements
+.filterGroup {
+  margin-bottom: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.filterLabel {
+  display: block;
+  font-size: $font-size-small;
+  color: $text-light;
+  margin-bottom: 6px;
+}
+
+.select {
+  width: 100%;
+}
+
+// ✅ FIX 4: Fix year selects CSS - ensure proper width and placeholder visibility
+// Use separate global selectors without nesting
+:global(.react-select__control) {
+  min-height: 44px;
+  min-width: 100%; // Ensure full width
+  border: 1px solid rgba($primary-color, 0.2) !important;
+  border-radius: $border-radius;
+}
+
+:global(.react-select__control:hover) {
+  // ✅ Use primary color hover instead of yellow
+  border-color: rgba($primary-color, 0.4) !important;
+}
+
+:global(.react-select__placeholder) {
+  color: $text-light;
+  font-size: $font-size-base;
+  // Ensure placeholder is visible with proper width
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:global(.react-select__single-value) {
+  color: $primary-color;
+  font-size: $font-size-base;
+}
+
+:global(.react-select__menu) {
+  border-radius: $border-radius;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+:global(.react-select__option:hover) {
+  // ✅ Use primary color hover instead of yellow
+  background-color: rgba($primary-color, 0.1) !important;
+  color: $primary-color !important;
+}
+
+:global(.react-select__option--is-selected) {
+  background-color: $primary-color !important;
+  color: $white !important;
+}
+
+// Range inputs - Enhanced for year inputs
+.rangeInputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inputGroup {
+  position: relative;
+  flex: 1;
+  // ✅ FIX 4: Ensure year inputs have proper width
+  min-width: 0; // Allow flex items to shrink
+}
+
+.rangeInput {
+  width: 100%;
+  height: 44px;
+  padding: 12px 12px 20px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  font-size: $font-size-base;
+  color: $primary-color;
+  appearance: none;
+  // ✅ Ensure placeholder text is visible
+  min-width: 120px; // Minimum width for year inputs to show placeholder
+
+  &::placeholder {
+    color: $text-light;
+    font-size: $font-size-base;
+  }
+
+  &:focus {
+    outline: none;
+    // ✅ Use primary color focus instead of yellow
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  // Remove number input arrows on webkit browsers
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  // Remove number input arrows on Firefox
+  &[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+.rangeLabel {
+  position: absolute;
+  bottom: 5px;
+  left: 12px;
+  font-size: $font-size-small;
+  color: $text-light;
+}
+
+.rangeSeparator {
+  font-size: $font-size-base;
+  color: $text-light;
+  flex-shrink: 0;
+}
+
+// Select groups
+.selectGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.halfSelect {
+  flex: 1;
+  min-width: 0; // Allow flex items to shrink
+}
+
+// ✅ FIX 2: Radio groups - Enhanced for mobile functionality
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-base;
+  color: $primary-color;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+
+  // Improve touch target for mobile
+  min-height: 44px;
+
+  &:hover {
+    // ✅ Use primary color hover instead of yellow
+    color: darken($primary-color, 10%);
+  }
+}
+
+.radioInput {
+  margin-right: 10px;
+  // ✅ Use primary color for radio buttons
+  accent-color: $primary-color;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+
+  // Ensure radio buttons work properly on mobile
+  &:focus {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+// Checkbox groups
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-base;
+  color: $primary-color;
+  cursor: pointer;
+  padding: 8px 0;
+  min-height: 44px; // Improve touch target
+  transition: color 0.2s ease;
+
+  &:hover {
+    // ✅ Use primary color hover instead of yellow
+    color: darken($primary-color, 10%);
+  }
+}
+
+.checkboxInput {
+  margin-right: 10px;
+  // ✅ Use primary color for checkboxes
+  accent-color: $primary-color;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+
+  &:focus {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+// Footer with action buttons
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid rgba($primary-color, 0.1);
+  flex-shrink: 0;
+}
+
+.resetButton {
+  flex: 1;
+  height: 46px;
+  background-color: transparent;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: $border-radius;
+  color: $primary-color;
+  font-size: $font-size-base;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    // ✅ Use primary color hover instead of yellow
+    background-color: rgba($primary-color, 0.05);
+    border-color: rgba($primary-color, 0.4);
+  }
+}
+
+.applyButton {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  // ✅ Keep secondary color for apply button (it's the CTA)
+  background-color: $secondary-color;
+  border: none;
+  border-radius: $border-radius;
+  color: $primary-color;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover,
+  &:focus {
+    background-color: darken($secondary-color, 5%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 230, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+  .modal {
+    max-height: 95vh;
+  }
+
+  .rangeInput {
+    // Ensure adequate width on very small screens
+    min-width: 100px;
+    font-size: $font-size-small;
+  }
+
+  .rangeInputs {
+    gap: 6px;
+  }
+
+  .rangeSeparator {
+    font-size: $font-size-small;
+  }
+}

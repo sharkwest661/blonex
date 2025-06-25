@@ -1,113 +1,35 @@
+// src/components/Filters/MobileFilters/VehicleFilterOverlay.tsx
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import { X, ChevronDown, Search } from "lucide-react";
-import { useVehicleFilterStore } from "@/stores/useVehicleFilterStore";
 import { Select } from "@/components/UI/Select";
-import styles from "./MobileFilterOverlay.module.scss";
+import { useVehicleFilterStore } from "@/stores/useVehicleFilterStore";
+import {
+  makeOptions,
+  modelOptions,
+  colorOptions,
+  fuelOptions,
+  bodyOptions,
+  transmissionOptions,
+  cityOptions,
+} from "@/constants/vehicleOptions";
+import type { VehicleCondition } from "@/types/vehicle.types";
+import styles from "./VehicleFilterOverlay.module.scss";
 
-// Mock data for dropdowns (would come from API in real implementation)
-const makeOptions = [
-  { value: "mercedes", label: "Mercedes" },
-  { value: "bmw", label: "BMW" },
-  { value: "audi", label: "Audi" },
-  { value: "toyota", label: "Toyota" },
-  { value: "honda", label: "Honda" },
-];
-
-// This would be dynamic based on selected make
-const modelOptions = {
-  mercedes: [
-    { value: "c200", label: "C 200" },
-    { value: "e350", label: "E 350" },
-    { value: "s500", label: "S 500" },
-    { value: "g63", label: "G 63 AMG" },
-  ],
-  bmw: [
-    { value: "320i", label: "320i" },
-    { value: "520d", label: "520d" },
-    { value: "x5", label: "X5" },
-    { value: "m3", label: "M3" },
-  ],
-  audi: [
-    { value: "a4", label: "A4" },
-    { value: "a6", label: "A6" },
-    { value: "q7", label: "Q7" },
-    { value: "rs6", label: "RS6" },
-  ],
-  toyota: [
-    { value: "camry", label: "Camry" },
-    { value: "corolla", label: "Corolla" },
-    { value: "rav4", label: "RAV4" },
-    { value: "landcruiser", label: "Land Cruiser" },
-  ],
-  honda: [
-    { value: "civic", label: "Civic" },
-    { value: "accord", label: "Accord" },
-    { value: "crv", label: "CR-V" },
-    { value: "hrv", label: "HR-V" },
-  ],
-};
-
-const colorOptions = [
-  { value: "black", label: "Qara" },
-  { value: "white", label: "Ağ" },
-  { value: "silver", label: "Gümüşü" },
-  { value: "red", label: "Qırmızı" },
-  { value: "blue", label: "Mavi" },
-];
-
-const fuelOptions = [
-  { value: "gasoline", label: "Benzin" },
-  { value: "diesel", label: "Dizel" },
-  { value: "hybrid", label: "Hibrid" },
-  { value: "electric", label: "Elektrik" },
-  { value: "lpg", label: "LPG" },
-];
-
-const bodyOptions = [
-  { value: "sedan", label: "Sedan" },
-  { value: "suv", label: "SUV" },
-  { value: "coupe", label: "Kupe" },
-  { value: "hatchback", label: "Hetçbek" },
-  { value: "wagon", label: "Universal" },
-  { value: "pickup", label: "Pikap" },
-];
-
-const yearOptions = Array.from({ length: 30 }, (_, i) => ({
-  value: String(2025 - i),
-  label: String(2025 - i),
-}));
-
-const transmissionOptions = [
-  { value: "auto", label: "Avtomat" },
-  { value: "manual", label: "Mexaniki" },
-  { value: "semi-auto", label: "Robotlaşdırılmış" },
-  { value: "cvt", label: "CVT" },
-];
-
-const cityOptions = [
-  { value: "baku", label: "Bakı" },
-  { value: "ganja", label: "Gəncə" },
-  { value: "sumgait", label: "Sumqayıt" },
-  { value: "mingachevir", label: "Mingəçevir" },
-  { value: "sheki", label: "Şəki" },
-];
-
-interface MobileFilterOverlayProps {
+interface VehicleFilterOverlayProps {
   isOpen: boolean;
   onClose: () => void;
   onApply: () => void;
 }
 
-export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
+const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
   isOpen,
   onClose,
   onApply,
 }) => {
-  const overlayRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
-  // Get filter state and actions from the store
+  // Get filter values from store
   const make = useVehicleFilterStore((state) => state.make);
   const model = useVehicleFilterStore((state) => state.model);
   const minPrice = useVehicleFilterStore((state) => state.minPrice);
@@ -138,94 +60,88 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
       ? modelOptions[make as keyof typeof modelOptions]
       : [];
 
-  // Handle price input changes
-  const handlePriceChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    type: "min" | "max"
-  ) => {
-    const value = e.target.value ? parseInt(e.target.value) : null;
-    if (type === "min") {
-      setPriceRange(value, maxPrice);
-    } else {
-      setPriceRange(minPrice, value);
-    }
-  };
+  // ✅ FIX 1: Handle price input changes with proper clamping
+  const handlePriceChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
+      let value = e.target.value ? parseInt(e.target.value) : null;
+
+      // ✅ Clamp price to be greater than 0
+      if (value !== null && value <= 0) {
+        value = 1; // Set minimum price to 1
+      }
+
+      if (type === "min") {
+        setPriceRange(value, maxPrice);
+      } else {
+        setPriceRange(minPrice, value);
+      }
+    },
+    [setPriceRange, minPrice, maxPrice]
+  );
+
+  // Handle year input changes
+  const handleYearChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
+      const value = e.target.value ? parseInt(e.target.value) : null;
+      if (type === "min") {
+        setFilter("minYear", value);
+      } else {
+        setFilter("maxYear", value);
+      }
+    },
+    [setFilter]
+  );
+
+  // ✅ FIX 2: Handle condition radio buttons properly for mobile
+  const handleConditionChange = useCallback(
+    (conditionValue: VehicleCondition) => {
+      setCondition(conditionValue);
+    },
+    [setCondition]
+  );
 
   // Handle section toggle
-  const toggleSection = (section: string) => {
-    setActiveSection(activeSection === section ? null : section);
-  };
+  const toggleSection = useCallback(
+    (section: string) => {
+      setActiveSection(activeSection === section ? null : section);
+    },
+    [activeSection]
+  );
 
-  // Handle condition change
-  const handleConditionChange = (value: string) => {
-    setCondition(value as "all" | "new" | "used");
-  };
-
-  // Close on outside click
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        overlayRef.current &&
-        !overlayRef.current.contains(e.target as Node)
-      ) {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      // Prevent body scroll
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, onClose]);
-
-  // Handle escape key
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, [onClose]);
-
-  // Apply filters
-  const handleApply = () => {
-    onApply();
-    onClose();
-  };
-
-  // Reset filters
-  const handleReset = () => {
+  // Handle reset
+  const handleReset = useCallback(() => {
     resetFilters();
-  };
+  }, [resetFilters]);
+
+  // Handle apply
+  const handleApply = useCallback(() => {
+    onApply();
+  }, [onApply]);
+
+  // Handle overlay click
+  const handleOverlayClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target === e.currentTarget) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
   if (!isOpen) return null;
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.backdrop} onClick={onClose} />
-      <div className={styles.drawer} ref={overlayRef}>
+    <div className={styles.overlay} onClick={handleOverlayClick}>
+      <div className={styles.modal}>
         {/* Header */}
         <div className={styles.header}>
-          <h2 className={styles.title}>Filtrlər</h2>
-          <button
-            className={styles.closeButton}
-            onClick={onClose}
-            aria-label="Bağla"
-          >
+          <h2 className={styles.title}>Filter</h2>
+          <button className={styles.closeButton} onClick={onClose}>
             <X size={24} />
           </button>
         </div>
 
-        {/* Filter Sections */}
+        {/* Scrollable Content */}
         <div className={styles.content}>
           {/* Make & Model Section */}
           <div className={styles.filterSection}>
@@ -246,7 +162,6 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
             {activeSection === "makeModel" && (
               <div className={styles.sectionContent}>
                 <div className={styles.filterGroup}>
-                  <label className={styles.filterLabel}>Marka</label>
                   <Select
                     options={makeOptions}
                     value={
@@ -259,17 +174,12 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
                           }
                         : null
                     }
-                    onChange={(value) => {
-                      setMake(value);
-                      setModel(null); // Reset model when make changes
-                    }}
+                    onChange={(value) => setMake(value)}
                     placeholder="Marka seçin"
                     className={styles.select}
                   />
                 </div>
-
                 <div className={styles.filterGroup}>
-                  <label className={styles.filterLabel}>Model</label>
                   <Select
                     options={currentModelOptions}
                     value={
@@ -292,7 +202,7 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
             )}
           </div>
 
-          {/* Price Range Section */}
+          {/* Price Section */}
           <div className={styles.filterSection}>
             <button
               className={styles.sectionHeader}
@@ -316,10 +226,11 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
                       type="number"
                       value={minPrice || ""}
                       onChange={(e) => handlePriceChange(e, "min")}
-                      placeholder="Min"
+                      placeholder="Min qiymət"
                       className={styles.rangeInput}
+                      min="1"
                     />
-                    <label className={styles.rangeLabel}>Min</label>
+                    <span className={styles.rangeLabel}>AZN</span>
                   </div>
                   <span className={styles.rangeSeparator}>-</span>
                   <div className={styles.inputGroup}>
@@ -327,10 +238,11 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
                       type="number"
                       value={maxPrice || ""}
                       onChange={(e) => handlePriceChange(e, "max")}
-                      placeholder="Max"
+                      placeholder="Max qiymət"
                       className={styles.rangeInput}
+                      min="1"
                     />
-                    <label className={styles.rangeLabel}>Max</label>
+                    <span className={styles.rangeLabel}>AZN</span>
                   </div>
                 </div>
               </div>
@@ -344,7 +256,7 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
               onClick={() => toggleSection("year")}
               aria-expanded={activeSection === "year"}
             >
-              <span>İl</span>
+              <span>Buraxılış ili</span>
               <ChevronDown
                 size={20}
                 className={`${styles.arrow} ${
@@ -355,37 +267,28 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
 
             {activeSection === "year" && (
               <div className={styles.sectionContent}>
-                <div className={styles.selectGroup}>
-                  <div className={styles.halfSelect}>
-                    <label className={styles.filterLabel}>Min</label>
-                    <Select
-                      options={yearOptions}
-                      value={
-                        minYear
-                          ? { value: String(minYear), label: String(minYear) }
-                          : null
-                      }
-                      onChange={(value) =>
-                        setFilter("minYear", value ? parseInt(value) : null)
-                      }
-                      placeholder="Min"
-                      className={styles.select}
+                <div className={styles.rangeInputs}>
+                  <div className={styles.inputGroup}>
+                    <input
+                      type="number"
+                      value={minYear || ""}
+                      onChange={(e) => handleYearChange(e, "min")}
+                      placeholder="Min il"
+                      className={styles.rangeInput}
+                      min="1900"
+                      max={new Date().getFullYear()}
                     />
                   </div>
-                  <div className={styles.halfSelect}>
-                    <label className={styles.filterLabel}>Max</label>
-                    <Select
-                      options={yearOptions}
-                      value={
-                        maxYear
-                          ? { value: String(maxYear), label: String(maxYear) }
-                          : null
-                      }
-                      onChange={(value) =>
-                        setFilter("maxYear", value ? parseInt(value) : null)
-                      }
-                      placeholder="Max"
-                      className={styles.select}
+                  <span className={styles.rangeSeparator}>-</span>
+                  <div className={styles.inputGroup}>
+                    <input
+                      type="number"
+                      value={maxYear || ""}
+                      onChange={(e) => handleYearChange(e, "max")}
+                      placeholder="Max il"
+                      className={styles.rangeInput}
+                      min="1900"
+                      max={new Date().getFullYear()}
                     />
                   </div>
                 </div>
@@ -393,38 +296,38 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
             )}
           </div>
 
-          {/* Body Type Section */}
+          {/* Color Section */}
           <div className={styles.filterSection}>
             <button
               className={styles.sectionHeader}
-              onClick={() => toggleSection("bodyType")}
-              aria-expanded={activeSection === "bodyType"}
+              onClick={() => toggleSection("color")}
+              aria-expanded={activeSection === "color"}
             >
-              <span>Ban növü</span>
+              <span>Rəng</span>
               <ChevronDown
                 size={20}
                 className={`${styles.arrow} ${
-                  activeSection === "bodyType" ? styles.expanded : ""
+                  activeSection === "color" ? styles.expanded : ""
                 }`}
               />
             </button>
 
-            {activeSection === "bodyType" && (
+            {activeSection === "color" && (
               <div className={styles.sectionContent}>
                 <Select
-                  options={bodyOptions}
+                  options={colorOptions}
                   value={
-                    bodyType
+                    color
                       ? {
-                          value: bodyType,
+                          value: color,
                           label:
-                            bodyOptions.find((o) => o.value === bodyType)
-                              ?.label || bodyType,
+                            colorOptions.find((o) => o.value === color)
+                              ?.label || color,
                         }
                       : null
                   }
-                  onChange={(value) => setFilter("bodyType", value)}
-                  placeholder="Ban növü seçin"
+                  onChange={(value) => setFilter("color", value)}
+                  placeholder="Rəng seçin"
                   className={styles.select}
                 />
               </div>
@@ -469,38 +372,38 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
             )}
           </div>
 
-          {/* Color Section */}
+          {/* Body Type Section */}
           <div className={styles.filterSection}>
             <button
               className={styles.sectionHeader}
-              onClick={() => toggleSection("color")}
-              aria-expanded={activeSection === "color"}
+              onClick={() => toggleSection("bodyType")}
+              aria-expanded={activeSection === "bodyType"}
             >
-              <span>Rəng</span>
+              <span>Ban növü</span>
               <ChevronDown
                 size={20}
                 className={`${styles.arrow} ${
-                  activeSection === "color" ? styles.expanded : ""
+                  activeSection === "bodyType" ? styles.expanded : ""
                 }`}
               />
             </button>
 
-            {activeSection === "color" && (
+            {activeSection === "bodyType" && (
               <div className={styles.sectionContent}>
                 <Select
-                  options={colorOptions}
+                  options={bodyOptions}
                   value={
-                    color
+                    bodyType
                       ? {
-                          value: color,
+                          value: bodyType,
                           label:
-                            colorOptions.find((o) => o.value === color)
-                              ?.label || color,
+                            bodyOptions.find((o) => o.value === bodyType)
+                              ?.label || bodyType,
                         }
                       : null
                   }
-                  onChange={(value) => setFilter("color", value)}
-                  placeholder="Rəng seçin"
+                  onChange={(value) => setFilter("bodyType", value)}
+                  placeholder="Ban növü seçin"
                   className={styles.select}
                 />
               </div>
@@ -546,7 +449,7 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
             )}
           </div>
 
-          {/* Location Section */}
+          {/* City Section */}
           <div className={styles.filterSection}>
             <button
               className={styles.sectionHeader}
@@ -603,35 +506,47 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
             {activeSection === "condition" && (
               <div className={styles.sectionContent}>
                 <div className={styles.radioGroup}>
-                  <label className={styles.radioLabel}>
+                  <label
+                    className={styles.radioLabel}
+                    onClick={() => handleConditionChange("all")}
+                  >
                     <input
                       type="radio"
-                      name="condition"
+                      name="condition_mobile"
+                      value="all"
                       checked={condition === "all"}
                       onChange={() => handleConditionChange("all")}
                       className={styles.radioInput}
                     />
-                    <span>Hamısı</span>
+                    Hamısı
                   </label>
-                  <label className={styles.radioLabel}>
+                  <label
+                    className={styles.radioLabel}
+                    onClick={() => handleConditionChange("new")}
+                  >
                     <input
                       type="radio"
-                      name="condition"
+                      name="condition_mobile"
+                      value="new"
                       checked={condition === "new"}
                       onChange={() => handleConditionChange("new")}
                       className={styles.radioInput}
                     />
-                    <span>Yeni</span>
+                    Yeni
                   </label>
-                  <label className={styles.radioLabel}>
+                  <label
+                    className={styles.radioLabel}
+                    onClick={() => handleConditionChange("used")}
+                  >
                     <input
                       type="radio"
-                      name="condition"
+                      name="condition_mobile"
+                      value="used"
                       checked={condition === "used"}
                       onChange={() => handleConditionChange("used")}
                       className={styles.radioInput}
                     />
-                    <span>Sürülmüş</span>
+                    Sürülmüş
                   </label>
                 </div>
               </div>
@@ -696,4 +611,4 @@ export const MobileFilterOverlay: React.FC<MobileFilterOverlayProps> = ({
   );
 };
 
-export default MobileFilterOverlay;
+export default VehicleFilterOverlay;
