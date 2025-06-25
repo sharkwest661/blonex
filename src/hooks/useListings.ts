@@ -1,85 +1,65 @@
 // src/hooks/useListings.ts - FIXED VERSION
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
+import type { VehiclePost as VehicleData } from "@/types/post.types";
 import type {
-  VehicleData,
-  VehicleFeature,
   UseListingsOptions,
   UseListingsReturn,
 } from "@/types/vehicle.types";
 
-// Mock data (this would come from your API in a real app)
-const mockVipListings: VehicleData[] = [
-  {
-    id: "vip-1",
-    title: "BMW X5",
-    price: 45000,
-    currency: "₼",
-    location: "Bakı",
-    date: "28.01.2025, 14:30",
-    imageUrl: "/assets/images/example/post2.png",
-    type: "vip",
-    features: [
-      {
-        type: "credit",
-        icon: "/assets/images/percent.svg",
-        tooltip: "Kredit mümkündür",
-        enabled: true,
-      },
-      {
-        type: "barter",
-        icon: "/assets/images/barter.svg",
-        tooltip: "Barter mümkündür",
-        enabled: true,
-      },
-    ] as VehicleFeature[],
-    href: "/neqliyyat/bmw-x5-12345",
-    hasVipBadge: true,
-    hasPremiumBadge: true,
-    year: 2022,
-    make: "BMW",
-    model: "X5",
-    mileage: 15000,
-    engineSize: 3.0,
-    transmission: "Avtomat",
-    fuelType: "Benzin",
-  },
-  // Add more mock VIP listings...
-];
+// Mock data using unified types
+const createMockVehicleData = (
+  id: string,
+  type: "vip" | "premium" | "recent"
+): VehicleData => ({
+  id,
+  title: type === "vip" ? "BMW X5" : "Toyota Camry",
+  price: type === "vip" ? 45000 : 28000,
+  currency: "₼",
+  location: "Bakı",
+  date: "28.01.2025, 14:30",
+  imageUrl: "/assets/images/example/post2.png",
+  type,
+  features: [
+    {
+      type: "credit",
+      icon: "/assets/images/percent.svg",
+      tooltip: "Kredit mümkündür",
+      enabled: true,
+    },
+    ...(type === "vip"
+      ? [
+          {
+            type: "barter" as const,
+            icon: "/assets/images/barter.svg",
+            tooltip: "Barter mümkündür",
+            enabled: true,
+          },
+        ]
+      : []),
+  ],
+  href: `/neqliyyat/${type === "vip" ? "bmw-x5" : "toyota-camry"}-${id}`,
+  hasVipBadge: type === "vip",
+  hasPremiumBadge: type === "vip" || type === "premium",
+  year: type === "vip" ? 2022 : 2021,
+  make: type === "vip" ? "BMW" : "Toyota",
+  model: type === "vip" ? "X5" : "Camry",
+  mileage: type === "vip" ? 15000 : 32000,
+  engineSize: type === "vip" ? 3.0 : 2.5,
+  transmission: "Avtomat",
+  fuelType: "Benzin",
+});
 
-const mockRecentListings: VehicleData[] = [
-  {
-    id: "recent-1",
-    title: "Toyota Camry",
-    price: 28000,
-    currency: "₼",
-    location: "Bakı",
-    date: "28.01.2025, 15:45",
-    imageUrl: "/assets/images/example/post2.png",
-    type: "recent",
-    features: [
-      {
-        type: "credit",
-        icon: "/assets/images/percent.svg",
-        tooltip: "Kredit mümkündür",
-        enabled: true,
-      },
-    ] as VehicleFeature[],
-    href: "/neqliyyat/toyota-camry-67890",
-    year: 2021,
-    make: "Toyota",
-    model: "Camry",
-    mileage: 32000,
-    engineSize: 2.5,
-    transmission: "Avtomat",
-    fuelType: "Benzin",
-  },
-  // Add more mock recent listings...
-];
+const mockVipListings: VehicleData[] = Array.from({ length: 8 }, (_, i) =>
+  createMockVehicleData(`vip-${i + 1}`, "vip")
+);
 
-// ✅ FIX: Memoized API functions to prevent recreation on every render
+const mockRecentListings: VehicleData[] = Array.from({ length: 12 }, (_, i) =>
+  createMockVehicleData(`recent-${i + 1}`, "recent")
+);
+
+// Memoized API functions
 const fetchVipListings = async (): Promise<VehicleData[]> => {
-  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 800));
   return mockVipListings;
 };
@@ -87,131 +67,100 @@ const fetchVipListings = async (): Promise<VehicleData[]> => {
 const fetchRecentListings = async (options?: {
   sortBy?: string;
 }): Promise<VehicleData[]> => {
-  // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 600));
 
-  // Sort listings based on options
   let listings = [...mockRecentListings];
 
+  // Apply sorting
   if (options?.sortBy) {
-    listings = sortListings(listings, options.sortBy);
+    listings = listings.sort((a, b) => {
+      switch (options.sortBy) {
+        case "price_asc":
+          return a.price - b.price;
+        case "price_desc":
+          return b.price - a.price;
+        case "year":
+          return (b.year || 0) - (a.year || 0);
+        case "mileage":
+          return (a.mileage || 0) - (b.mileage || 0);
+        case "date":
+        default:
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+    });
   }
 
   return listings;
 };
 
-// ✅ FIX: Stable sort function that doesn't change references
-const sortListings = (
-  listings: VehicleData[],
-  sortBy: string
-): VehicleData[] => {
-  const sortedListings = [...listings];
-
-  switch (sortBy) {
-    case "price_asc":
-      return sortedListings.sort((a, b) => a.price - b.price);
-    case "price_desc":
-      return sortedListings.sort((a, b) => b.price - a.price);
-    case "mileage":
-      return sortedListings.sort((a, b) => (a.mileage || 0) - (b.mileage || 0));
-    case "year":
-      return sortedListings.sort((a, b) => (b.year || 0) - (a.year || 0));
-    case "date":
-    default:
-      // Default is already sorted by date
-      return sortedListings;
-  }
-};
-
-// ✅ FIX: VIP listings hook with stable configuration
+// Hook implementations
 export const useVipListings = (
-  options: UseListingsOptions = {}
+  options?: UseListingsOptions
 ): UseListingsReturn => {
-  // ✅ FIX: Memoize options to prevent unnecessary re-fetches
-  const memoizedOptions = useMemo(
-    () => ({
-      enabled: options.enabled ?? true,
-      staleTime: options.staleTime ?? 5 * 60 * 1000,
-    }),
-    [options.enabled, options.staleTime]
-  );
-
   const {
-    data = [],
+    data: listings = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["vipListings"], // ✅ FIX: Stable query key
+    queryKey: ["listings", "vip"],
     queryFn: fetchVipListings,
-    enabled: memoizedOptions.enabled,
-    staleTime: memoizedOptions.staleTime,
-    // ✅ FIX: Add refetchOnWindowFocus: false to prevent unnecessary refetches
-    refetchOnWindowFocus: false,
-    // ✅ FIX: Add retry configuration
-    retry: 2,
-    retryDelay: 1000,
+    enabled: options?.enabled ?? true,
+    staleTime: options?.staleTime ?? 5 * 60 * 1000,
   });
 
-  // ✅ FIX: Memoize return object to prevent unnecessary re-renders
-  return useMemo(
-    () => ({
-      listings: data,
-      isLoading,
-      error: error as Error | null,
-      refetch,
-    }),
-    [data, isLoading, error, refetch]
-  );
+  return {
+    listings,
+    isLoading,
+    error: error as Error | null,
+    refetch,
+  };
 };
 
-// ✅ FIX: Recent listings hook with stable configuration
 export const useRecentListings = (
-  options: UseListingsOptions = {}
+  options?: UseListingsOptions
 ): UseListingsReturn => {
-  // ✅ FIX: Memoize options and provide stable defaults
-  const memoizedOptions = useMemo(
-    () => ({
-      enabled: options.enabled ?? true,
-      staleTime: options.staleTime ?? 5 * 60 * 1000,
-      sortBy: options.sortBy ?? "date",
-    }),
-    [options.enabled, options.staleTime, options.sortBy]
-  );
+  const sortBy = options?.sortBy;
 
   const {
-    data = [],
+    data: listings = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
-    // ✅ FIX: Include sortBy in query key for proper cache invalidation
-    queryKey: ["recentListings", memoizedOptions.sortBy],
-    queryFn: () => fetchRecentListings({ sortBy: memoizedOptions.sortBy }),
-    enabled: memoizedOptions.enabled,
-    staleTime: memoizedOptions.staleTime,
-    // ✅ FIX: Prevent unnecessary refetches
-    refetchOnWindowFocus: false,
-    retry: 2,
-    retryDelay: 1000,
+    queryKey: ["listings", "recent", sortBy],
+    queryFn: () => fetchRecentListings({ sortBy }),
+    enabled: options?.enabled ?? true,
+    staleTime: options?.staleTime ?? 5 * 60 * 1000,
   });
 
-  // ✅ FIX: Memoize return object
-  return useMemo(
-    () => ({
-      listings: data,
-      isLoading,
-      error: error as Error | null,
-      refetch,
-    }),
-    [data, isLoading, error, refetch]
-  );
+  return {
+    listings,
+    isLoading,
+    error: error as Error | null,
+    refetch,
+  };
 };
 
-// ✅ FIX: Export stable object to prevent import issues
-const useListingsHooks = {
-  useVipListings,
-  useRecentListings,
-};
+export const usePremiumListings = (
+  options?: UseListingsOptions
+): UseListingsReturn => {
+  const {
+    data: listings = [],
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["listings", "premium"],
+    queryFn: fetchVipListings, // Reuse for now
+    enabled: options?.enabled ?? true,
+    staleTime: options?.staleTime ?? 5 * 60 * 1000,
+  });
 
-export default useListingsHooks;
+  return {
+    listings,
+    isLoading,
+    error: error as Error | null,
+    refetch,
+  };
+};

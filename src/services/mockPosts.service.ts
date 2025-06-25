@@ -1,27 +1,30 @@
-// src/services/mockPosts.service.ts
-import { VehicleData, VehicleFeature } from "@/components/Listings/VehicleCard";
+// src/services/mockPosts.service.ts - FIXED VERSION
+import type { Post, PostFeature, VehiclePost } from "@/types/post.types";
 
-// Mock features
-const mockFeatures: VehicleFeature[] = [
-  {
-    type: "barter",
-    icon: "/assets/images/barter.svg",
-    tooltip: "Barter mümkündür",
-    enabled: true,
-  },
-  {
-    type: "credit",
-    icon: "/assets/images/percent.svg",
-    tooltip: "Kredit mümkündür",
-    enabled: true,
-  },
+// ✅ FIX: Use unified Post types instead of separate VehicleData
+const createPostFeature = (
+  type: "barter" | "credit",
+  icon: string,
+  tooltip: string,
+  enabled: boolean = true
+): PostFeature => ({
+  type,
+  icon,
+  tooltip,
+  enabled,
+});
+
+// Mock features using proper types
+const mockFeatures: PostFeature[] = [
+  createPostFeature("barter", "/assets/images/barter.svg", "Barter mümkündür"),
+  createPostFeature("credit", "/assets/images/percent.svg", "Kredit mümkündür"),
 ];
 
-// Generate mock vehicle data
-const generateMockVehicle = (
+// Generate mock vehicle post data
+const generateMockVehiclePost = (
   id: string,
   type: "vip" | "premium" | "recent"
-): VehicleData => {
+): VehiclePost => {
   const makes = [
     "Mercedes-Benz",
     "BMW",
@@ -34,6 +37,7 @@ const generateMockVehicle = (
     "Volkswagen",
     "Nissan",
   ];
+
   const models = {
     "Mercedes-Benz": ["S 500", "E 200", "C 180", "GLE 450", "G 63 AMG"],
     BMW: ["X5", "X6", "X7", "7 Series", "5 Series"],
@@ -52,13 +56,11 @@ const generateMockVehicle = (
   const engineSizes = [1.5, 1.6, 2.0, 2.5, 3.0, 3.5, 4.0, 4.4];
   const mileages = [0, 5000, 10000, 15000, 20000, 30000, 40000, 50000, 60000];
   const transmissions = ["Avtomat", "Mexaniki", "Robotlaşdırılmış"];
-  const fuelTypes = ["Benzin", "Dizel", "Hibrid", "Elektrik", "LPG"];
+  const fuelTypes = ["Benzin", "Dizel", "Elektrik", "Hibrid"];
 
-  const randomIndex = Math.floor(Math.random() * 10);
-  const make = makes[randomIndex % makes.length];
-  const modelOptions = models[make as keyof typeof models] || models["Toyota"];
-  const model = modelOptions[Math.floor(Math.random() * modelOptions.length)];
-
+  const make = makes[Math.floor(Math.random() * makes.length)];
+  const modelList = models[make as keyof typeof models];
+  const model = modelList[Math.floor(Math.random() * modelList.length)];
   const year = years[Math.floor(Math.random() * years.length)];
   const engineSize =
     engineSizes[Math.floor(Math.random() * engineSizes.length)];
@@ -67,47 +69,36 @@ const generateMockVehicle = (
     transmissions[Math.floor(Math.random() * transmissions.length)];
   const fuelType = fuelTypes[Math.floor(Math.random() * fuelTypes.length)];
 
-  // Price varies by type
-  let price = 0;
-  if (type === "vip") {
-    price = 80000 + Math.floor(Math.random() * 70000);
-  } else if (type === "premium") {
-    price = 50000 + Math.floor(Math.random() * 40000);
-  } else {
-    price = 20000 + Math.floor(Math.random() * 30000);
-  }
+  // Random features (0-2 features)
+  const featureCount = Math.floor(Math.random() * 3);
+  const vehicleFeatures = mockFeatures
+    .sort(() => 0.5 - Math.random())
+    .slice(0, featureCount);
 
-  // Generate subtitle for VIP listings
-  let subtitle = undefined;
-  if (type === "vip") {
-    subtitle = `${year}, ${engineSize} L, ${mileage.toLocaleString()} km`;
-  }
+  const basePrice =
+    type === "vip"
+      ? 45000 + Math.random() * 100000
+      : type === "premium"
+      ? 25000 + Math.random() * 50000
+      : 15000 + Math.random() * 30000;
 
-  // Generate features
-  const hasCredit = Math.random() > 0.5;
-  const hasBarter = Math.random() > 0.7;
-  const vehicleFeatures = [];
-
-  if (hasCredit) {
-    vehicleFeatures.push(mockFeatures[1]); // Credit
-  }
-
-  if (hasBarter) {
-    vehicleFeatures.push(mockFeatures[0]); // Barter
-  }
+  const subtitle =
+    type === "vip"
+      ? `${year}, ${engineSize} L, ${mileage.toLocaleString()} km`
+      : undefined;
 
   return {
-    id: `${type}-${id}`,
+    id,
     title: `${make} ${model}`,
     subtitle,
-    price,
+    price: Math.round(basePrice),
     currency: "₼",
     location: locations[Math.floor(Math.random() * locations.length)],
-    date: `${Math.floor(Math.random() * 28) + 1}.${
-      Math.floor(Math.random() * 12) + 1
-    }.2025, ${Math.floor(Math.random() * 24)}:${Math.floor(
-      Math.random() * 60
-    )}`,
+    date: `${Math.floor(Math.random() * 28) + 1}.01.2025, ${Math.floor(
+      Math.random() * 24
+    )}:${Math.floor(Math.random() * 60)
+      .toString()
+      .padStart(2, "0")}`,
     imageUrl: "/assets/images/example/post2.png",
     type,
     features: vehicleFeatures,
@@ -126,26 +117,43 @@ const generateMockVehicle = (
   };
 };
 
-// Mock service
+// ✅ FIX: Mock service now returns proper Post[] types
 export class MockPostsService {
   // Get VIP posts
-  static getVipPosts(count: number = 10): VehicleData[] {
+  static getVipPosts(count: number = 10): Post[] {
     return Array.from({ length: count }, (_, i) =>
-      generateMockVehicle(`vip-${i + 1}`, "vip")
+      generateMockVehiclePost(`vip-${i + 1}`, "vip")
     );
   }
 
   // Get recent posts
-  static getRecentPosts(count: number = 20): VehicleData[] {
-    return Array.from({ length: count }, (_, i) =>
-      generateMockVehicle(`recent-${i + 1}`, "recent")
+  static getRecentPosts(count: number = 20, sortBy?: string): Post[] {
+    const posts = Array.from({ length: count }, (_, i) =>
+      generateMockVehiclePost(`recent-${i + 1}`, "recent")
     );
+
+    // Simple sorting implementation
+    if (sortBy) {
+      return posts.sort((a, b) => {
+        switch (sortBy) {
+          case "price_asc":
+            return a.price - b.price;
+          case "price_desc":
+            return b.price - a.price;
+          case "date":
+          default:
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+      });
+    }
+
+    return posts;
   }
 
   // Get premium posts
-  static getPremiumPosts(count: number = 15): VehicleData[] {
+  static getPremiumPosts(count: number = 15): Post[] {
     return Array.from({ length: count }, (_, i) =>
-      generateMockVehicle(`premium-${i + 1}`, "premium")
+      generateMockVehiclePost(`premium-${i + 1}`, "premium")
     );
   }
 
@@ -153,156 +161,67 @@ export class MockPostsService {
   static getFilteredPosts(
     filters: Record<string, any>,
     count: number = 20
-  ): VehicleData[] {
-    // Create a base set of vehicles
-    const vehicles = [
+  ): Post[] {
+    const posts = [
       ...this.getVipPosts(Math.floor(count * 0.2)),
       ...this.getPremiumPosts(Math.floor(count * 0.3)),
       ...this.getRecentPosts(Math.floor(count * 0.5)),
     ];
 
     // Apply filters (simplified implementation)
-    let filteredVehicles = [...vehicles];
+    let filteredPosts = [...posts];
 
     // Apply make filter
     if (filters.make) {
-      filteredVehicles = filteredVehicles.filter(
-        (v) => v.make && v.make.toLowerCase() === filters.make.toLowerCase()
+      filteredPosts = filteredPosts.filter(
+        (p) =>
+          (p as VehiclePost).make &&
+          (p as VehiclePost)
+            .make!.toLowerCase()
+            .includes(filters.make.toLowerCase())
       );
     }
 
-    // Apply model filter
-    if (filters.model) {
-      filteredVehicles = filteredVehicles.filter(
-        (v) => v.model && v.model.toLowerCase() === filters.model.toLowerCase()
-      );
-    }
-
-    // Apply price range filters
+    // Apply price range filter
     if (filters.minPrice) {
-      filteredVehicles = filteredVehicles.filter(
-        (v) => v.price >= filters.minPrice
-      );
+      filteredPosts = filteredPosts.filter((p) => p.price >= filters.minPrice);
     }
-
     if (filters.maxPrice) {
-      filteredVehicles = filteredVehicles.filter(
-        (v) => v.price <= filters.maxPrice
-      );
-    }
-
-    // Apply year range filters
-    if (filters.minYear) {
-      filteredVehicles = filteredVehicles.filter(
-        (v) => v.year && v.year >= filters.minYear
-      );
-    }
-
-    if (filters.maxYear) {
-      filteredVehicles = filteredVehicles.filter(
-        (v) => v.year && v.year <= filters.maxYear
-      );
+      filteredPosts = filteredPosts.filter((p) => p.price <= filters.maxPrice);
     }
 
     // Apply sorting
     if (filters.sortBy) {
-      switch (filters.sortBy) {
-        case "price_asc":
-          filteredVehicles.sort((a, b) => a.price - b.price);
-          break;
-        case "price_desc":
-          filteredVehicles.sort((a, b) => b.price - a.price);
-          break;
-        case "year":
-          filteredVehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
-          break;
-        case "mileage":
-          filteredVehicles.sort((a, b) => (a.mileage || 0) - (b.mileage || 0));
-          break;
-        case "date":
-        default:
-          // Already sorted by date
-          break;
-      }
+      filteredPosts = filteredPosts.sort((a, b) => {
+        switch (filters.sortBy) {
+          case "price_asc":
+            return a.price - b.price;
+          case "price_desc":
+            return b.price - a.price;
+          case "year":
+            const yearA = (a as VehiclePost).year || 0;
+            const yearB = (b as VehiclePost).year || 0;
+            return yearB - yearA;
+          case "mileage":
+            const mileageA = (a as VehiclePost).mileage || 0;
+            const mileageB = (b as VehiclePost).mileage || 0;
+            return mileageA - mileageB;
+          case "date":
+          default:
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+      });
     }
 
-    // Ensure we don't return more than requested
-    return filteredVehicles.slice(0, count);
+    return filteredPosts.slice(0, count);
   }
 
   // Async versions for React Query
-  static async getVipPostsAsync(
-    count: number = 10,
-    sortBy?: string
-  ): Promise<VehicleData[]> {
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    const posts = this.getVipPosts(count);
-
-    if (sortBy) {
-      return this.sortPosts(posts, sortBy);
-    }
-
-    return posts;
-  }
-
-  static async getRecentPostsAsync(
-    count: number = 20,
-    sortBy?: string
-  ): Promise<VehicleData[]> {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    const posts = this.getRecentPosts(count);
-
-    if (sortBy) {
-      return this.sortPosts(posts, sortBy);
-    }
-
-    return posts;
-  }
-
-  static async getPremiumPostsAsync(
-    count: number = 15,
-    sortBy?: string
-  ): Promise<VehicleData[]> {
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    const posts = this.getPremiumPosts(count);
-
-    if (sortBy) {
-      return this.sortPosts(posts, sortBy);
-    }
-
-    return posts;
-  }
-
   static async getFilteredPostsAsync(
     filters: Record<string, any>,
     count: number = 20
-  ): Promise<VehicleData[]> {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  ): Promise<Post[]> {
+    await new Promise((resolve) => setTimeout(resolve, 800));
     return this.getFilteredPosts(filters, count);
   }
-
-  // Helper method for sorting
-  private static sortPosts(
-    posts: VehicleData[],
-    sortBy: string
-  ): VehicleData[] {
-    const sortedPosts = [...posts];
-
-    switch (sortBy) {
-      case "price_asc":
-        return sortedPosts.sort((a, b) => a.price - b.price);
-      case "price_desc":
-        return sortedPosts.sort((a, b) => b.price - a.price);
-      case "year":
-        return sortedPosts.sort((a, b) => (b.year || 0) - (a.year || 0));
-      case "mileage":
-        return sortedPosts.sort((a, b) => (a.mileage || 0) - (b.mileage || 0));
-      case "date":
-      default:
-        // Already sorted by date
-        return sortedPosts;
-    }
-  }
 }
-
-export default MockPostsService;

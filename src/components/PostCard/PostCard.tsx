@@ -1,39 +1,11 @@
-// src/components/PostCard/PostCard.tsx
+// src/components/PostCard/PostCard.tsx - UPDATED IMPORTS
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useFavoritesStore } from "@/stores/useFavoritesStore";
+import { useFavoritesStoreHydrated } from "@/stores/useFavoritesStore";
+import type { Post, PostFeature } from "@/types/post.types";
 import styles from "./PostCard.module.scss";
-
-export interface PostFeature {
-  type: "barter" | "credit";
-  icon: string;
-  tooltip: string;
-  enabled: boolean;
-}
-
-export interface Post {
-  id: string;
-  title: string;
-  subtitle?: string; // For VIP posts (e.g., "2020, 4.0 L, 23 000 km")
-  price: number;
-  currency: string;
-  location: string;
-  date: string;
-  imageUrl: string;
-  type: "vip" | "premium" | "recent";
-  features: PostFeature[];
-  href: string;
-  hasVipBadge?: boolean;
-  hasPremiumBadge?: boolean;
-  isStore?: boolean;
-  storeInfo?: {
-    name: string;
-    logo: string;
-    href: string;
-  };
-}
 
 interface PostCardProps {
   post: Post;
@@ -49,9 +21,8 @@ export const PostCard: React.FC<PostCardProps> = ({
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
-  // Get favorites from Zustand store
-  const favorites = useFavoritesStore((state) => state.favorites);
-  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+  // ✅ FIX: Use hydration-safe favorites store
+  const { favorites, toggleFavorite } = useFavoritesStoreHydrated();
   const isFavorite = favorites.includes(post.id);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
@@ -75,7 +46,6 @@ export const PostCard: React.FC<PostCardProps> = ({
   };
 
   const formatDate = (dateString: string) => {
-    // Assuming date format like "28.01.2021, 16:34"
     return dateString;
   };
 

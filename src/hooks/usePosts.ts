@@ -1,12 +1,12 @@
-// src/hooks/usePosts.ts
+// src/hooks/usePosts.ts - FIXED VERSION
 import { useQuery } from "@tanstack/react-query";
-import { Post } from "@/components/PostCard";
+import type { Post } from "@/types/post.types";
 import { MockPostsService } from "@/services/mockPosts.service";
 
 interface UsePostsOptions {
   enabled?: boolean;
   staleTime?: number;
-  sortBy?: string; // Add this property
+  sortBy?: string;
 }
 
 interface UsePostsReturn {
@@ -16,114 +16,68 @@ interface UsePostsReturn {
   refetch: () => void;
 }
 
-export const useVipPosts = (
-  count: number = 20,
-  options: UsePostsOptions = {}
-): UsePostsReturn => {
-  const { enabled = true, staleTime = 5 * 60 * 1000, sortBy } = options;
-
+// VIP Posts hook
+export const useVipPosts = (options?: UsePostsOptions): UsePostsReturn => {
   const {
     data: posts = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["posts", "vip", count, sortBy], // Add sortBy to queryKey
-    queryFn: () => MockPostsService.getVipPostsAsync(count, sortBy),
-    enabled,
-    staleTime,
-    gcTime: 10 * 60 * 1000, // 10 minutes
-    retry: (failureCount, error) => {
-      // Don't retry on 4xx errors
-      if (error && "status" in error && typeof error.status === "number") {
-        if (error.status >= 400 && error.status < 500) {
-          return false;
-        }
-      }
-      return failureCount < 3;
-    },
+    queryKey: ["posts", "vip"],
+    queryFn: () => MockPostsService.getVipPosts(),
+    enabled: options?.enabled ?? true,
+    staleTime: options?.staleTime ?? 5 * 60 * 1000, // 5 minutes
   });
 
   return {
-    posts,
+    posts, // ✅ FIX: Now properly typed as Post[]
     isLoading,
     error: error as Error | null,
     refetch,
   };
 };
 
-export const useRecentPosts = (
-  count: number = 20,
-  options: UsePostsOptions = {}
-): UsePostsReturn => {
-  const { enabled = true, staleTime = 5 * 60 * 1000, sortBy } = options;
-
+// Recent Posts hook
+export const useRecentPosts = (options?: UsePostsOptions): UsePostsReturn => {
   const {
     data: posts = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["posts", "recent", count, sortBy], // Add sortBy to queryKey
-    queryFn: () => MockPostsService.getRecentPostsAsync(count, sortBy),
-    enabled,
-    staleTime,
-    gcTime: 10 * 60 * 1000,
-    retry: (failureCount, error) => {
-      if (error && "status" in error && typeof error.status === "number") {
-        if (error.status >= 400 && error.status < 500) {
-          return false;
-        }
-      }
-      return failureCount < 3;
-    },
+    queryKey: ["posts", "recent", options?.sortBy],
+    queryFn: () => MockPostsService.getRecentPosts(20, options?.sortBy),
+    enabled: options?.enabled ?? true,
+    staleTime: options?.staleTime ?? 5 * 60 * 1000,
   });
 
   return {
-    posts,
+    posts, // ✅ FIX: Now properly typed as Post[]
     isLoading,
     error: error as Error | null,
     refetch,
   };
 };
 
-export const usePremiumPosts = (
-  count: number = 20,
-  options: UsePostsOptions = {}
-): UsePostsReturn => {
-  const { enabled = true, staleTime = 5 * 60 * 1000, sortBy } = options;
-
+// Premium Posts hook
+export const usePremiumPosts = (options?: UsePostsOptions): UsePostsReturn => {
   const {
     data: posts = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["posts", "premium", count, sortBy], // Add sortBy to queryKey
-    queryFn: () => MockPostsService.getPremiumPostsAsync(count, sortBy),
-    enabled,
-    staleTime,
-    gcTime: 10 * 60 * 1000,
-    retry: (failureCount, error) => {
-      if (error && "status" in error && typeof error.status === "number") {
-        if (error.status >= 400 && error.status < 500) {
-          return false;
-        }
-      }
-      return failureCount < 3;
-    },
+    queryKey: ["posts", "premium"],
+    queryFn: () => MockPostsService.getPremiumPosts(),
+    enabled: options?.enabled ?? true,
+    staleTime: options?.staleTime ?? 5 * 60 * 1000,
   });
 
   return {
-    posts,
+    posts, // ✅ FIX: Now properly typed as Post[]
     isLoading,
     error: error as Error | null,
     refetch,
   };
-};
-
-export default {
-  useVipPosts,
-  useRecentPosts,
-  usePremiumPosts,
 };

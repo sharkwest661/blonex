@@ -1,37 +1,13 @@
-// src/types/vehicle.ts - Centralized vehicle types
-export interface VehicleFeature {
-  type: "barter" | "credit" | string; // Allow both specific types and generic strings
-  icon: string;
-  tooltip: string;
-  enabled: boolean;
-}
+// src/types/vehicle.types.ts - UPDATED WITH UNIFIED TYPES
+import type { Post, PostFeature, VehiclePost } from "./post.types";
 
-export interface VehicleData {
-  id: string;
-  title: string;
-  subtitle?: string;
-  price: number;
-  currency: string;
-  location: string;
-  date: string;
-  imageUrl: string;
-  type: "vip" | "premium" | "recent";
-  features: VehicleFeature[];
-  href: string;
-  hasVipBadge?: boolean;
-  hasPremiumBadge?: boolean;
+// ✅ FIX: Use unified feature type
+export type VehicleFeature = PostFeature;
 
-  // Vehicle-specific properties
-  year?: number;
-  make?: string;
-  model?: string;
-  mileage?: number;
-  engineSize?: number;
-  transmission?: string;
-  fuelType?: string;
-}
+// ✅ FIX: Use unified post type extended for vehicles
+export type VehicleData = VehiclePost;
 
-// Export additional vehicle-related types
+// Vehicle-specific enums and types
 export type VehicleType = "vip" | "premium" | "recent";
 export type VehicleCondition = "all" | "new" | "used";
 export type VehicleFuelType =
