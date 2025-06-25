@@ -1,4 +1,4 @@
-// src/hooks/usePosts.ts - FIXED VERSION
+// src/hooks/usePosts.ts - CORRECTED VERSION
 import { useQuery } from "@tanstack/react-query";
 import type { Post } from "@/types/post.types";
 import { MockPostsService } from "@/services/mockPosts.service";
@@ -16,68 +16,115 @@ interface UsePostsReturn {
   refetch: () => void;
 }
 
-// VIP Posts hook
-export const useVipPosts = (options?: UsePostsOptions): UsePostsReturn => {
+// ✅ FIX: Maintain original signatures with count parameter
+export const useVipPosts = (
+  count: number = 20,
+  options: UsePostsOptions = {}
+): UsePostsReturn => {
+  const { enabled = true, staleTime = 5 * 60 * 1000, sortBy } = options;
+
   const {
     data: posts = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["posts", "vip"],
-    queryFn: () => MockPostsService.getVipPosts(),
-    enabled: options?.enabled ?? true,
-    staleTime: options?.staleTime ?? 5 * 60 * 1000, // 5 minutes
+    queryKey: ["posts", "vip", count, sortBy],
+    queryFn: () => MockPostsService.getVipPostsAsync(count, sortBy),
+    enabled,
+    staleTime,
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: (failureCount, error) => {
+      // Don't retry on 4xx errors
+      if (error && "status" in error && typeof error.status === "number") {
+        if (error.status >= 400 && error.status < 500) {
+          return false;
+        }
+      }
+      return failureCount < 3;
+    },
   });
 
   return {
-    posts, // ✅ FIX: Now properly typed as Post[]
+    posts, // ✅ FIX: Now returns Post[] type
     isLoading,
     error: error as Error | null,
     refetch,
   };
 };
 
-// Recent Posts hook
-export const useRecentPosts = (options?: UsePostsOptions): UsePostsReturn => {
+export const useRecentPosts = (
+  count: number = 20,
+  options: UsePostsOptions = {}
+): UsePostsReturn => {
+  const { enabled = true, staleTime = 5 * 60 * 1000, sortBy } = options;
+
   const {
     data: posts = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["posts", "recent", options?.sortBy],
-    queryFn: () => MockPostsService.getRecentPosts(20, options?.sortBy),
-    enabled: options?.enabled ?? true,
-    staleTime: options?.staleTime ?? 5 * 60 * 1000,
+    queryKey: ["posts", "recent", count, sortBy],
+    queryFn: () => MockPostsService.getRecentPostsAsync(count, sortBy),
+    enabled,
+    staleTime,
+    gcTime: 10 * 60 * 1000,
+    retry: (failureCount, error) => {
+      if (error && "status" in error && typeof error.status === "number") {
+        if (error.status >= 400 && error.status < 500) {
+          return false;
+        }
+      }
+      return failureCount < 3;
+    },
   });
 
   return {
-    posts, // ✅ FIX: Now properly typed as Post[]
+    posts, // ✅ FIX: Now returns Post[] type
     isLoading,
     error: error as Error | null,
     refetch,
   };
 };
 
-// Premium Posts hook
-export const usePremiumPosts = (options?: UsePostsOptions): UsePostsReturn => {
+export const usePremiumPosts = (
+  count: number = 20,
+  options: UsePostsOptions = {}
+): UsePostsReturn => {
+  const { enabled = true, staleTime = 5 * 60 * 1000, sortBy } = options;
+
   const {
     data: posts = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["posts", "premium"],
-    queryFn: () => MockPostsService.getPremiumPosts(),
-    enabled: options?.enabled ?? true,
-    staleTime: options?.staleTime ?? 5 * 60 * 1000,
+    queryKey: ["posts", "premium", count, sortBy],
+    queryFn: () => MockPostsService.getPremiumPostsAsync(count, sortBy),
+    enabled,
+    staleTime,
+    gcTime: 10 * 60 * 1000,
+    retry: (failureCount, error) => {
+      if (error && "status" in error && typeof error.status === "number") {
+        if (error.status >= 400 && error.status < 500) {
+          return false;
+        }
+      }
+      return failureCount < 3;
+    },
   });
 
   return {
-    posts, // ✅ FIX: Now properly typed as Post[]
+    posts, // ✅ FIX: Now returns Post[] type
     isLoading,
     error: error as Error | null,
     refetch,
   };
+};
+
+export default {
+  useVipPosts,
+  useRecentPosts,
+  usePremiumPosts,
 };

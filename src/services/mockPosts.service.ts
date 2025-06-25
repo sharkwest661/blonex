@@ -217,6 +217,64 @@ export class MockPostsService {
   }
 
   // Async versions for React Query
+  static async getVipPostsAsync(
+    count: number = 10,
+    sortBy?: string
+  ): Promise<Post[]> {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    let posts = this.getVipPosts(count);
+
+    // Apply sorting if specified
+    if (sortBy) {
+      posts = posts.sort((a, b) => {
+        switch (sortBy) {
+          case "price_asc":
+            return a.price - b.price;
+          case "price_desc":
+            return b.price - a.price;
+          case "date":
+          default:
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+      });
+    }
+
+    return posts;
+  }
+
+  static async getRecentPostsAsync(
+    count: number = 20,
+    sortBy?: string
+  ): Promise<Post[]> {
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    return this.getRecentPosts(count, sortBy);
+  }
+
+  static async getPremiumPostsAsync(
+    count: number = 15,
+    sortBy?: string
+  ): Promise<Post[]> {
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    let posts = this.getPremiumPosts(count);
+
+    // Apply sorting if specified
+    if (sortBy) {
+      posts = posts.sort((a, b) => {
+        switch (sortBy) {
+          case "price_asc":
+            return a.price - b.price;
+          case "price_desc":
+            return b.price - a.price;
+          case "date":
+          default:
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+      });
+    }
+
+    return posts;
+  }
+
   static async getFilteredPostsAsync(
     filters: Record<string, any>,
     count: number = 20
