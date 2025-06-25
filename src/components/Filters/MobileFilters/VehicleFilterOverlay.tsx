@@ -1,4 +1,4 @@
-// src/components/Filters/MobileFilters/VehicleFilterOverlay.tsx
+// ===== 7. src/components/Filters/MobileFilters/VehicleFilterOverlay.tsx =====
 "use client";
 import React, { useState, useCallback } from "react";
 import { X, ChevronDown, Search } from "lucide-react";
@@ -60,12 +60,12 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
       ? modelOptions[make as keyof typeof modelOptions]
       : [];
 
-  // ✅ FIX 1: Handle price input changes with proper clamping
+  // Handle price input changes with proper clamping
   const handlePriceChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
       let value = e.target.value ? parseInt(e.target.value) : null;
 
-      // ✅ Clamp price to be greater than 0
+      // Clamp price to be greater than 0
       if (value !== null && value <= 0) {
         value = 1; // Set minimum price to 1
       }
@@ -92,7 +92,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
     [setFilter]
   );
 
-  // ✅ FIX 2: Handle condition radio buttons properly for mobile
+  // Handle condition radio buttons properly for mobile
   const handleConditionChange = useCallback(
     (conditionValue: VehicleCondition) => {
       setCondition(conditionValue);
@@ -177,6 +177,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                     onChange={(value) => setMake(value)}
                     placeholder="Marka seçin"
                     className={styles.select}
+                    variant="filter"
                   />
                 </div>
                 <div className={styles.filterGroup}>
@@ -195,6 +196,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                     onChange={(value) => setModel(value)}
                     placeholder="Model seçin"
                     className={styles.select}
+                    variant="filter"
                     isDisabled={!make}
                   />
                 </div>
@@ -329,6 +331,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                   onChange={(value) => setFilter("color", value)}
                   placeholder="Rəng seçin"
                   className={styles.select}
+                  variant="filter"
                 />
               </div>
             )}
@@ -367,6 +370,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                   onChange={(value) => setFilter("fuelType", value)}
                   placeholder="Yanacaq növü seçin"
                   className={styles.select}
+                  variant="filter"
                 />
               </div>
             )}
@@ -405,6 +409,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                   onChange={(value) => setFilter("bodyType", value)}
                   placeholder="Ban növü seçin"
                   className={styles.select}
+                  variant="filter"
                 />
               </div>
             )}
@@ -444,6 +449,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                   onChange={(value) => setFilter("transmission", value)}
                   placeholder="Sürətlər qutusu seçin"
                   className={styles.select}
+                  variant="filter"
                 />
               </div>
             )}
@@ -482,6 +488,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                   onChange={(value) => setFilter("city", value)}
                   placeholder="Şəhər seçin"
                   className={styles.select}
+                  variant="filter"
                 />
               </div>
             )}

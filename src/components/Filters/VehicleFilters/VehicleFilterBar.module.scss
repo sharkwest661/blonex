@@ -1,7 +1,7 @@
-// src/components/Filters/VehicleFilters/VehicleFilterBar.module.scss
+/* ===== 9. src/components/Filters/VehicleFilters/VehicleFilterBar.module.scss ===== */
 @import "../../../styles/variables.scss";
 
-.desctopFilters {
+.desktopFilters {
   background-color: $white;
   border-radius: $border-radius;
   padding: 20px;
@@ -19,7 +19,6 @@
   }
 }
 
-// Form group widths
 .formGroup {
   margin-bottom: 15px;
 }
@@ -60,59 +59,16 @@
   }
 }
 
-// ✅ Ensure dFlex utility class exists
 .dFlex {
   display: flex;
 }
 
-// Dropdown styles
 .dropdown {
   width: 100%;
   position: relative;
 }
 
-// ✅ FIX 4: Ensure select dropdowns have proper width and styling
-// Use separate global selectors without nesting
-:global(.react-select__control) {
-  min-height: 44px;
-  border: 1px solid rgba($primary-color, 0.2) !important;
-  border-radius: $border-radius;
-}
-
-:global(.react-select__control:hover) {
-  // ✅ FIX 3: Use primary color hover instead of yellow
-  border-color: rgba($primary-color, 0.4) !important;
-}
-
-:global(.react-select__placeholder) {
-  color: $text-light;
-  font-size: $font-size-base;
-  // ✅ Ensure placeholder text is visible
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-:global(.react-select__single-value) {
-  color: $primary-color;
-  font-size: $font-size-base;
-}
-
-:global(.react-select__menu) {
-  border-radius: $border-radius;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-:global(.react-select__option:hover) {
-  // ✅ FIX 3: Use primary color hover instead of yellow
-  background-color: rgba($primary-color, 0.1) !important;
-  color: $primary-color !important;
-}
-
-:global(.react-select__option--is-selected) {
-  background-color: $primary-color !important;
-  color: $white !important;
-}
+/* NO GLOBAL SELECTORS - All react-select styling handled in CSS-in-JS */
 
 .dropdownGroup {
   display: flex;
@@ -123,7 +79,6 @@
   }
 }
 
-// Input ranges - ✅ Enhanced for better styling and width
 .unersalInputs {
   display: flex;
   gap: 10px;
@@ -131,7 +86,7 @@
   label {
     flex: 1;
     position: relative;
-    min-width: 0; // Allow flex items to shrink
+    min-width: 0;
 
     input {
       width: 100%;
@@ -142,7 +97,6 @@
       padding-bottom: 24px;
       font-size: $font-size-base;
       color: $primary-color;
-      // ✅ FIX 4: Ensure adequate width for placeholder text
       min-width: 120px;
 
       &::placeholder {
@@ -152,19 +106,16 @@
 
       &:focus {
         outline: none;
-        // ✅ FIX 3: Use primary color focus instead of yellow
         border-color: $primary-color;
         box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
       }
 
-      // Remove number input arrows on webkit browsers
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
       }
 
-      // Remove number input arrows on Firefox
       &[type="number"] {
         -moz-appearance: textfield;
       }
@@ -181,7 +132,6 @@
   }
 }
 
-// Radio button group for car condition
 .forCar {
   display: flex;
   align-items: center;
@@ -201,7 +151,6 @@
 
     input[type="radio"] {
       margin-right: 8px;
-      // ✅ FIX 3: Use primary color for radio buttons
       accent-color: $primary-color;
       cursor: pointer;
 
@@ -218,14 +167,12 @@
       cursor: pointer;
 
       &:hover {
-        // ✅ FIX 3: Use primary color hover
         color: $primary-color;
       }
     }
   }
 }
 
-// Checkbox group for credit/barter
 .forCredit {
   display: flex;
   width: 100%;
@@ -246,7 +193,6 @@
 
     input[type="checkbox"] {
       margin-right: 8px;
-      // ✅ FIX 3: Use primary color for checkboxes
       accent-color: $primary-color;
       cursor: pointer;
 
@@ -263,37 +209,22 @@
       cursor: pointer;
 
       &:hover {
-        // ✅ FIX 3: Use primary color hover
         color: $primary-color;
       }
     }
   }
 }
 
-// Additional filters section
-.additionalFilters {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid rgba($primary-color, 0.1);
-}
-
-.additionalChekingsHero {
-  width: 100%;
-}
-
-// Individual filter sections in additional filters
 .barter,
 .kredit {
   display: flex;
   align-items: center;
 }
 
-// Responsive improvements
 @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
   .unersalInputs {
     label {
       input {
-        // Reduce minimum width on smaller screens but keep readable
         min-width: 100px;
         font-size: $font-size-small;
       }

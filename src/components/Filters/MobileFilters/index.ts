@@ -1,4 +1,3 @@
-// src/components/Filters/MobileFilters/index.ts
-// ✅ FIX 5: Renamed MobileFilterOverlay to VehicleFilterOverlay to be more specific
+/* ===== 12. src/components/Filters/MobileFilters/index.ts ===== */
 export { default as VehicleFilterOverlay } from "./VehicleFilterOverlay";
 export { default as MobileFilterTrigger } from "./MobileFilterTrigger";

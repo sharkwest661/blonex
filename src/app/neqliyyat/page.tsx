@@ -1,4 +1,4 @@
-// src/app/neqliyyat/page.tsx
+/* ===== 13. src/app/neqliyyat/page.tsx ===== */
 "use client";
 import React, { useState, useCallback, useMemo } from "react";
 import { Container } from "@/components/Layout/Container";
@@ -6,7 +6,7 @@ import { DateSortFilter } from "@/components/Filters/DateSortFilter";
 import { VehicleFilterBar } from "@/components/Filters/VehicleFilters";
 import {
   MobileFilterTrigger,
-  VehicleFilterOverlay, // ✅ FIX 5: Updated import name
+  VehicleFilterOverlay,
 } from "@/components/Filters/MobileFilters";
 import { VehicleListingsSection } from "@/components/Listings/VehicleListingsSection";
 import { FullWidthBanner } from "@/components/FullWidthBanner";
@@ -17,15 +17,12 @@ import BrandsGrid from "@/components/Brands";
 import type { VehicleData } from "@/types/vehicle.types";
 
 export default function NeqliyyatPage() {
-  // Mobile filter overlay state
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  // Get store values directly without selectors to prevent infinite loops
   const sortBy = useVehicleFilterStore((state) => state.sortBy);
   const setSortBy = useVehicleFilterStore((state) => state.setSortBy);
   const resetFilters = useVehicleFilterStore((state) => state.resetFilters);
 
-  // Memoize the sort options to prevent recreation on every render
   const sortOptions = useMemo(
     () => [
       { id: "date", label: "Tarixə görə" },
@@ -37,7 +34,6 @@ export default function NeqliyyatPage() {
     []
   );
 
-  // Fetch VIP and recent listings using our custom hooks
   const { listings: vipListings, isLoading: vipLoading } = useVipListings();
   const {
     listings: recentListings,
@@ -45,40 +41,29 @@ export default function NeqliyyatPage() {
     refetch: refetchListings,
   } = useRecentListings({ sortBy });
 
-  // Use useCallback and prevent unnecessary refetch calls
   const handleSortChange = useCallback(
     (sortId: string) => {
-      // The setSortBy function from the store is already stable and will only update if different
       setSortBy(sortId);
-      // Remove the immediate refetch call as useRecentListings will automatically
-      // refetch when sortBy changes due to the dependency in its queryKey
     },
     [setSortBy]
   );
 
-  // Memoize event handlers to prevent unnecessary re-renders
   const openMobileFilter = useCallback(() => setIsMobileFilterOpen(true), []);
   const closeMobileFilter = useCallback(() => setIsMobileFilterOpen(false), []);
 
-  // Remove the refetch call from handleFilterApply to prevent loops
   const handleFilterApply = useCallback(() => {
-    // The useRecentListings hook will automatically refetch when filters change
-    // due to its query dependencies, so we don't need to manually call refetch
     closeMobileFilter();
   }, [closeMobileFilter]);
 
   return (
     <main>
       <Container>
-        {/* Page Title */}
         <h1 className={styles.pageTitle}>Nəqliyyat</h1>
 
-        {/* Desktop Filter Bar */}
         <div className={styles.desktopFilters}>
           <VehicleFilterBar />
         </div>
 
-        {/* Mobile Filter & Sort Buttons */}
         <div className={styles.mobileFilters}>
           <div className={styles.filters767}>
             <MobileFilterTrigger onClick={openMobileFilter} />
@@ -90,19 +75,16 @@ export default function NeqliyyatPage() {
           </div>
         </div>
 
-        {/* ✅ FIX 5: Updated component name */}
         <VehicleFilterOverlay
           isOpen={isMobileFilterOpen}
           onClose={closeMobileFilter}
           onApply={handleFilterApply}
         />
 
-        {/* Brands Section */}
         <section className={styles.brandsSection}>
           <BrandsGrid />
         </section>
 
-        {/* VIP Listings Section */}
         <VehicleListingsSection
           title="VIP Elanlar"
           listings={vipListings}
@@ -113,14 +95,12 @@ export default function NeqliyyatPage() {
           className={styles.listingsSection}
         />
 
-        {/* Banner Ad */}
         <FullWidthBanner
           imageSrc="/assets/images/example/banner2.png"
           altText="Full Width Advertisement"
           href="#"
         />
 
-        {/* Recent Listings Section */}
         <VehicleListingsSection
           title="Yeni elanlar"
           listings={recentListings}

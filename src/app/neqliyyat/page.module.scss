@@ -1,3 +1,4 @@
+/* ===== 14. src/app/neqliyyat/page.module.scss ===== */
 @import "../../styles/variables.scss";
 
 .pageTitle {
@@ -12,7 +13,6 @@
   }
 }
 
-// Desktop Filters
 .desktopFilters {
   display: block;
   margin-bottom: 30px;
@@ -22,7 +22,6 @@
   }
 }
 
-// Mobile Filters
 .mobileFilters {
   display: none;
 
@@ -72,7 +71,6 @@
   }
 }
 
-// Brands Section
 .brandsSection {
   margin-bottom: 30px;
 
@@ -81,8 +79,7 @@
   }
 }
 
-// Content Sections
-.section {
+.listingsSection {
   margin-bottom: 40px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {

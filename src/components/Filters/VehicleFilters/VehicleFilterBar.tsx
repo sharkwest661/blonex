@@ -1,4 +1,4 @@
-// src/components/Filters/VehicleFilters/VehicleFilterBar.tsx
+// ===== 8. src/components/Filters/VehicleFilters/VehicleFilterBar.tsx =====
 "use client";
 import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -20,9 +20,7 @@ interface VehicleFilterBarProps {
   className?: string;
 }
 
-export const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({
-  className,
-}) => {
+const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({ className }) => {
   const router = useRouter();
 
   // Get filter values from store
@@ -58,12 +56,12 @@ export const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({
       ? modelOptions[make as keyof typeof modelOptions]
       : [];
 
-  // ✅ FIX 1: Handle price input changes with proper clamping
+  // Handle price input changes with proper clamping
   const handlePriceChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
       let value = e.target.value ? parseInt(e.target.value) : null;
 
-      // ✅ Clamp price to be greater than 0
+      // Clamp price to be greater than 0
       if (value !== null && value <= 0) {
         value = 1; // Set minimum price to 1
       }
@@ -130,14 +128,12 @@ export const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({
 
   // Handle search button click
   const handleSearch = useCallback(() => {
-    // In a real app, this would navigate to the filtered search results
-    // For now, we'll just log the filters
     console.log("Search with filters:", useVehicleFilterStore.getState());
     router.push("/neqliyyat/search");
   }, [router]);
 
   return (
-    <div className={`${styles.desctopFilters} ${className || ""}`}>
+    <div className={`${styles.desktopFilters} ${className || ""}`}>
       {/* Row 1 - Always visible filters */}
       <div className={styles.filterRow}>
         {/* Make Dropdown */}
@@ -458,3 +454,5 @@ export const VehicleFilterBar: React.FC<VehicleFilterBarProps> = ({
     </div>
   );
 };
+
+export default VehicleFilterBar;

@@ -1,4 +1,4 @@
-// src/components/UI/Select/Select.tsx
+// ===== 3. src/components/UI/Select/Select.tsx =====
 import React from "react";
 import ReactSelect, {
   StylesConfig,
@@ -48,7 +48,7 @@ export const Select: React.FC<SelectProps> = ({
     return defaultValue;
   }, [defaultValue, options]);
 
-  // ✅ Complete CSS-in-JS styling - no more global selectors needed
+  // Complete CSS-in-JS styling - NO global selectors needed
   const customStyles: StylesConfig = {
     control: (provided, state) => ({
       ...provided,
@@ -60,11 +60,12 @@ export const Select: React.FC<SelectProps> = ({
         : "1px solid rgba(1, 63, 68, 0.2)",
       borderRadius: "10px",
       boxShadow: state.isFocused ? "0 0 0 2px rgba(1, 63, 68, 0.2)" : "none",
+      backgroundColor: "#ffffff",
+      cursor: "pointer",
+      transition: "all 0.2s ease",
       "&:hover": {
         borderColor: "rgba(1, 63, 68, 0.4)",
       },
-      backgroundColor: "#ffffff",
-      cursor: "pointer",
     }),
     indicatorSeparator: () => ({
       display: "none",
@@ -97,6 +98,7 @@ export const Select: React.FC<SelectProps> = ({
       cursor: "pointer",
       fontSize: "1rem",
       fontWeight: state.isSelected ? "500" : "400",
+      transition: "all 0.2s ease",
       "&:active": {
         backgroundColor: state.isSelected ? "#013f44" : "rgba(1, 63, 68, 0.2)",
       },
@@ -119,14 +121,22 @@ export const Select: React.FC<SelectProps> = ({
       ...provided,
       padding: variant === "sort" ? "0 8px" : "2px 8px",
       fontSize:
-        variant === "sort" && window.innerWidth <= 768 ? "0.75rem" : "1rem",
+        variant === "sort" &&
+        typeof window !== "undefined" &&
+        window.innerWidth <= 768
+          ? "0.75rem"
+          : "1rem",
     }),
     singleValue: (provided) => ({
       ...provided,
       color: "#013f44",
       fontWeight: "500",
       fontSize:
-        variant === "sort" && window.innerWidth <= 768 ? "0.75rem" : "1rem",
+        variant === "sort" &&
+        typeof window !== "undefined" &&
+        window.innerWidth <= 768
+          ? "0.75rem"
+          : "1rem",
     }),
     placeholder: (provided) => ({
       ...provided,

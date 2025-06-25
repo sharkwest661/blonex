@@ -1,4 +1,4 @@
-// src/components/UI/Select/Select.module.scss
+/* ===== 4. src/components/UI/Select/Select.module.scss ===== */
 @import "../../../styles/variables.scss";
 
 .select {
@@ -8,7 +8,6 @@
   color: $primary-color;
 }
 
-// Sort variant for section titles
 .select--sort {
   min-width: 150px;
 
@@ -17,12 +16,11 @@
   }
 }
 
-// Filter variant for filter sections
 .select--filter {
   width: 100%;
 }
 
-// ✅ No more global selectors - all react-select styling moved to CSS-in-JS
+/* NO GLOBAL SELECTORS - All styling handled in CSS-in-JS */
 
 @keyframes dropdownAnimation {
   from {

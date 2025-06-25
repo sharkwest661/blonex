@@ -1,6 +1,4 @@
-// src/constants/vehicleOptions.ts
-// Vehicle filter options data - centralized for consistency
-
+// ===== 1. src/constants/vehicleOptions.ts =====
 export interface OptionItem {
   value: string;
   label: string;
@@ -161,60 +159,3 @@ export const cityOptions: OptionItem[] = [
   { value: "yevlakh", label: "Yevlax" },
   { value: "khirdalan", label: "Xırdalan" },
 ];
-
-// Engine size options (in cubic centimeters)
-export const engineSizeOptions: OptionItem[] = [
-  { value: "1000", label: "1.0L" },
-  { value: "1200", label: "1.2L" },
-  { value: "1400", label: "1.4L" },
-  { value: "1500", label: "1.5L" },
-  { value: "1600", label: "1.6L" },
-  { value: "1800", label: "1.8L" },
-  { value: "2000", label: "2.0L" },
-  { value: "2500", label: "2.5L" },
-  { value: "3000", label: "3.0L" },
-  { value: "3500", label: "3.5L" },
-  { value: "4000", label: "4.0L" },
-  { value: "5000", label: "5.0L+" },
-];
-
-// Year options (from current year back to 1990)
-export const yearOptions: OptionItem[] = Array.from({ length: 35 }, (_, i) => {
-  const year = new Date().getFullYear() - i;
-  return { value: String(year), label: String(year) };
-});
-
-// Mileage range options (for quick selection)
-export const mileageRangeOptions: OptionItem[] = [
-  { value: "0-10000", label: "0 - 10,000 km" },
-  { value: "10000-50000", label: "10,000 - 50,000 km" },
-  { value: "50000-100000", label: "50,000 - 100,000 km" },
-  { value: "100000-200000", label: "100,000 - 200,000 km" },
-  { value: "200000+", label: "200,000+ km" },
-];
-
-// Price range options (for quick selection, in AZN)
-export const priceRangeOptions: OptionItem[] = [
-  { value: "0-5000", label: "0 - 5,000 AZN" },
-  { value: "5000-10000", label: "5,000 - 10,000 AZN" },
-  { value: "10000-20000", label: "10,000 - 20,000 AZN" },
-  { value: "20000-50000", label: "20,000 - 50,000 AZN" },
-  { value: "50000-100000", label: "50,000 - 100,000 AZN" },
-  { value: "100000+", label: "100,000+ AZN" },
-];
-
-// Helper function to get models for a specific make
-export const getModelsForMake = (make: string): OptionItem[] => {
-  return modelOptions[make] || [];
-};
-
-// Helper function to find option by value
-export const findOptionByValue = (options: OptionItem[], value: string): OptionItem | undefined => {
-  return options.find(option => option.value === value);
-};
-
-// Helper function to get option label by value
-export const getOptionLabel = (options: OptionItem[], value: string): string => {
-  const option = findOptionByValue(options, value);
-  return option ? option.label : value;
-};
