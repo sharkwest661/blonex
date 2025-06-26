@@ -14,7 +14,6 @@ import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { useVipListings, useRecentListings } from "@/hooks/useListings";
 import styles from "./page.module.scss";
 import { useVehicleFilterStoreHydrated } from "@/stores/useVehicleFilterStore";
-import type { VehicleData } from "@/types/vehicle.types";
 
 // ✅ FIX: Dynamically import BrandsGrid to prevent SSR issues
 const BrandsGrid = dynamic(() => import("@/components/Brands"), {

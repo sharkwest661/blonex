@@ -1,47 +1,36 @@
-// Wishlist Modal Component - src/components/Modals/WishlistModal/WishlistModal.tsx
+// Updated Wishlist Modal Component - src/components/Modals/WishlistModal/WishlistModal.tsx
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { X, Heart, Trash2, Share2, Eye } from "lucide-react";
+import { useFavoritesStoreHydrated } from "@/stores/useFavoritesStore";
 import styles from "./WishlistModal.module.scss";
 
-interface WishlistItem {
-  id: string;
-  title: string;
-  price: string;
-  currency: string;
-  location: string;
-  date: string;
-  image: string;
-  href: string;
-  isVip?: boolean;
-  isPremium?: boolean;
-}
-
+// ✅ SIMPLIFIED: Use your existing favorites structure
 interface WishlistModalProps {
   isOpen: boolean;
   onClose: () => void;
-  items: WishlistItem[];
-  onRemoveItem: (id: string) => void;
-  onClearAll: () => void;
+  // Remove items prop since we get them from store
+  // onRemoveItem and onClearAll are handled by store
 }
 
 export const WishlistModal: React.FC<WishlistModalProps> = ({
   isOpen,
   onClose,
-  items,
-  onRemoveItem,
-  onClearAll,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  // ✅ FIXED: Use your existing favorites store
+  const { favorites, removeFavorite, clearFavorites } =
+    useFavoritesStoreHydrated();
 
   if (!isOpen) return null;
 
   const handleRemoveItem = async (id: string) => {
     setIsLoading(true);
     try {
-      onRemoveItem(id);
+      removeFavorite(id);
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +39,7 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
   const handleClearAll = async () => {
     setIsLoading(true);
     try {
-      onClearAll();
+      clearFavorites();
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +49,7 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
     if (navigator.share) {
       navigator.share({
         title: "Seçdiklərim - Bolbol",
-        text: `${items.length} seçilmiş elan`,
+        text: `${favorites.length} seçilmiş elan`,
         url: window.location.origin + "/sechdiklerim",
       });
     } else {
@@ -77,12 +66,14 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
             <Heart className={styles.heartIcon} size={24} />
             <div>
               <h2 className={styles.modalTitle}>Seçdiklərim</h2>
-              <p className={styles.itemCount}>{items.length} elan seçildi</p>
+              <p className={styles.itemCount}>
+                {favorites.length} elan seçildi
+              </p>
             </div>
           </div>
 
           <div className={styles.headerActions}>
-            {items.length > 0 && (
+            {favorites.length > 0 && (
               <>
                 <button
                   className={styles.shareBtn}
@@ -110,7 +101,7 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
 
         {/* Modal Body */}
         <div className={styles.modalBody}>
-          {items.length === 0 ? (
+          {favorites.length === 0 ? (
             <div className={styles.emptyState}>
               <Heart className={styles.emptyIcon} size={64} />
               <h3>Heç bir elan seçilməyib</h3>
@@ -121,71 +112,28 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
             </div>
           ) : (
             <div className={styles.itemsList}>
-              {items.map((item) => (
-                <div key={item.id} className={styles.wishlistItem}>
+              {/* ✅ SIMPLIFIED: Show favorite IDs for now */}
+              {/* You can enhance this to fetch full post data based on IDs */}
+              {favorites.map((postId) => (
+                <div key={postId} className={styles.wishlistItem}>
                   <div className={styles.itemImage}>
-                    <Link href={item.href} onClick={onClose}>
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        width={120}
-                        height={90}
-                        className={styles.image}
-                      />
-                    </Link>
-
-                    {/* Badges */}
-                    {item.isVip && (
-                      <div className={styles.vipBadge}>
-                        <Image
-                          src="/assets/images/vip-small.svg"
-                          alt="VIP"
-                          width={16}
-                          height={16}
-                        />
-                        VIP
-                      </div>
-                    )}
-                    {item.isPremium && (
-                      <div className={styles.premiumBadge}>
-                        <Image
-                          src="/assets/images/premium-small.svg"
-                          alt="Premium"
-                          width={16}
-                          height={16}
-                        />
-                        Premium
-                      </div>
-                    )}
+                    <div className={styles.image}>
+                      {/* Placeholder - you can fetch actual post data */}
+                      <span>📋</span>
+                    </div>
                   </div>
 
                   <div className={styles.itemContent}>
-                    <Link href={item.href} onClick={onClose}>
-                      <h4 className={styles.itemTitle}>{item.title}</h4>
-                    </Link>
-
-                    <div className={styles.itemPrice}>
-                      {item.price} {item.currency}
-                    </div>
-
+                    <h4 className={styles.itemTitle}>Elan ID: {postId}</h4>
                     <div className={styles.itemMeta}>
-                      <span className={styles.location}>{item.location}</span>
-                      <span className={styles.date}>{item.date}</span>
+                      <span className={styles.location}>Seçilmiş elan</span>
                     </div>
                   </div>
 
                   <div className={styles.itemActions}>
-                    <Link
-                      href={item.href}
-                      className={styles.viewBtn}
-                      onClick={onClose}
-                      title="Elana bax"
-                    >
-                      <Eye size={18} />
-                    </Link>
                     <button
                       className={styles.removeBtn}
-                      onClick={() => handleRemoveItem(item.id)}
+                      onClick={() => handleRemoveItem(postId)}
                       disabled={isLoading}
                       title="Seçdiklərdən çıxar"
                     >
@@ -199,7 +147,7 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        {items.length > 0 && (
+        {favorites.length > 0 && (
           <div className={styles.modalFooter}>
             <p className={styles.footerText}>
               Seçdiyiniz elanlar cihazınızda saxlanılır

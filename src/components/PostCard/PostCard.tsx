@@ -1,121 +1,205 @@
-// src/components/PostCard/PostCard.tsx - UPDATED IMPORTS
+// Performance-Optimized PostCard Component - src/components/PostCard/PostCard.tsx
 "use client";
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
-import { useFavoritesStoreHydrated } from "@/stores/useFavoritesStore";
-import type { Post, PostFeature } from "@/types/post.types";
+import Image from "next/image";
+import { Heart } from "lucide-react";
+import { useWishlist } from "@/hooks/useWishlist";
+import { useModals } from "@/hooks/useModals";
+import { useAuth } from "@/contexts/AuthContext";
 import styles from "./PostCard.module.scss";
 
-interface PostCardProps {
+// ✅ RESTORED: All original interfaces
+export interface PostFeature {
+  icon: string;
+  tooltip: string;
+}
+
+export interface Post {
+  id: string;
+  title: string;
+  subtitle?: string;
+  price: string;
+  currency: string;
+  location: string;
+  date: string;
+  images: string[];
+  href: string;
+  isVip?: boolean;
+  isPremium?: boolean;
+  isStore?: boolean;
+  isPulsed?: boolean;
+  features: PostFeature[];
+  storeInfo?: {
+    name: string;
+    logo: string;
+    href: string;
+  };
+}
+
+export interface PostCardProps {
   post: Post;
   className?: string;
-  onFavoriteToggle?: (postId: string, isFavorite: boolean) => void;
+  variant?: "default" | "vip" | "premium";
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
   post,
   className,
-  onFavoriteToggle,
+  variant = "default",
 }) => {
-  const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
-  // ✅ FIX: Use hydration-safe favorites store
-  const { favorites, toggleFavorite } = useFavoritesStoreHydrated();
-  const isFavorite = favorites.includes(post.id);
+  // ✅ RESTORED: Wishlist and auth integration
+  const { addItem, removeItem, isInWishlist } = useWishlist();
+  const { openLogin } = useModals();
+  const { isAuthenticated } = useAuth();
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleFavorite(post.id);
-    onFavoriteToggle?.(post.id, !isFavorite);
-  };
+  // ✅ RESTORED: Favorite functionality
+  const handleFavoriteClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-  const handleImageLoad = () => {
-    setImageLoading(false);
-  };
+      if (!isAuthenticated) {
+        openLogin();
+        return;
+      }
 
-  const handleImageError = () => {
-    setImageLoading(false);
-    setImageError(true);
-  };
+      const wishlistItem = {
+        id: post.id,
+        title: post.title,
+        price: post.price,
+        currency: post.currency,
+        location: post.location,
+        date: post.date,
+        image: post.images[0] || "/assets/images/placeholder.jpg",
+        href: post.href,
+        isVip: post.isVip,
+        isPremium: post.isPremium,
+      };
 
-  const formatPrice = (price: number, currency: string) => {
-    return `${price.toLocaleString()} ${currency}`;
-  };
+      if (isInWishlist(post.id)) {
+        removeItem(post.id);
+      } else {
+        addItem(wishlistItem);
+      }
+    },
+    [post, isAuthenticated, isInWishlist, addItem, removeItem, openLogin]
+  );
 
+  // ✅ RESTORED: Helper functions
   const formatDate = (dateString: string) => {
-    return dateString;
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) return "Bu gün";
+    if (diffDays === 2) return "Dünən";
+    if (diffDays <= 7) return `${diffDays} gün əvvəl`;
+
+    return date.toLocaleDateString("az-AZ");
   };
 
-  // Determine title class based on post type
+  const formatPrice = (price: string, currency: string) => {
+    return `${price} ${currency}`;
+  };
+
   const getTitleClass = () => {
-    if (post.type === "vip") {
+    if (post.isVip || variant === "vip") {
       return styles.post__title;
     }
     return styles.other_post_title;
   };
 
-  // Determine if should show subtitle (only for VIP)
-  const shouldShowSubtitle = post.type === "vip" && post.subtitle;
+  const shouldShowSubtitle = post.isVip && post.subtitle;
+
+  // ✅ RESTORED: Card classes with all variants
+  const cardClasses = [
+    styles.post__item,
+    post.isPulsed ? styles["post__item--pulsed"] : "",
+    className || "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <div className={`${styles.post__item} ${className || ""}`}>
-      {/* Image Section */}
+    <div className={cardClasses}>
+      {/* ✅ RESTORED: Image Section */}
       <div className={styles.post__img}>
-        {!imageError ? (
-          <Image
-            src={post.imageUrl}
-            alt={post.title}
-            fill
-            sizes="(max-width: 576px) 50vw, (max-width: 767px) 33vw, (max-width: 1024px) 25vw, 20vw"
-            className={styles.post__image}
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-            style={{ objectFit: "cover" }}
-          />
-        ) : (
-          <div className={styles.post__imagePlaceholder}>
-            <span>Şəkil yüklənmədi</span>
-          </div>
-        )}
+        <Link href={post.href}>
+          {!imageError && post.images.length > 0 ? (
+            <Image
+              src={post.images[0]}
+              alt={post.title}
+              width={300}
+              height={225}
+              className={styles.post__image}
+              onError={() => setImageError(true)}
+              loading="lazy"
+            />
+          ) : (
+            <div className={styles.post__imagePlaceholder}>Şəkil yoxdur</div>
+          )}
+        </Link>
 
-        {/* Overlays */}
+        {/* ✅ RESTORED: Overlay Attributes */}
         <div className={styles.post__attributes}>
-          {/* VIP Badge */}
-          {(post.hasVipBadge || post.type === "vip") && (
-            <span
-              className={styles.post__vip}
-              title="VIP elan"
-              aria-label="VIP elan"
-            />
-          )}
+          <div>
+            {/* ✅ RESTORED: VIP Badge */}
+            {post.isVip && (
+              <div className={styles.post__vip}>
+                <Image
+                  src="/assets/images/vip-small.svg"
+                  alt="VIP"
+                  width={16}
+                  height={16}
+                />
+                VIP
+              </div>
+            )}
 
-          {/* Premium Badge */}
-          {(post.hasPremiumBadge || post.type === "vip") && (
-            <span
-              className={styles.post__premium}
-              title="Premium elan"
-              aria-label="Premium elan"
-            />
-          )}
+            {/* ✅ RESTORED: Premium Badge */}
+            {post.isPremium && (
+              <div className={styles.post__premium}>
+                <Image
+                  src="/assets/images/premium-small.svg"
+                  alt="Premium"
+                  width={16}
+                  height={16}
+                />
+                Premium
+              </div>
+            )}
+          </div>
 
-          {/* Favorites Button */}
+          {/* ✅ RESTORED: Favorite Button */}
           <button
-            type="button"
-            className={`${styles.post__favorites} ${
-              isFavorite ? styles.active : ""
+            className={`${styles.post__favorite} ${
+              isInWishlist(post.id) ? styles.active : ""
             }`}
             onClick={handleFavoriteClick}
             aria-label={
-              isFavorite ? "Seçdiklərdən çıxar" : "Seçdiklərə əlavə et"
+              isInWishlist(post.id)
+                ? "Seçdiklərdən çıxar"
+                : "Seçdiklərə əlavə et"
             }
-            title={isFavorite ? "Seçdiklərdən çıxar" : "Seçdiklərə əlavə et"}
-          />
+            title={
+              isInWishlist(post.id)
+                ? "Seçdiklərdən çıxar"
+                : "Seçdiklərə əlavə et"
+            }
+          >
+            <Heart
+              size={20}
+              className={styles.heartIcon}
+              fill={isInWishlist(post.id) ? "currentColor" : "none"}
+            />
+          </button>
         </div>
 
-        {/* Store Info (if applicable) */}
+        {/* ✅ RESTORED: Store Info */}
         {post.isStore && post.storeInfo && (
           <Link
             href={post.storeInfo.href}
@@ -127,41 +211,42 @@ export const PostCard: React.FC<PostCardProps> = ({
               alt={post.storeInfo.name}
               width={16}
               height={16}
+              className={styles.storeIcon}
             />
             <span>{post.storeInfo.name}</span>
           </Link>
         )}
       </div>
 
-      {/* Info Section */}
+      {/* ✅ RESTORED: Info Section */}
       <div className={styles.post__info}>
         <div className={styles.post__content}>
-          {/* Title */}
+          {/* ✅ RESTORED: Title */}
           <Link href={post.href} className={getTitleClass()}>
             {post.title}
           </Link>
 
-          {/* Subtitle (only for VIP) */}
+          {/* ✅ RESTORED: Subtitle (only for VIP) */}
           {shouldShowSubtitle && (
             <Link href={post.href} className={styles.post__title2}>
               {post.subtitle}
             </Link>
           )}
 
-          {/* Meta Info */}
+          {/* ✅ RESTORED: Meta Info */}
           <p className={styles.post__meta}>
             {post.location}, {formatDate(post.date)}
           </p>
         </div>
 
-        {/* Footer */}
+        {/* ✅ RESTORED: Footer */}
         <div className={styles.post__footer}>
-          {/* Price */}
+          {/* ✅ RESTORED: Price */}
           <div className={styles.post__price}>
             {formatPrice(post.price, post.currency)}
           </div>
 
-          {/* Features */}
+          {/* ✅ RESTORED: Features */}
           {post.features.length > 0 && (
             <div className={styles.post__features}>
               {post.features.map((feature, index) => (
@@ -174,8 +259,9 @@ export const PostCard: React.FC<PostCardProps> = ({
                   <Image
                     src={feature.icon}
                     alt={feature.tooltip}
-                    width={20}
-                    height={20}
+                    width={16}
+                    height={16}
+                    className={styles.featureIcon}
                   />
                 </span>
               ))}

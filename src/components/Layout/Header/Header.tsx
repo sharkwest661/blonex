@@ -1,93 +1,160 @@
+// Updated Header Component with Existing Store Integration
 // src/components/Layout/Header/Header.tsx
+
 "use client";
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import Image from "next/image";
+import { Heart, User, Plus } from "lucide-react";
 import { Container } from "@/components/Layout/Container";
-import TopBar from "./TopBar/TopBar";
-import MobileMenu from "./MobileMenu/MobileMenu";
+import { HomeSearch } from "@/components/Home/HomeSearch";
+import { MobileMenu } from "./MobileMenu";
+import { WishlistModal, LoginModal } from "@/components/Modals";
+import { useFavoritesStoreHydrated } from "@/stores/useFavoritesStore";
 import styles from "./Header.module.scss";
 
 const Header: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // ✅ FIXED: Use existing favorites store instead of custom hooks
+  const { favorites } = useFavoritesStoreHydrated();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // ✅ SIMPLIFIED: Use local state for modals instead of custom hook
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  // ✅ SIMPLIFIED: Mock user state (you can connect to your auth store)
+  const [user, setUser] = useState<any>(null);
+  const isAuthenticated = !!user;
 
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.classList.add("noscroll");
-    } else {
-      document.body.classList.remove("noscroll");
+  const handleLoginSuccess = async (phone: string) => {
+    try {
+      // Mock login - replace with your auth logic
+      setUser({ phone, name: `User ${phone.slice(-4)}` });
+      setIsLoginOpen(false);
+    } catch (error) {
+      console.error("Login failed:", error);
     }
-    return () => {
-      document.body.classList.remove("noscroll");
-    };
-  }, [isMenuOpen]);
+  };
+
+  const handleUserMenuClick = () => {
+    if (isAuthenticated) {
+      // Show user menu dropdown or navigate to profile
+      setUser(null); // Mock logout
+    } else {
+      setIsLoginOpen(true);
+    }
+  };
+
+  const handleSearch = (query: string) => {
+    // Handle search - you can implement this based on your routing
+    console.log("Search:", query);
+  };
 
   return (
-    <header className={styles.header}>
-      <Container noPadding>
-        <TopBar />
-      </Container>
+    <>
+      <header className={styles.header}>
+        <div className={styles.navbar_bg}>
+          <Container>
+            <nav
+              className={styles.navbar}
+              role="navigation"
+              aria-label="Əsas naviqasiya"
+            >
+              {/* Mobile Menu Button - Left side on mobile */}
+              <MobileMenu />
 
-      <div className={styles.navbar_bg}>
-        <Container noPadding>
-          <nav className={styles.navbar}>
-            {/* Mobile Menu Toggle - Only visible on mobile */}
-            <MobileMenu
-              isOpen={isMenuOpen}
-              onToggle={toggleMenu}
-              onClose={closeMenu}
-            />
+              {/* Logo - Center on mobile, left on desktop */}
+              <Link
+                href="/"
+                className={styles.navbarBrand}
+                aria-label="Bolbol ana səhifə"
+              >
+                <Image
+                  src="/assets/images/logo-white.svg"
+                  alt="Bolbol"
+                  width={120}
+                  height={32}
+                  priority
+                />
+              </Link>
 
-            {/* Logo - Center on mobile, left on desktop */}
-            <Link href="/" className={styles.navbarBrand}>
-              <Image
-                src="/assets/images/logo.svg"
-                alt="Bolbol Logo"
-                width={132}
-                height={44}
-                priority
-              />
-            </Link>
+              {/* Mobile New Ad Button - Right side on mobile */}
+              <Link
+                href="/new-ad"
+                className={styles.mobileNewAdBtn}
+                aria-label="Yeni elan"
+              >
+                <Plus size={20} />
+              </Link>
 
-            {/* Mobile New Ad Button - Only visible on mobile */}
-            <Link href="/new-ad" className={styles.mobileNewAdBtn}>
-              <Plus size={20} />
-            </Link>
+              {/* Desktop Navigation - Right side */}
+              <div className={styles.navbarRight}>
+                {/* Header Search */}
+                <div className={styles.headerSearch}>
+                  <HomeSearch
+                    onSearch={handleSearch}
+                    placeholder="Axtar..."
+                    className={styles.searchComponent}
+                  />
+                </div>
 
-            {/* Desktop Navigation - Only visible on desktop */}
-            <div className={styles.navbarRight}>
-              <div className={styles.header__links}>
-                <Link
-                  href="/favorites"
-                  className={`${styles.header__link} ${styles["header__link--favorites"]}`}
-                >
-                  Seçdiklərim
-                </Link>
-                <Link
-                  href="/profile"
-                  className={`${styles.header__link} ${styles["header__link--login"]}`}
-                >
-                  Şəxsi kabinet
+                {/* Navigation Links */}
+                <div className={styles.header__links}>
+                  {/* Wishlist/Favorites */}
+                  <button
+                    className={`${styles.header__link} ${styles["header__link--favorites"]}`}
+                    onClick={() => setIsWishlistOpen(true)}
+                    aria-label={`Seçdiklərim (${favorites.length})`}
+                    type="button"
+                  >
+                    <Heart size={20} />
+                    Seçdiklərim
+                    {favorites.length > 0 && (
+                      <span className={styles.badge}>{favorites.length}</span>
+                    )}
+                  </button>
+
+                  {/* Login/User Account */}
+                  <button
+                    className={`${styles.header__link} ${styles["header__link--login"]}`}
+                    onClick={handleUserMenuClick}
+                    aria-label={isAuthenticated ? "Hesab" : "Daxil ol"}
+                    type="button"
+                  >
+                    <User size={20} />
+                    {isAuthenticated ? (
+                      <>
+                        {user?.name || "Hesab"}
+                        <span className={styles.userIndicator} />
+                      </>
+                    ) : (
+                      "Daxil ol"
+                    )}
+                  </button>
+                </div>
+
+                {/* New Ad Button */}
+                <Link href="/new-ad" className={styles.header__btn}>
+                  <Plus size={20} />
+                  <span>Yeni elan</span>
                 </Link>
               </div>
+            </nav>
+          </Container>
+        </div>
+      </header>
 
-              <Link href="/new-ad" className={styles.header__btn}>
-                <span>Yeni elan</span>
-              </Link>
-            </div>
-          </nav>
-        </Container>
-      </div>
-    </header>
+      {/* Modals */}
+      <WishlistModal
+        isOpen={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+      />
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onSuccess={handleLoginSuccess}
+      />
+    </>
   );
 };
 

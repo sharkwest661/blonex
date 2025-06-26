@@ -3,7 +3,10 @@
 import React, { useState, useCallback } from "react";
 import { X, ChevronDown, Search } from "lucide-react";
 import { Select } from "@/components/UI/Select";
-import { useVehicleFilterStore } from "@/stores/useVehicleFilterStore";
+import {
+  useVehicleFilterStore,
+  VehicleCondition,
+} from "@/stores/useVehicleFilterStore";
 import {
   makeOptions,
   modelOptions,
@@ -13,7 +16,6 @@ import {
   transmissionOptions,
   cityOptions,
 } from "@/constants/vehicleOptions";
-import type { VehicleCondition } from "@/types/vehicle.types";
 import styles from "./VehicleFilterOverlay.module.scss";
 
 interface VehicleFilterOverlayProps {
