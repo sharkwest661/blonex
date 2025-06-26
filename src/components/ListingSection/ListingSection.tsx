@@ -1,4 +1,4 @@
-// src/components/ListingSection/ListingSection.tsx
+// src/components/ListingSection/ListingSection.tsx - FIXED
 import React from "react";
 import { Container } from "@/components/Layout/Container";
 import SectionTitle, {
@@ -8,17 +8,22 @@ import PostGrid, { type PostGridProps } from "@/components/PostGrid/PostGrid";
 import Advertisement, {
   type AdvertisementProps,
 } from "@/components/Advertisement/Advertisement";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
+import { cn } from "@/utils/cn"; // ✅ FIXED: Use proper utility
 import styles from "./ListingSection.module.scss";
 
+// ✅ FIXED: Better TypeScript interfaces
 export interface ListingSectionProps {
   title: SectionTitleProps;
   posts: PostGridProps;
   advertisement?: AdvertisementProps;
   onSortChange?: (value: string) => void;
   className?: string;
+  /** Whether to show error boundary */
+  withErrorBoundary?: boolean;
 }
 
-export const ListingSection: React.FC<ListingSectionProps> = ({
+const ListingSectionContent: React.FC<ListingSectionProps> = ({
   title,
   posts,
   advertisement,
@@ -26,7 +31,7 @@ export const ListingSection: React.FC<ListingSectionProps> = ({
   className,
 }) => {
   return (
-    <section className={`${styles.listingSection} ${className || ""}`}>
+    <section className={cn(styles.listingSection, className)}>
       {/* Section Title */}
       <SectionTitle {...title} onSortChange={onSortChange} />
 
@@ -48,6 +53,28 @@ export const ListingSection: React.FC<ListingSectionProps> = ({
       </Container>
     </section>
   );
+};
+
+export const ListingSection: React.FC<ListingSectionProps> = ({
+  withErrorBoundary = true,
+  ...props
+}) => {
+  // ✅ FIXED: Wrap with error boundary by default
+  if (withErrorBoundary) {
+    return (
+      <ErrorBoundary
+        fallback={
+          <div className={styles.errorState}>
+            <p>Bölmə yüklənərkən xəta baş verdi</p>
+          </div>
+        }
+      >
+        <ListingSectionContent {...props} />
+      </ErrorBoundary>
+    );
+  }
+
+  return <ListingSectionContent {...props} />;
 };
 
 export default ListingSection;

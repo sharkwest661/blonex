@@ -12,7 +12,7 @@ export {
 } from "./ErrorBoundary";
 
 // Export types
-export type { LoaderProps } from "./Loader/Loader";
+export type { LoaderProps } from "../UI/Loader/Loader";
 export type { LoaderDotsProps } from "./Loader/LoaderDots";
 export type { SkeletonLoaderProps } from "./Loader/SkeletonLoader";
 export type { ErrorFallbackProps } from "./ErrorBoundary";

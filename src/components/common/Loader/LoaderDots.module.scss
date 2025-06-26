@@ -1,10 +1,10 @@
-// src/components/common/Loader/LoaderDots.module.scss
+// src/components/common/Loader/LoaderDots.module.scss - FIXED
 @import "../../../styles/variables.scss";
 
 .loaderDots {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: $spacing-xs; // ✅ FIXED: was 4px
 }
 
 .loaderDots__dot {
@@ -12,20 +12,20 @@
   animation: loader-dots-bounce 1.4s ease-in-out infinite both;
 }
 
-// Size variants
+// Size variants - FIXED to use variables
 .loaderDots--small .loaderDots__dot {
-  width: 6px;
-  height: 6px;
+  width: $size-xs; // ✅ FIXED: was 6px
+  height: $size-xs;
 }
 
 .loaderDots--medium .loaderDots__dot {
-  width: 8px;
-  height: 8px;
+  width: $size-sm; // ✅ FIXED: was 8px
+  height: $size-sm;
 }
 
 .loaderDots--large .loaderDots__dot {
-  width: 12px;
-  height: 12px;
+  width: $size-md; // ✅ FIXED: was 12px
+  height: $size-md;
 }
 
 // Color variants
@@ -72,4 +72,17 @@
     animation: none;
     opacity: 0.6;
   }
+}
+
+// Screen reader only class - moved here instead of global
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

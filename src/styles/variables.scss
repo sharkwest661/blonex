@@ -10,15 +10,11 @@ $white: #ffffff;
 $black: #000000;
 
 /* Typography - Updated to use custom fonts */
-
-// APPROACH 1: Separate font families (recommended for your current setup)
 $font-family-main: "Arimo-Regular", "Arimo", Helvetica, Arial, sans-serif;
 $font-family-bold: "Arimo-Bold", "Arimo", Helvetica, Arial, sans-serif;
-
-// APPROACH 2: Single font family with weights (alternative)
 $font-family-arimo: "Arimo", Helvetica, Arial, sans-serif;
 
-// Font weights (for use with single family approach)
+// Font weights
 $font-weight-normal: 400;
 $font-weight-bold: 700;
 
@@ -28,9 +24,9 @@ $font-size-large: 1.125rem; // = 18px
 $font-size-xl: 1.5rem; // = 24px
 $font-size-small: 0.875rem; // = 14px
 
-// Section title specific font sizes (matching original design)
-$font-size-section-title: 2.4rem; // = 38.4px for main section titles
-$font-size-section-title-variant: 2.2rem; // = 35.2px for title variants
+// Section title specific font sizes
+$font-size-section-title: 2.4rem; // = 38.4px
+$font-size-section-title-variant: 2.2rem; // = 35.2px
 
 /* Breakpoints */
 $breakpoint-sm: 576px;
@@ -38,9 +34,41 @@ $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
 
-/* Spacing */
+/* Spacing System - FIXED */
 $spacing-unit: 8px;
+
+// Calculated spacing values (use these instead of hardcoded values)
+$spacing-xs: $spacing-unit * 0.5; // 4px
+$spacing-sm: $spacing-unit * 0.75; // 6px
+$spacing-md: $spacing-unit; // 8px
+$spacing-lg: $spacing-unit * 1.5; // 12px
+$spacing-xl: $spacing-unit * 2; // 16px
+$spacing-2xl: $spacing-unit * 3; // 24px
+$spacing-3xl: $spacing-unit * 4; // 32px
+
+/* Size System - NEW */
+// Use these for consistent sizing
+$size-xs: 6px;
+$size-sm: 8px;
+$size-md: 12px;
+$size-lg: 16px;
+$size-xl: 24px;
+$size-2xl: 32px;
+$size-3xl: 40px;
+$size-4xl: 48px;
+$size-5xl: 64px;
 
 /* Borders */
 $border-radius: 10px;
+$border-radius-sm: 4px;
+$border-radius-lg: 12px;
 $border-color: #cccccc;
+
+/* Z-index System - NEW */
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
