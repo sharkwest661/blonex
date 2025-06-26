@@ -1,28 +1,45 @@
-// src/components/ListingSection/ListingSection.module.scss
+// src/components/ListingSection/ListingSection.module.scss - UPDATED
 @import "../../styles/variables.scss";
 
 .listingSection {
-  margin-bottom: 24px; // ✅ REDUCED from 40px
+  margin-bottom: $spacing-2xl;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    margin-bottom: 16px; // ✅ REDUCED from 32px
+    margin-bottom: $spacing-xl;
   }
+}
+
+// ✅ NEW: Mobile sort container - shows only on mobile (under 768px)
+.mobileSortContainer {
+  display: none; // Hidden by default (desktop)
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: block; // ✅ Show on mobile
+    padding: $spacing-lg 0;
+    background-color: $white;
+    border-bottom: 1px solid #f0f0f0;
+  }
+}
+
+.mobileSortFilter {
+  // Additional mobile-specific styles if needed
+  margin: 0;
 }
 
 // ✅ FIXED: Minimal padding in wrapper to match reference image
 .wrapper {
   display: flex;
-  gap: 12px; // ✅ REDUCED from 20px to 12px
-  padding: 4px; // ✅ MINIMAL padding instead of 24px 0 24px 20px
+  gap: $spacing-lg;
+  padding: $spacing-xs;
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    gap: 8px; // ✅ REDUCED from 16px to 8px
+    gap: $spacing-md;
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex-direction: column;
-    padding: 2px; // ✅ Even smaller mobile padding
-    gap: 8px; // ✅ Small gap instead of 0
+    padding: $spacing-xs / 2;
+    gap: $spacing-md;
   }
 }
 
@@ -42,5 +59,25 @@
     min-width: unset;
     max-width: 100%;
     order: -1;
+  }
+}
+
+// Error state
+.errorState {
+  padding: $spacing-4xl $spacing-2xl;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-radius: $border-radius;
+  margin: $spacing-2xl 0;
+
+  p {
+    color: $danger-color;
+    font-size: $font-size-base;
+    margin: 0;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: $spacing-2xl $spacing-xl;
+    margin: $spacing-xl 0;
   }
 }

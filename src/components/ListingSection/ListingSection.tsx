@@ -1,4 +1,4 @@
-// src/components/ListingSection/ListingSection.tsx - FIXED
+// src/components/ListingSection/ListingSection.tsx - UPDATED
 import React from "react";
 import { Container } from "@/components/Layout/Container";
 import SectionTitle, {
@@ -8,11 +8,12 @@ import PostGrid, { type PostGridProps } from "@/components/PostGrid/PostGrid";
 import Advertisement, {
   type AdvertisementProps,
 } from "@/components/Advertisement/Advertisement";
+import { DateSortFilter } from "@/components/Filters/DateSortFilter";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
-import { cn } from "@/utils/cn"; // ✅ FIXED: Use proper utility
+import { cn } from "@/utils/cn";
 import styles from "./ListingSection.module.scss";
 
-// ✅ FIXED: Better TypeScript interfaces
+// ✅ UPDATED: Better TypeScript interfaces
 export interface ListingSectionProps {
   title: SectionTitleProps;
   posts: PostGridProps;
@@ -30,10 +31,32 @@ const ListingSectionContent: React.FC<ListingSectionProps> = ({
   onSortChange,
   className,
 }) => {
+  // Sort options for mobile filter
+  const sortOptions = [
+    { id: "-created_at", label: "Əvvəlcə yeni" },
+    { id: "created_at", label: "Əvvəlcə köhnə" },
+    { id: "-price", label: "Əvvəlcə baha" },
+    { id: "price", label: "Əvvəlcə ucuz" },
+  ];
+
   return (
     <section className={cn(styles.listingSection, className)}>
       {/* Section Title */}
       <SectionTitle {...title} onSortChange={onSortChange} />
+
+      {/* ✅ NEW: Mobile Sort Filter - Only show when showSortDropdown is true */}
+      {title.showSortDropdown && onSortChange && (
+        <div className={styles.mobileSortContainer}>
+          <Container>
+            <DateSortFilter
+              options={sortOptions}
+              defaultSelected="-created_at"
+              onSortChange={onSortChange}
+              className={styles.mobileSortFilter}
+            />
+          </Container>
+        </div>
+      )}
 
       {/* Main Content */}
       <Container>

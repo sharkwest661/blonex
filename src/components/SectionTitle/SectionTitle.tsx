@@ -1,4 +1,4 @@
-// src/components/SectionTitle/SectionTitle.tsx
+// src/components/SectionTitle/SectionTitle.tsx - UPDATED
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -60,7 +60,7 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({
             {title}
           </span>
 
-          {/* Sort Dropdown - Only for "Yeni elanlar" section */}
+          {/* ✅ UPDATED: Sort Dropdown - Desktop only when showSortDropdown is true */}
           {showSortDropdown && (
             <div className={styles.sort__form}>
               <Select

@@ -1,124 +1,114 @@
-// src/components/SectionTitle/SectionTitle.module.scss (updated)
+// src/components/SectionTitle/SectionTitle.module.scss - REVERTED TO ORIGINAL STYLE
 @import "../../styles/variables.scss";
 
 .title_bg {
   background-color: $secondary-color;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 16px 0;
+    margin-bottom: 5px;
+  }
 }
 
 .title {
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 55px;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 20px;
+  font-size: $font-size-large; // ✅ KEPT: Font size variable
+  font-weight: 700;
   font-family: $font-family-bold;
-  font-size: 1.5rem; // 24px equivalent with 16px base
-  line-height: 1.17;
   color: $primary-color;
-  background-color: $secondary-color;
 
-  a {
-    font-family: $font-family-main;
+  &.noPadding {
+    padding: 0;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 0 16px;
+    font-size: $font-size-base; // ✅ KEPT: Font size variable
+    gap: 12px;
+
+    &.noPadding {
+      padding: 0;
+    }
   }
 }
 
 .title--left {
   justify-content: space-between;
-  padding: 0 20px;
-  font-size: 1.375rem; // 22px equivalent with 16px base
 }
 
 .title--center {
   justify-content: center;
-  padding: 0 20px;
-  font-size: 1.375rem;
 }
 
 .title--right {
   justify-content: flex-end;
-  padding: 0 20px;
-  font-size: 1.375rem;
 }
 
 .center_vertical {
-  display: flex !important;
+  display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .title__icon {
-  margin-right: 10px;
+  flex-shrink: 0;
 }
 
-// Form and sort select styles
+// ✅ KEPT: Sort form - hide on mobile (under 768px) - THIS IS NEEDED
 .sort__form {
-  margin-right: 5px;
-  margin-left: auto;
-  height: 100%;
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none; // ✅ Hide sort dropdown on mobile
+  }
 }
 
 .sort__select {
-  min-width: 150px;
-  background-color: $white !important;
+  min-width: 180px;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    min-width: 160px;
+  }
 }
 
-// Button styles
 .btn {
   display: flex;
   align-items: center;
-  height: 46px;
-  padding: 0;
+  gap: 8px;
+  padding: 8px 16px;
   background-color: transparent;
+  // border: 1px solid $primary-color;
+  // border-radius: $border-radius;
   color: $primary-color;
-  font-size: 1.125rem;
-  border: none;
-  cursor: pointer;
   text-decoration: none;
+  font-size: $font-size-base; // ✅ KEPT: Font size variable
+  font-weight: 500;
+  transition: all 0.2s ease;
 
-  img {
-    margin-right: 10px;
-  }
+  // &:hover {
+  //   background-color: $primary-color;
+  //   color: $white;
+  // }
 
-  &:hover,
-  &:focus {
-    background-color: transparent;
-    color: $primary-color;
-    text-decoration: none;
-  }
-}
-
-// Responsive adjustments
-@media screen and (max-width: 1200px) {
-  .sort__form {
-    margin-right: 5px;
-    margin-left: auto;
-    height: 100%;
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 6px 12px;
+    font-size: $font-size-small; // ✅ KEPT: Font size variable
+    gap: 4px;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .title {
-    font-size: $font-size-xl;
-  }
-
-  .title--left,
-  .title--center,
-  .title--right {
-    font-size: $font-size-large;
-    padding: 0 16px;
-  }
-}
-
-// Alternative mobile layout class
-.title--left- {
-  flex-direction: column;
-  padding: 10px 20px 0;
-}
-
-.title--rounded {
-  border-radius: 10px;
-}
-
-.noPadding {
-  padding: 0 !important;
+// Error state
+.errorState {
+  padding: 20px;
+  text-align: center;
+  color: $danger-color; // ✅ KEPT: Danger color variable
+  font-size: $font-size-small; // ✅ KEPT: Font size variable
 }
