@@ -1,59 +1,36 @@
-// src/components/CategoryGrid/CategoryGrid.tsx (Semantically Corrected)
+// src/components/CategoryGrid/CategoryGrid.tsx (FIXED TypeScript Issues)
 "use client";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Category } from "@/types/category.types";
 import { useCategories } from "@/hooks/useCategories";
 import styles from "./CategoryGrid.module.scss";
 
 interface CategoryGridProps {
-  categories?: Category[];
-  showAllButton?: boolean;
   className?: string;
-  useApi?: boolean; // Whether to fetch from API or use provided categories
+  showAllButton?: boolean; // Show "Bütün kateqoriyalar" button on mobile
 }
 
-export const CategoryGrid: React.FC<CategoryGridProps> = ({
-  categories: providedCategories,
-  showAllButton = true,
+const CategoryGrid: React.FC<CategoryGridProps> = ({
   className,
-  useApi = true,
+  showAllButton = true,
 }) => {
+  // ✅ FIXED: Use correct property names from useCategories hook
+  const { categories, isLoading, error } = useCategories();
   const [showAll, setShowAll] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Fetch categories from API if useApi is true and no categories provided
-  const {
-    categories: fetchedCategories,
-    isLoading,
-    error,
-  } = useCategories({
-    enabled: useApi && !providedCategories,
-  });
-
-  // Use provided categories or fetched categories
-  const categories = providedCategories || fetchedCategories;
-
-  // Handle screen size detection
+  // Check if we're on mobile
   useEffect(() => {
-    const checkScreenSize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      // Reset showAll when switching from mobile to desktop
-      if (!mobile) {
-        setShowAll(false);
-      }
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
 
-    // Initial check
-    checkScreenSize();
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
-    // Add event listener
-    window.addEventListener("resize", checkScreenSize);
-
-    // Cleanup
-    return () => window.removeEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Handle loading state
@@ -148,7 +125,7 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({
         })}
       </ul>
 
-      {/* Show button only on mobile when there are more than 4 categories and not showing all */}
+      {/* ✅ FIXED: Single button component with proper styling */}
       {shouldShowButton && (
         <button
           type="button"

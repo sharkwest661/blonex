@@ -12,7 +12,7 @@
 .wrapper {
   display: flex;
   gap: 20px;
-  padding: 24px 0 24px 20px;
+  padding: 24px 20px 24px 20px; // Equal left and right padding
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
     gap: 16px;
@@ -20,7 +20,7 @@
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex-direction: column;
-    padding: 20px 0 !important;
+    padding: 20px 16px !important; // Equal left/right padding on mobile
     gap: 0;
   }
 }

@@ -1,4 +1,4 @@
-// src/components/SectionTitle/SectionTitle.module.scss (updated)
+// src/components/SectionTitle/SectionTitle.module.scss (FIXED Mobile Font & Alignment)
 @import "../../styles/variables.scss";
 
 .title_bg {
@@ -24,19 +24,44 @@
 .title--left {
   justify-content: space-between;
   padding: 0 20px;
-  font-size: 1.375rem; // 22px equivalent with 16px base
+  font-size: 1.375rem; // 22px for Premium elanlar
+
+  // ✅ FIXED: Mobile font size and alignment
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    justify-content: space-between; // ✅ KEEP space-between alignment
+    padding: 0 16px;
+    font-size: 1.125rem; // ✅ SMALLER: 18px instead of 22px on mobile
+    min-height: 48px; // ✅ Slightly smaller height on mobile
+
+    // Hide select form inside the title on mobile
+    .sort__form {
+      display: none; // ✅ HIDE SELECT INSIDE
+    }
+  }
 }
 
 .title--center {
   justify-content: center;
   padding: 0 20px;
   font-size: 1.375rem;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 1.125rem; // ✅ SMALLER on mobile
+    padding: 0 16px;
+    min-height: 48px;
+  }
 }
 
 .title--right {
   justify-content: flex-end;
   padding: 0 20px;
   font-size: 1.375rem;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 1.125rem; // ✅ SMALLER on mobile
+    padding: 0 16px;
+    min-height: 48px;
+  }
 }
 
 .center_vertical {
@@ -46,6 +71,10 @@
 
 .title__icon {
   margin-right: 10px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-right: 8px; // ✅ Smaller margin on mobile
+  }
 }
 
 // Form and sort select styles
@@ -57,9 +86,25 @@
   align-items: center;
 }
 
+// ✅ NEW: Mobile select form (used outside title)
+.sort__form--mobile {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin: 10px 16px 0; // ✅ OUTSIDE spacing
+    margin-left: 16px;
+    margin-right: 16px;
+    width: calc(100% - 32px); // ✅ FULL WIDTH minus padding
+    height: auto;
+  }
+}
+
 .sort__select {
   min-width: 150px;
   background-color: $white !important;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    width: 100%;
+    min-width: unset;
+  }
 }
 
 // Button styles
@@ -85,27 +130,15 @@
     color: $primary-color;
     text-decoration: none;
   }
-}
 
-// Responsive adjustments
-@media screen and (max-width: 1200px) {
-  .sort__form {
-    margin-right: 5px;
-    margin-left: auto;
-    height: 100%;
-  }
-}
+  // ✅ FIXED: Mobile button styling
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 1rem; // ✅ Smaller font on mobile
+    height: 42px; // ✅ Smaller height on mobile
 
-@media screen and (max-width: 768px) {
-  .title {
-    font-size: $font-size-xl;
-  }
-
-  .title--left,
-  .title--center,
-  .title--right {
-    font-size: $font-size-large;
-    padding: 0 16px;
+    img {
+      margin-right: 8px; // ✅ Smaller margin on mobile
+    }
   }
 }
 
@@ -121,4 +154,26 @@
 
 .noPadding {
   padding: 0 !important;
+}
+
+// Responsive adjustments
+@media screen and (max-width: 1200px) {
+  .sort__form {
+    margin-right: 5px;
+    margin-left: auto;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 1.125rem; // ✅ SMALLER: 18px base on mobile
+  }
+
+  .title--left,
+  .title--center,
+  .title--right {
+    font-size: 1.125rem; // ✅ CONSISTENT: 18px for all variants on mobile
+    padding: 0 16px;
+  }
 }

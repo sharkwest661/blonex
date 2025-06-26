@@ -1,4 +1,5 @@
-// src/components/Layout/Container/Container.module.scss
+// src/components/Layout/Container/Container.module.scss (FINAL FIXED)
+// ✅ CRITICAL: Import variables first!
 @import "../../../styles/variables.scss";
 
 // Standard container - like the original main_container
@@ -9,12 +10,22 @@
   margin-right: auto;
   padding-left: 20px;
   padding-right: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding-left: 16px; // Consistent mobile padding
+    padding-right: 16px;
+  }
 }
 
 // Fluid container - full width with padding
 .containerFluid {
   width: 100%;
   max-width: 100%;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 // No padding modifier (like standardNavbar, standardTopBar)
@@ -29,6 +40,11 @@
   flex-wrap: wrap;
   margin-right: -20px;
   margin-left: -20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-right: -16px;
+    margin-left: -16px;
+  }
 }
 
 // Column class
@@ -37,12 +53,9 @@
   width: 100%;
   padding-right: 20px;
   padding-left: 20px;
-}
 
-// Responsive adjustments
-@media screen and (max-width: $breakpoint-md) {
-  .container {
-    padding-left: 10px;
-    padding-right: 10px;
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding-right: 16px;
+    padding-left: 16px;
   }
 }

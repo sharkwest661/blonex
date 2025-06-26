@@ -1,15 +1,14 @@
-// src/components/Advertisement/Advertisement.module.scss
+// src/components/Advertisement/Advertisement.module.scss (COMPLETE FIXED)
 @import "../../styles/variables.scss";
 
-// Sticky advertisement container
+// ✅ FIXED: Sticky advertisement container - hide on mobile
 .stickyAd {
   position: sticky;
   top: 10px;
   z-index: 3 !important;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    position: static;
-    padding-bottom: 22px; // commercial-banner-1 mobile padding
+    display: none; // ✅ Hide advertisement completely on mobile
   }
 
   // Make all nested elements fill height on desktop (>1024px)
@@ -18,15 +17,6 @@
   & > * > * {
     height: auto;
   }
-
-  // @media screen and (max-width: 1024px) {
-  //   // Reset height to auto on tablet and below
-  //   &,
-  //   & > *,
-  //   & > * > * {
-  //     height: auto;
-  //   }
-  // }
 }
 
 // Desktop link - visible on medium screens and up
@@ -38,18 +28,18 @@
   }
 }
 
-// Mobile link - visible only on small screens
+// Mobile link - should be hidden as per requirement
 .mobileLink {
-  display: none;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: block;
-  }
+  display: none; // ✅ Hide mobile ads completely
 }
 
-// Banner image
+// ✅ FIXED: Banner image - hide on mobile
 .bannerImage {
   display: block;
   width: 100%;
   height: auto;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none; // ✅ Hide banner images on mobile
+  }
 }
