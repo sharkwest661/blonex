@@ -16,15 +16,15 @@
   // Responsive grid columns
   grid-template-columns: repeat(5, 1fr);
 
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1400px) {
     grid-template-columns: repeat(5, 1fr);
   }
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  @media screen and (max-width: 992px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
