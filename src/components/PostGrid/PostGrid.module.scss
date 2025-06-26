@@ -1,93 +1,335 @@
-// src/components/PostGrid/PostGrid.module.scss
+// Enhanced PostGrid.module.scss - Modern grid layout
 @import "../../styles/variables.scss";
 
+// Enhanced main post grid container
 .post {
-  overflow: hidden;
-  padding: 20px;
-  padding-left: 0 !important;
-  margin: -20px;
+  width: 100%;
+  position: relative;
 }
 
-.post__list {
-  // Converted from flexbox to CSS grid
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); // Desktop: 5 columns
-  gap: 10px;
+// Enhanced wrapper with better spacing
+.wrapper {
+  width: 100%;
+}
 
-  // Large tablets: 5 columns (1200px and below)
-  @media screen and (max-width: 1200px) {
-    grid-template-columns: repeat(5, 1fr);
+// Enhanced post list with modern grid
+.post__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  @media screen and (max-width: 1400px) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
   }
 
-  // Tablets: 4 columns (1024px and below)
-  @media screen and (max-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
   }
 
-  // Small tablets: 3 columns (767px and below)
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  // Mobile: 2 columns (576px and below)
-  @media screen and (max-width: 576px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media screen and (max-width: 520px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
-.wrapper {
-  // Wrapper specific styles remain unchanged
-}
-
+// Enhanced post item container
 .post__item {
-  // No need for explicit width calculations with CSS Grid
-  // Item will automatically fit grid cell
+  position: relative;
+  height: 100%;
+
+  // Staggered animation for items
+  animation: fadeInUp 0.6s ease-out both;
+
+  @for $i from 1 through 12 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{($i - 1) * 0.1}s;
+    }
+  }
 }
 
-// Loading state
+// Enhanced loading state
 .post__loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
-  color: $text-light;
-  font-size: $font-size-base;
-  gap: 16px;
+  padding: 80px 20px;
+  text-align: center;
+  min-height: 300px;
+
+  span {
+    margin-top: 16px;
+    color: $text-light;
+    font-size: $font-size-base;
+    font-weight: 500;
+  }
+
+  // Enhanced loading skeleton grid
+  &.withSkeleton {
+    display: block;
+    padding: 0;
+    min-height: auto;
+
+    .skeletonGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+
+      @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      @media screen and (max-width: 520px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .skeletonCard {
+      background: $white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      animation: pulse 1.5s infinite;
+
+      .skeletonImage {
+        height: 220px;
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+
+      .skeletonContent {
+        padding: 24px;
+
+        .skeletonLine {
+          height: 12px;
+          background: linear-gradient(
+            90deg,
+            #f0f0f0 25%,
+            #e0e0e0 50%,
+            #f0f0f0 75%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
+          border-radius: 6px;
+          margin-bottom: 12px;
+
+          &:nth-child(1) {
+            width: 100%;
+          }
+          &:nth-child(2) {
+            width: 80%;
+          }
+          &:nth-child(3) {
+            width: 60%;
+            height: 16px;
+          }
+          &:nth-child(4) {
+            width: 40%;
+            height: 10px;
+          }
+        }
+      }
+    }
+  }
 }
 
-// Error state
+// Enhanced error state
 .post__error {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
-  color: #dc3545;
-  font-size: $font-size-base;
+  padding: 80px 20px;
   text-align: center;
-  gap: 8px;
+  background: rgba(220, 53, 69, 0.02);
+  border: 1px solid rgba(220, 53, 69, 0.1);
+  border-radius: 20px;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
 
-  p:first-child {
-    font-weight: 600;
+  // Error icon
+  &::before {
+    content: "⚠️";
+    font-size: 3rem;
+    margin-bottom: 20px;
+    display: block;
+    animation: bounce 2s infinite;
+  }
+
+  p {
+    margin: 0 0 8px 0;
+
+    &:first-of-type {
+      color: #dc3545;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    &:last-of-type {
+      color: $text-light;
+      font-size: $font-size-small;
+    }
+  }
+
+  // Subtle pattern background
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23dc3545' fill-opacity='0.03'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E")
+      repeat;
+    pointer-events: none;
+    z-index: -1;
   }
 }
 
-// Empty state
+// Enhanced empty state
 .post__empty {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
-  color: $text-light;
-  font-size: $font-size-base;
+  padding: 80px 20px;
   text-align: center;
+  background: rgba($primary-color, 0.02);
+  border: 1px solid rgba($primary-color, 0.08);
+  border-radius: 20px;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+
+  // Empty icon
+  &::before {
+    content: "📂";
+    font-size: 3rem;
+    margin-bottom: 20px;
+    display: block;
+    opacity: 0.6;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  p {
+    margin: 0;
+    color: $text-light;
+    font-size: 1.1rem;
+    font-weight: 500;
+    max-width: 300px;
+  }
+
+  // Subtle pattern background
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23013f44' fill-opacity='0.02'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+      repeat;
+    pointer-events: none;
+    z-index: -1;
+  }
 }
 
-// Wrapper adjustments for mobile
-@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-  .wrapper {
-    padding: 20px 0px !important;
+// Responsive adjustments for different screen sizes
+@media screen and (min-width: 1600px) {
+  .post__list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1599px) {
+  .post__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: calc(#{$breakpoint-md})) and (max-width: 1199px) {
+  .post__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// Smooth animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Grid layout debugging (only in development)
+.post__list[data-debug="true"] {
+  .post__item {
+    outline: 1px dashed rgba($primary-color, 0.2);
   }
 }

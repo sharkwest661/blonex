@@ -1,4 +1,5 @@
-// src/components/HomePage/HomePageContent.tsx
+// src/components/HomePage/HomePageContent.tsx (Enhanced Usage)
+
 "use client";
 import React, { useState } from "react";
 import { ListingSection } from "@/components/ListingSection";
@@ -6,22 +7,19 @@ import { FullWidthBanner } from "@/components/FullWidthBanner";
 import { useVipPosts, useRecentPosts, usePremiumPosts } from "@/hooks/usePosts";
 
 export const HomePageContent: React.FC = () => {
-  // State to track current sort value for recent posts
   const [recentPostsSort, setRecentPostsSort] = useState("-created_at");
 
-  // Fetch data using React Query hooks
   const vipPosts = useVipPosts(20);
   const recentPosts = useRecentPosts(20, { sortBy: recentPostsSort });
   const premiumPosts = usePremiumPosts(20);
 
-  // Handle sort change
   const handleSortChange = (value: string) => {
     setRecentPostsSort(value);
   };
 
   return (
     <>
-      {/* VIP Listings Section */}
+      {/* VIP Listings with Enhanced Advertisement */}
       <ListingSection
         title={{
           title: "VIP Elanlar",
@@ -37,23 +35,28 @@ export const HomePageContent: React.FC = () => {
           isLoading: vipPosts.isLoading,
           error: vipPosts.error,
           emptyMessage: "VIP elan tapılmadı",
+          showSkeleton: true, // Enhanced loading
         }}
         advertisement={{
           desktopImage: "/assets/images/example/banner1.png",
           mobileImage: "/assets/images/example/banner-mob.png",
           altText: "Advertisement Banner",
           href: "#",
+          variant: "featured", // Enhanced advertisement
+          promotional: true,
         }}
       />
 
-      {/* Full Width Banner 1 */}
+      {/* Enhanced Full Width Banner */}
       <FullWidthBanner
         imageSrc="/assets/images/example/banner2.png"
         altText="Full Width Advertisement"
         href="#"
+        variant="promotional" // Enhanced banner
+        priority={true}
       />
 
-      {/* Recent Listings Section */}
+      {/* Recent Listings */}
       <ListingSection
         title={{
           title: "Yeni elanlar",
@@ -67,24 +70,27 @@ export const HomePageContent: React.FC = () => {
           isLoading: recentPosts.isLoading,
           error: recentPosts.error,
           emptyMessage: "Yeni elan tapılmadı",
+          showSkeleton: true, // Enhanced loading
         }}
         advertisement={{
           desktopImage: "/assets/images/example/banner3.png",
           mobileImage: "/assets/images/example/banner-mob.png",
           altText: "Advertisement Banner",
           href: "#",
+          variant: "compact", // Enhanced advertisement
         }}
         onSortChange={handleSortChange}
       />
 
-      {/* Full Width Banner 2 */}
+      {/* Compact Banner */}
       <FullWidthBanner
         imageSrc="/assets/images/example/banner2.png"
-        altText="Full Width Advertisement"
+        altText="Compact Advertisement"
         href="#"
+        variant="compact"
       />
 
-      {/* Premium Listings Section */}
+      {/* Premium Listings */}
       <ListingSection
         title={{
           title: "Premium elanlar",
@@ -98,12 +104,14 @@ export const HomePageContent: React.FC = () => {
           isLoading: premiumPosts.isLoading,
           error: premiumPosts.error,
           emptyMessage: "Premium elan tapılmadı",
+          showSkeleton: true, // Enhanced loading
         }}
         advertisement={{
           desktopImage: "/assets/images/example/banner3.png",
           mobileImage: "/assets/images/example/banner-mob.png",
           altText: "Advertisement Banner",
           href: "#",
+          variant: "minimal", // Enhanced advertisement
         }}
       />
     </>

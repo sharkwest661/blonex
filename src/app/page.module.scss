@@ -1,0 +1,352 @@
+// Enhanced Homepage Styles - page.module.scss
+@import "../styles/variables.scss";
+
+// Enhanced homepage container
+.homepage {
+  background: linear-gradient(135deg, #f5f6fc 0%, #ffffff 100%);
+  min-height: 100vh;
+}
+
+// Enhanced home filters section
+.homeFiltersSection {
+  background: linear-gradient(
+    135deg,
+    $primary-color 0%,
+    darken($primary-color, 10%) 100%
+  );
+  padding: 60px 0 80px;
+  position: relative;
+  overflow: hidden;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 40px 0 60px;
+  }
+
+  // Add subtle pattern overlay
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+      repeat;
+    pointer-events: none;
+  }
+}
+
+// Enhanced search container
+.searchContainer {
+  position: relative;
+  z-index: 2;
+
+  .dekstopSearchBar {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.3);
+    }
+
+    @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 6px;
+    }
+  }
+}
+
+// Enhanced category grid section
+.categorySection {
+  background: $white;
+  border-radius: 24px 24px 0 0;
+  margin-top: -20px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08);
+  padding: 40px 20px 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-top: -16px;
+    border-radius: 20px 20px 0 0;
+    padding: 32px 16px 16px;
+  }
+}
+
+// Enhanced category items
+.categoryItem {
+  background: $white;
+  border-radius: 16px;
+  padding: 20px 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba($primary-color, 0.08);
+  position: relative;
+  overflow: hidden;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
+
+  // Subtle gradient overlay
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba($primary-color, 0.02) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba($primary-color, 0.15),
+      0 5px 15px rgba(0, 0, 0, 0.08);
+    border-color: rgba($primary-color, 0.2);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .categoryIcon {
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px);
+  }
+}
+
+.categoryIcon {
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.categoryButton {
+  background: linear-gradient(
+    135deg,
+    rgba($primary-color, 0.1) 0%,
+    rgba($primary-color, 0.05) 100%
+  );
+  border: 1px solid rgba($primary-color, 0.15);
+  border-radius: 12px;
+  color: $primary-color;
+  font-weight: 600;
+  padding: 16px 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba($primary-color, 0.1);
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba($primary-color, 0.15) 0%,
+      rgba($primary-color, 0.08) 100%
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba($primary-color, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Enhanced main content sections
+.mainContent {
+  padding-top: 60px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding-top: 40px;
+  }
+}
+
+// Enhanced section titles
+.sectionTitle {
+  margin-bottom: 40px;
+
+  h2 {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: $primary-color;
+    margin-bottom: 8px;
+    position: relative;
+
+    // Subtle underline accent
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, $secondary-color 0%, transparent 100%);
+      border-radius: 2px;
+    }
+  }
+
+  .seeAll {
+    color: $primary-color;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: darken($primary-color, 10%);
+      transform: translateX(4px);
+    }
+  }
+}
+
+// Enhanced listing cards
+.listingCard {
+  background: $white;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba($primary-color, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12),
+      0 8px 16px rgba($primary-color, 0.08);
+    border-color: rgba($primary-color, 0.15);
+  }
+
+  .imageContainer {
+    position: relative;
+    overflow: hidden;
+
+    img {
+      transition: transform 0.5s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  .content {
+    padding: 20px;
+
+    @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+      padding: 16px;
+    }
+  }
+
+  .price {
+    color: $primary-color;
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  .title {
+    color: $text-dark;
+    font-weight: 500;
+    margin: 8px 0;
+    line-height: 1.4;
+  }
+
+  .meta {
+    color: $text-light;
+    font-size: $font-size-small;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+// Enhanced banners
+.fullWidthBanner {
+  margin: 60px 0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin: 40px 0;
+    border-radius: 16px;
+  }
+}
+
+// Enhanced sidebar ads
+.sidebarAd {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    border-radius: 12px;
+  }
+}
+
+// Loading state enhancements
+.loading {
+  .skeletonCard {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 16px;
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Accessibility enhancements
+.focusVisible:focus {
+  outline: 2px solid $secondary-color;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+// Smooth page transitions
+.pageTransition {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

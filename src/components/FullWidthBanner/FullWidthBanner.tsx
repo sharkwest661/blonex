@@ -1,4 +1,5 @@
-// src/components/FullWidthBanner/FullWidthBanner.tsx
+// src/components/FullWidthBanner/FullWidthBanner.tsx (Enhanced)
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,6 +11,13 @@ export interface FullWidthBannerProps {
   altText: string;
   priority?: boolean;
   className?: string;
+  variant?:
+    | "default"
+    | "promotional"
+    | "featured"
+    | "minimal"
+    | "compact"
+    | "seasonal"; // New prop
 }
 
 export const FullWidthBanner: React.FC<FullWidthBannerProps> = ({
@@ -18,7 +26,16 @@ export const FullWidthBanner: React.FC<FullWidthBannerProps> = ({
   altText,
   priority = false,
   className,
+  variant = "default",
 }) => {
+  const bannerClasses = [
+    styles.fullWidthBanner,
+    variant !== "default" ? styles[variant] : "",
+    className || "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   const content = (
     <Image
       src={imageSrc}
@@ -28,13 +45,14 @@ export const FullWidthBanner: React.FC<FullWidthBannerProps> = ({
       className={styles.bannerImage}
       priority={priority}
       sizes="100vw"
+      style={{ width: "100%", height: "auto" }}
     />
   );
 
   return (
-    <section className={`${styles.fullWidthBanner} ${className || ""}`}>
+    <section className={bannerClasses}>
       {href && href !== "#" ? (
-        <Link href={href} className={styles.bannerLink}>
+        <Link href={href} className={styles.bannerLink} aria-label={altText}>
           {content}
         </Link>
       ) : (

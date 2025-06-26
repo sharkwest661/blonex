@@ -1,4 +1,3 @@
-// src/components/PostGrid/PostGrid.tsx
 "use client";
 import React from "react";
 import { PostCard, type Post } from "@/components/PostCard";
@@ -11,6 +10,7 @@ export interface PostGridProps {
   error?: Error | null;
   className?: string;
   emptyMessage?: string;
+  showSkeleton?: boolean; // New prop for enhanced loading
 }
 
 export const PostGrid: React.FC<PostGridProps> = ({
@@ -19,9 +19,32 @@ export const PostGrid: React.FC<PostGridProps> = ({
   error = null,
   className,
   emptyMessage = "Heç bir elan tapılmadı",
+  showSkeleton = true,
 }) => {
-  // Handle loading state
+  // Enhanced loading state with skeleton cards
   if (isLoading) {
+    if (showSkeleton) {
+      return (
+        <div className={`${styles.post} ${className || ""}`}>
+          <div className={`${styles.post__loading} ${styles.withSkeleton}`}>
+            <div className={styles.skeletonGrid}>
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div key={index} className={styles.skeletonCard}>
+                  <div className={styles.skeletonImage} />
+                  <div className={styles.skeletonContent}>
+                    <div className={styles.skeletonLine} />
+                    <div className={styles.skeletonLine} />
+                    <div className={styles.skeletonLine} />
+                    <div className={styles.skeletonLine} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={`${styles.post} ${className || ""}`}>
         <div className={styles.post__loading}>
@@ -32,7 +55,7 @@ export const PostGrid: React.FC<PostGridProps> = ({
     );
   }
 
-  // Handle error state
+  // Enhanced error state
   if (error) {
     return (
       <div className={`${styles.post} ${className || ""}`}>
@@ -44,7 +67,7 @@ export const PostGrid: React.FC<PostGridProps> = ({
     );
   }
 
-  // Handle empty state
+  // Enhanced empty state
   if (!posts || posts.length === 0) {
     return (
       <div className={`${styles.post} ${className || ""}`}>
@@ -59,8 +82,12 @@ export const PostGrid: React.FC<PostGridProps> = ({
     <div className={`${styles.post} ${className || ""}`}>
       <div className={styles.wrapper}>
         <div className={styles.post__list}>
-          {posts.map((post) => (
-            <div key={post.id} className={styles.post__item}>
+          {posts.map((post, index) => (
+            <div
+              key={post.id}
+              className={styles.post__item}
+              style={{ "--item-index": index } as React.CSSProperties}
+            >
               <PostCard post={post} />
             </div>
           ))}
