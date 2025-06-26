@@ -52,12 +52,12 @@
   max-width: 690px !important;
   padding: 0 !important;
   margin: 0 auto !important;
-  margin-bottom: 20px !important;
+  margin-bottom: $spacing-xl !important; // ✅ FIXED: was 20px, now 16px (normal spacing)
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 auto !important;
-    margin-bottom: 20px !important;
+    margin-bottom: $spacing-xl !important; // ✅ FIXED: consistent mobile spacing
   }
 }

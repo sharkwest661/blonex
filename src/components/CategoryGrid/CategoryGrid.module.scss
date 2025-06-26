@@ -144,12 +144,22 @@
 .category__btn.btn {
   width: 100%;
   margin-top: 8px;
-  padding: 8px;
+  padding: 8px 16px;
   background: rgba($primary-color, 0.1);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border-radius: 5px;
   color: $primary-color;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  // ✅ FIXED: Center text and set 18px font size
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: $font-size-large; // ✅ 18px (1.125rem)
+  font-family: $font-family-main;
+  font-weight: 500;
 
   &:before {
     content: "";
@@ -159,6 +169,25 @@
     background: url("/assets/images/categories/categories-more.svg") no-repeat
       center/cover;
     display: block;
+  }
+
+  &:hover,
+  &:focus {
+    background: rgba($primary-color, 0.15);
+    color: $primary-color;
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+}
+
+// Hide category button on desktop
+@media screen and (min-width: $breakpoint-md) {
+  .category__btn.btn {
+    display: none;
   }
 }
 

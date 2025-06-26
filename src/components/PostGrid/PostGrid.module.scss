@@ -1,69 +1,64 @@
-// src/components/PostGrid/PostGrid.module.scss
+// ===== POSTGRID LAYOUT TO MATCH REFERENCE IMAGE =====
+// File: src/components/PostGrid/PostGrid.module.scss
+
 @import "../../styles/variables.scss";
 
 .post {
+  padding: 0; // ✅ No padding needed
+  margin: 0; // ✅ No margin needed
   overflow: hidden;
-  padding: 20px;
-  padding-left: 0 !important;
-  margin: -20px;
 }
 
 .post__list {
-  // Converted from flexbox to CSS grid
   display: grid;
-  grid-template-columns: repeat(5, 1fr); // Desktop: 5 columns
-  gap: 10px;
+  gap: 10px; // ✅ TIGHT gaps like reference image
 
-  // Large tablets: 5 columns (1200px and below)
+  // Responsive grid columns
+  grid-template-columns: repeat(5, 1fr);
+
   @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(5, 1fr);
   }
 
-  // Tablets: 4 columns (1024px and below)
   @media screen and (max-width: 1024px) {
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
   }
 
-  // Small tablets: 3 columns (767px and below)
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  // Mobile: 2 columns (576px and below)
-  @media screen and (max-width: 576px) {
+  @media screen and (max-width: 575px) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 .wrapper {
-  // Wrapper specific styles remain unchanged
+  width: 100%;
 }
 
 .post__item {
-  // No need for explicit width calculations with CSS Grid
-  // Item will automatically fit grid cell
+  width: 100%;
+  height: 100%;
 }
-
-// Loading state
+// ===== STATE STYLES =====
 .post__loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   color: $text-light;
   font-size: $font-size-base;
-  gap: 16px;
+  gap: 12px;
 }
 
-// Error state
 .post__error {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   color: #dc3545;
   font-size: $font-size-base;
   text-align: center;
@@ -74,20 +69,12 @@
   }
 }
 
-// Empty state
 .post__empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   color: $text-light;
   font-size: $font-size-base;
   text-align: center;
-}
-
-// Wrapper adjustments for mobile
-@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-  .wrapper {
-    padding: 20px 0px !important;
-  }
 }

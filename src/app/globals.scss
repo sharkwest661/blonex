@@ -50,17 +50,16 @@ a {
 
 // Global main and section styles to match original
 main {
-  padding: 25px 0 50px !important;
+  padding: $spacing-2xl 0 $spacing-3xl !important; // ✅ FIXED: 24px 0 32px (was 25px 0 50px)
 }
 
 section {
-  padding-bottom: 50px;
+  padding-bottom: $spacing-xl; // ✅ FIXED: 16px (was 50px - much smaller!)
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding-bottom: 40px;
+    padding-bottom: $spacing-lg; // ✅ FIXED: 12px mobile (was 40px - much smaller!)
   }
 }
-
 .main_container {
   width: 1600px;
   max-width: 95%;

@@ -7,42 +7,44 @@
   max-width: 95%;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 4px; // ✅ REDUCED from 20px to 4px
+  padding-right: 4px; // ✅ REDUCED from 20px to 4px
 }
 
-// Fluid container - full width with padding
+// Fluid container - full width with minimal padding
 .containerFluid {
   width: 100%;
   max-width: 100%;
+  padding-left: 4px; // ✅ Add minimal padding for fluid too
+  padding-right: 4px;
 }
 
-// No padding modifier (like standardNavbar, standardTopBar)
+// No padding modifier
 .noPadding {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
 
-// Row class - use in combination with container
+// Row class - reduce negative margins to match new padding
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -20px;
-  margin-left: -20px;
+  margin-right: -4px !important; // ✅ REDUCED from -20px to -4px
+  margin-left: -4px !important; // ✅ REDUCED from -20px to -4px
 }
 
-// Column class
+// Column class - reduce padding to match
 .col {
   position: relative;
   width: 100%;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 4px; // ✅ REDUCED from 20px to 4px
+  padding-left: 4px; // ✅ REDUCED from 20px to 4px
 }
 
 // Responsive adjustments
 @media screen and (max-width: $breakpoint-md) {
   .container {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 2px; // ✅ Even smaller on mobile
+    padding-right: 2px;
   }
 }
