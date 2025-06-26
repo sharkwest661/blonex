@@ -12,7 +12,7 @@
 
 .filters767Inner {
   height: 50px;
-  background-color: #f0f0f0;
+  background-color: $filter-bg; // ✅ FIXED: Was #f0f0f0
   border-radius: 20px;
   cursor: pointer;
 
@@ -45,8 +45,8 @@
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.24);
-  z-index: 998;
+  background-color: $overlay-bg; // ✅ FIXED: Was rgba(0, 0, 0, 0.24)
+  z-index: $z-overlay; // ✅ FIXED: Was 998
   top: 0;
   left: 0;
   overflow: hidden;
@@ -58,13 +58,13 @@
   height: 400px;
   background: $white;
   bottom: 0;
-  z-index: 999;
+  z-index: $z-modal; // ✅ FIXED: Was 999
   padding: 0;
   margin: 0;
   left: 0;
   right: 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-top-left-radius: $border-radius; // ✅ FIXED: Was 8px
+  border-top-right-radius: $border-radius; // ✅ FIXED: Was 8px
   display: flex;
   flex-direction: column;
   transform: translateY(100%);
@@ -137,7 +137,7 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: $border-radius; // ✅ FIXED: Was 8px
   padding: 0 8px;
 
   &:hover {
@@ -160,7 +160,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 1px solid #ccc;
+  border: 1px solid $border-light; // ✅ FIXED: Was #ccc
   box-sizing: border-box;
   position: relative;
 }

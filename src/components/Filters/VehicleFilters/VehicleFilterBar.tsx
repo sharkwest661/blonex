@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
 // TODO: Uncomment when store is implemented
 // import { useFilterStore } from '@/stores/filterStore';

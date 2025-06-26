@@ -1,5 +1,6 @@
 /* Color Palette */
 $primary-color: #013f44;
+$primary-hover: #014c52; // ✅ NEW: Hover state for primary color
 $secondary-color: #ffe600;
 $accent-color: #e8724c;
 $text-color: #000000;
@@ -8,6 +9,30 @@ $text-light: #808080;
 $background-color: #f5f6fc;
 $white: #ffffff;
 $black: #000000;
+
+/* UI Component Colors */
+$filter-bg: #f0f0f0; // ✅ NEW: Background for filter triggers
+$border-light: #cccccc; // ✅ NEW: Light border color for form elements
+$overlay-bg: rgba(0, 0, 0, 0.24); // ✅ NEW: Background overlay (light)
+$overlay-bg-dark: rgba(0, 0, 0, 0.5); // ✅ NEW: Background overlay (dark)
+$error-color: #dc3545; // ✅ NEW: Error state color
+
+/* Filter Component Variables (for VehicleFilterBar compatibility) */
+$filter-bg-color: $filter-bg; // ✅ NEW: Alias for filter background
+$filter-border-color: $border-light; // ✅ NEW: Alias for filter borders
+$filter-text-color: $text-color; // ✅ NEW: Alias for filter text
+$filter-gray-color: #f8f9fa; // ✅ NEW: Light gray for hover states
+$filter-primary-light: rgba(
+  1,
+  63,
+  68,
+  0.1
+); // ✅ NEW: Light primary for selections
+
+/* Additional Variables (fixing undefined variables) */
+$light-gray: #f8f9fa; // ✅ NEW: Light gray for button hovers
+$gray: #6c757d; // ✅ NEW: Gray text color
+$primary-color-light: rgba(1, 63, 68, 0.1); // ✅ NEW: Light primary background
 
 /* Typography - Updated to use custom fonts */
 
@@ -44,3 +69,10 @@ $spacing-unit: 8px;
 /* Borders */
 $border-radius: 10px;
 $border-color: #cccccc;
+
+/* Z-Index Layers */
+$z-overlay: 998; // ✅ NEW: Background overlays
+$z-modal: 999; // ✅ NEW: Modal/popup content
+$z-dropdown: 1000; // ✅ NEW: Dropdown menus
+$z-header: 1001; // ✅ NEW: Site header
+$z-tooltip: 1002; // ✅ NEW: Tooltips

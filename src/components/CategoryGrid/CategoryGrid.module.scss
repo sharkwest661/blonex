@@ -162,6 +162,26 @@
   }
 }
 
+.category__btn {
+  background-color: $primary-color;
+  font-family: $font-family-main;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: $white;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+  border: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: $primary-hover; // ✅ FIXED: Was #014c52
+    color: $white;
+  }
+}
+
 // Hide category button on desktop
 @media screen and (min-width: $breakpoint-md) {
   .category__btn.btn {

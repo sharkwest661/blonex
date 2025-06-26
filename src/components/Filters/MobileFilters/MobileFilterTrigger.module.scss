@@ -8,7 +8,7 @@
   gap: 8px;
   width: 100%;
   height: 50px;
-  background-color: #f0f0f0;
+  background-color: $filter-bg; // ✅ FIXED: Was #f0f0f0
   border: none;
   border-radius: 20px;
   color: $primary-color;
@@ -20,7 +20,10 @@
 
   &:hover,
   &:focus {
-    background-color: darken(#f0f0f0, 5%);
+    background-color: darken(
+      $filter-bg,
+      5%
+    ); // ✅ FIXED: Was darken(#f0f0f0, 5%)
   }
 
   &:active {
