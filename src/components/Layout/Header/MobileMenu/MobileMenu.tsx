@@ -1,100 +1,60 @@
-import React, { useState, useEffect } from "react";
+// src/components/Layout/Header/MobileMenu/MobileMenu.tsx - FIXED WITH LOGIN MODAL
+"use client";
+import React from "react";
 import Link from "next/link";
-import {
-  X,
-  Menu,
-  Heart,
-  User,
-  Plus,
-  Home,
-  Search,
-  Phone,
-  Facebook,
-  Instagram,
-  MessageCircle,
-  Send,
-} from "lucide-react";
+import { Menu, X, Search, User, Heart, Plus } from "lucide-react";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useFavoritesStoreHydrated } from "@/stores/useFavoritesStore";
 import styles from "./MobileMenu.module.scss";
-import { CATEGORIES } from "@/constants";
-import { themeColors } from "@/constants/themeColors";
-
-interface Category {
-  id: string;
-  name: string;
-  icon: string;
-  href: string;
-  count?: number;
-}
 
 interface MobileMenuProps {
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
-  categories?: Category[];
-  isAuthenticated?: boolean;
-  userPhone?: string;
+  onLoginClick: () => void; // NEW: Function to open login modal
 }
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({
+const MobileMenu: React.FC<MobileMenuProps> = ({
   isOpen,
   onToggle,
   onClose,
-  categories = CATEGORIES,
-  isAuthenticated = false,
-  userPhone = "012 555 65 00",
+  onLoginClick, // NEW: Login modal trigger
 }) => {
-  const [showAllCategories, setShowAllCategories] = useState(false);
-
-  // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
-
-  // Close menu on escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
-
-  const visibleCategories = showAllCategories
-    ? categories
-    : categories.slice(0, 6);
-
-  const handleCategoryClick = () => {
-    onClose();
-  };
+  const { isAuthenticated, user } = useAuthStore();
+  const { getFavoritesCount } = useFavoritesStoreHydrated();
 
   const handleLinkClick = () => {
     onClose();
   };
 
+  const handleLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onLoginClick(); // Trigger login modal
+    onClose(); // Close mobile menu
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const query = formData.get("search") as string;
+    if (query.trim()) {
+      // Navigate to search results
+      window.location.href = `/search?q=${encodeURIComponent(query.trim())}`;
+      onClose();
+    }
+  };
+
   return (
     <>
-      {/* Mobile Menu Toggle Button - Only show when menu is closed */}
-      {!isOpen && (
-        <button
-          className={`${styles.menuToggle} ${isOpen ? styles.active : ""}`}
-          onClick={onToggle}
-          aria-label="Menyunu aç/bağla"
-          aria-expanded={isOpen}
-        >
-          <Menu size={24} color={themeColors.secondaryColor} />
-        </button>
-      )}
+      {/* Menu Toggle Button - Only visible on mobile */}
+      <button
+        className={`${styles.menuToggle} ${isOpen ? styles.active : ""}`}
+        onClick={onToggle}
+        aria-label="Menyunu aç/bağla"
+        aria-expanded={isOpen}
+      >
+        <Menu size={24} />
+      </button>
 
       {/* Backdrop */}
       {isOpen && (
@@ -126,47 +86,62 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
           {/* Search Bar */}
           <div className={styles.searchSection}>
-            <div className={styles.searchBar}>
+            <form onSubmit={handleSearchSubmit} className={styles.searchBar}>
               <Search size={20} className={styles.searchIcon} />
               <input
                 type="text"
+                name="search"
                 placeholder="Bolbol-da axtar..."
                 className={styles.searchInput}
               />
-            </div>
+              <button type="submit" className={styles.searchSubmit}>
+                <Search size={18} />
+              </button>
+            </form>
           </div>
 
           {/* User Section */}
           <div className={styles.userSection}>
             {isAuthenticated ? (
+              // Authenticated user info
               <div className={styles.userInfo}>
-                <User size={20} />
-                <span>Şəxsi kabinet</span>
+                <User size={18} />
+                <span>{user?.displayName || "İstifadəçi"}</span>
               </div>
             ) : (
-              <Link
-                href="/auth/login"
+              // Login button for non-authenticated users
+              <button
                 className={styles.loginButton}
-                onClick={handleLinkClick}
+                onClick={handleLoginClick}
+                aria-label="Daxil ol"
               >
-                <User size={20} />
+                <User size={18} />
                 <span>Daxil ol</span>
-              </Link>
+              </button>
             )}
+
+            {/* Favorites Button */}
             <Link
               href="/favorites"
               className={styles.favoritesButton}
               onClick={handleLinkClick}
             >
-              <Heart size={20} />
-              <span>Seçdiklərim</span>
+              <Heart size={18} />
+              <span>
+                Seçdiklərim
+                {getFavoritesCount() > 0 && (
+                  <span className={styles.favoritesCount}>
+                    ({getFavoritesCount()})
+                  </span>
+                )}
+              </span>
             </Link>
           </div>
 
           {/* Quick Actions */}
           <div className={styles.quickActions}>
             <Link
-              href="/add-listing"
+              href="/new-ad"
               className={styles.addListing}
               onClick={handleLinkClick}
             >
@@ -175,88 +150,66 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
             </Link>
           </div>
 
-          {/* Main Navigation */}
-          <nav className={styles.mainNav}>
-            <Link href="/" className={styles.navItem} onClick={handleLinkClick}>
-              <Home size={20} />
-              <span>Ana səhifə</span>
-            </Link>
-          </nav>
-
-          {/* Categories Section */}
-          <div className={styles.categoriesSection}>
-            <h3 className={styles.sectionTitle}>Kateqoriyalar</h3>
-            <div className={styles.categoriesList}>
-              {visibleCategories.map((category) => (
-                <Link
-                  key={category.id}
-                  href={category.href}
-                  className={styles.categoryItem}
-                  onClick={handleCategoryClick}
-                >
-                  <div className={styles.categoryIcon}>
-                    <img src={category.icon} alt="" />
-                  </div>
-                  <span className={styles.categoryName}>{category.name}</span>
-                  {category.count && (
-                    <span className={styles.categoryCount}>
-                      ({category.count})
-                    </span>
-                  )}
-                </Link>
-              ))}
-            </div>
-
-            {categories.length > 6 && (
-              <button
-                className={styles.showMoreButton}
-                onClick={() => setShowAllCategories(!showAllCategories)}
+          {/* Navigation Links */}
+          <div className={styles.navigation}>
+            <div className={styles.navGroup}>
+              <h3 className={styles.navGroupTitle}>Kateqoriyalar</h3>
+              <Link
+                href="/categories/electronics"
+                className={styles.navLink}
+                onClick={handleLinkClick}
               >
-                {showAllCategories ? "Daha az göstər" : "Bütün kateqoriyalar"}
-              </button>
-            )}
-          </div>
+                Elektronika
+              </Link>
+              <Link
+                href="/categories/vehicles"
+                className={styles.navLink}
+                onClick={handleLinkClick}
+              >
+                Nəqliyyat
+              </Link>
+              <Link
+                href="/categories/real-estate"
+                className={styles.navLink}
+                onClick={handleLinkClick}
+              >
+                Daşınmaz əmlak
+              </Link>
+              <Link
+                href="/categories/jobs"
+                className={styles.navLink}
+                onClick={handleLinkClick}
+              >
+                İş elanları
+              </Link>
+            </div>
 
-          {/* Contact Info */}
-          <div className={styles.contactSection}>
-            <h3 className={styles.sectionTitle}>Əlaqə</h3>
-            <div className={styles.contactInfo}>
-              <div className={styles.contactItem}>
-                <Phone size={18} />
-                <span>Dəstək: {userPhone} | 055 262 65 00</span>
+            {isAuthenticated && (
+              <div className={styles.navGroup}>
+                <h3 className={styles.navGroupTitle}>Hesabım</h3>
+                <Link
+                  href="/profile"
+                  className={styles.navLink}
+                  onClick={handleLinkClick}
+                >
+                  Şəxsi məlumatlar
+                </Link>
+                <Link
+                  href="/my-ads"
+                  className={styles.navLink}
+                  onClick={handleLinkClick}
+                >
+                  Mənim elanlarım
+                </Link>
+                <Link
+                  href="/settings"
+                  className={styles.navLink}
+                  onClick={handleLinkClick}
+                >
+                  Tənzimləmələr
+                </Link>
               </div>
-            </div>
-
-            <div className={styles.socialLinks}>
-              <a href="#" className={styles.socialLink} aria-label="Facebook">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className={styles.socialLink} aria-label="Instagram">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className={styles.socialLink} aria-label="WhatsApp">
-                <MessageCircle size={20} />
-              </a>
-              <a href="#" className={styles.socialLink} aria-label="Telegram">
-                <Send size={20} />
-              </a>
-            </div>
-          </div>
-
-          {/* Footer Links */}
-          <div className={styles.footerLinks}>
-            <Link href="/about" onClick={handleLinkClick}>
-              Haqqımızda
-            </Link>
-            <Link href="/help" onClick={handleLinkClick}>
-              Kömək
-            </Link>
-            <Link href="/privacy" onClick={handleLinkClick}>
-              Məxfilik
-            </Link>
-            <Link href="/terms" onClick={handleLinkClick}>
-              Şərtlər
-            </Link>
+            )}
           </div>
         </div>
       </div>
