@@ -1,4 +1,4 @@
-// src/components/PostCard/PostCard.module.scss
+// src/components/PostCard/PostCard.module.scss - COMPACT SUPER FÜRSƏT
 @import "../../styles/variables.scss";
 
 // PostCard-specific font sizes (scaled to match original 67.5% base)
@@ -6,6 +6,15 @@ $post-title-size: 1.08rem; // Equivalent to 1.6rem in original
 $post-subtitle-size: 0.94rem; // Equivalent to 1.4rem in original
 $post-meta-size: 0.81rem; // Equivalent to 1.2rem in original
 $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
+
+// Image link wrapper
+.imageLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
 
 // Main post card container
 .post__item {
@@ -15,8 +24,8 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   font-size: 1.2rem;
   line-height: 1.17;
   overflow: hidden;
-  transition: 0.3s;
-  z-index: -1 !important;
+  transition: all 0.3s ease;
+  z-index: 0;
   height: 100%; // Fill grid cell completely
   display: flex;
   flex-direction: column;
@@ -24,6 +33,11 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   &:hover {
     box-shadow: 0px 0px 0px 0px $primary-color,
       0px 10px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+
+    .post__image {
+      transform: scale(1.02);
+    }
   }
 
   // Checked state (for selection)
@@ -40,11 +54,20 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   // Pulsed state (for special promotions)
   &--pulsed {
     animation: pulse 2s infinite;
-    z-index: -1 !important;
+
+    .post__chance {
+      display: flex;
+    }
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    z-index: -1 !important;
+    &:hover {
+      transform: none; // Disable hover transform on mobile
+
+      .post__image {
+        transform: none;
+      }
+    }
   }
 }
 
@@ -53,8 +76,9 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   position: relative;
   width: 100%;
   aspect-ratio: 1.34/1;
-  z-index: 0 !important;
+  z-index: 0;
   flex: 0 0 auto; // Don't allow flex grow/shrink
+  overflow: hidden;
 
   > img {
     width: 100%;
@@ -66,6 +90,7 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   width: 100% !important;
   height: 100% !important;
   object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .post__imagePlaceholder {
@@ -86,25 +111,31 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   left: 0;
   right: 0;
   display: flex;
-  align-items: center;
-  padding: 5px;
-  z-index: 0 !important;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 8px;
+  z-index: 2;
+}
+
+.post__badges {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
 }
 
 // VIP and Premium badges
 .post__vip,
 .post__premium {
-  width: 28px;
-  height: 28px;
-  margin-right: 4px;
+  width: 32px;
+  height: 32px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  border-radius: 5px;
-  transition: 0.3s;
+  border-radius: 6px;
+  transition: 0.3s ease;
 
   &:hover {
-    background-color: rgba($white, 0.5);
+    transform: scale(1.05);
   }
 }
 
@@ -116,63 +147,86 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   background-image: url("/assets/images/premium-icon.svg");
 }
 
-// Favorites button
+// COMPACT Special opportunity badge - top right corner
+.post__chance {
+  position: absolute;
+  bottom: 8px; // ✅ Bottom
+  left: 8px; // ✅ Left corner
+  display: none; // Only show on pulsed items
+  z-index: 4;
+  animation: compactBounce 2s ease-in-out infinite;
+}
+
+.post__chanceContent {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: linear-gradient(135deg, #ff3030, #ff6b6b);
+  background-size: 200% 200%;
+  animation: subtleGradient 3s ease-in-out infinite alternate;
+  color: $white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-align: center;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(255, 48, 48, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
+  white-space: nowrap;
+}
+
+.post__chanceIcon {
+  font-size: 0.7rem;
+  animation: subtleGlow 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 0, 0.6));
+}
+
+.post__chanceText {
+  font-family: $font-family-bold;
+  line-height: 1;
+}
+
+// Favorites button - IMPROVED
 .post__favorites {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  margin-left: auto;
-  background-color: rgba($white, 0.6);
-  border-radius: 5px;
+  width: 36px;
+  height: 36px;
+  background-color: rgba($white, 0.9);
+  backdrop-filter: blur(4px);
+  border-radius: 50%;
   border: none;
   cursor: pointer;
-  z-index: 0 !important;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-  &:before,
-  &:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    transition: 0.3s;
-    z-index: 1 !important;
-  }
-
-  &:before {
-    width: 22px;
-    height: 20px;
-    margin-top: 1px;
-    background: url("/assets/images/favorite-icon.svg") no-repeat center/cover;
-  }
-
-  &:after {
-    width: 16px;
-    height: 14px;
-    background: url("/assets/images/favorite_full-icon.svg") no-repeat
-      center/cover;
-    opacity: 0;
+  .heartIcon {
+    color: $text-light;
+    transition: all 0.3s ease;
   }
 
   &.active {
-    background-color: $white;
+    background-color: #ff4757;
 
-    &:before {
-      opacity: 0;
-    }
-
-    &:after {
-      opacity: 1;
+    .heartIcon {
+      color: $white;
+      fill: currentColor;
     }
   }
 
   &:hover {
-    background-color: $white;
+    background-color: #ff4757;
+    transform: scale(1.1);
 
-    &:before {
-      background: url("/assets/images/favorite_hover-icon.svg") no-repeat
-        center/cover;
+    .heartIcon {
+      color: $white;
     }
   }
 
@@ -182,239 +236,250 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   }
 }
 
-// Store info overlay
+// IMPROVED STORE SECTION - No longer overlay
+.post__storeSection {
+  position: relative;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-bottom: 1px solid #dee2e6;
+  flex: 0 0 auto;
+}
+
 .post__store {
-  position: absolute;
-  top: 0;
-  left: 4px;
-  right: 4px;
-  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  padding: 4px 5px;
-  background-color: $white;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.05);
-  border-radius: 3px;
+  padding: 8px 12px;
   color: $primary-color;
-  transition: 0.3s;
-  z-index: 0 !important;
-  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  min-height: 36px;
 
-  &:hover,
+  &:hover {
+    background: linear-gradient(135deg, #e9ecef, #dee2e6);
+
+    .post__storeIndicator {
+      transform: translateX(2px);
+    }
+  }
+
   &:focus {
-    background: linear-gradient(
-        0deg,
-        rgba($primary-color, 0.05),
-        rgba($primary-color, 0.05)
-      ),
-      $white;
-    color: $primary-color;
-    text-decoration: none;
+    outline: 2px solid $secondary-color;
+    outline-offset: -2px;
   }
+}
 
-  &:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 3px;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    background: url("/assets/images/link.svg") no-repeat center/cover;
-    z-index: 0 !important;
-  }
+.post__storeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: $primary-color;
+  color: $white;
+  border-radius: 4px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
 
-  img {
-    width: 16px !important;
-    margin-right: 5px;
-  }
+.post__storeName {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $primary-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 8px;
+}
+
+.post__storeIndicator {
+  display: flex;
+  align-items: center;
+  color: $text-light;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
 // Info section
 .post__info {
   position: relative;
   color: rgba(0, 0, 0, 0.5);
-  padding-top: 4px !important;
   flex: 1 0 auto; // Grow to fill remaining space
   display: flex;
   flex-direction: column;
-
-  p {
-    margin-bottom: 3px !important;
-  }
-
-  @media screen and (min-width: $breakpoint-md) {
-    padding: 22px 5px 5px;
-  }
+  padding: 12px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 22px 5px 5px;
+    padding: 10px;
   }
 }
 
 .post__content {
-  padding: 0 5px;
   flex: 1 0 auto; // Grow to fill space
   display: flex;
   flex-direction: column;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 0 5px;
-  }
+  margin-bottom: 12px;
 }
 
-// Titles
+// Titles - IMPROVED
 .post__title {
   display: block;
-  height: 21px;
-  margin: 5px 0 0;
-  font-weight: 500;
-  line-height: 1.125;
+  margin: 0 0 6px 0;
+  font-weight: 600;
+  line-height: 1.3;
   color: $primary-color;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
+  min-height: 2.6em; // Consistent height for 2 lines
+  font-family: $font-family-bold;
+  font-size: $post-title-size;
   text-decoration: none;
 
-  &:hover,
-  &:focus {
-    color: $primary-color;
-    text-decoration: none;
+  &:hover {
+    color: $secondary-color;
   }
 }
 
 .other_post_title {
-  display: block;
-  margin: 5px 0 0;
-  font-weight: 500;
-  line-height: 1.125;
-  color: $primary-color;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-  text-decoration: none;
+  @extend .post__title;
 
   @media screen and (max-width: 400px) {
     font-size: 1.4rem;
   }
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    height: 36px !important;
-  }
-
-  @media screen and (max-width: 576px) {
-    height: 36px !important;
-  }
-
-  &:hover,
-  &:focus {
-    color: $primary-color;
-    text-decoration: none;
+    min-height: 2.4em;
   }
 }
 
-.post__title,
-.other_post_title {
-  font-family: $font-family-bold;
-  font-size: $post-title-size;
-  height: 2.5em; // Fixed height for 2 lines of text
-  margin-bottom: 0.5em;
-}
-
-.post__title2 {
-  display: block;
-  height: 1.25em; // Fixed height for 1 line
-  margin: 0 0 5px;
+.post__subtitle {
+  margin: 0 0 6px 0;
   font-size: $post-subtitle-size;
-  font-weight: 500 !important;
-  color: $primary-color;
+  font-weight: 400;
+  color: $text-light;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-  text-decoration: none;
-
-  &:hover,
-  &:focus {
-    color: $primary-color;
-    text-decoration: none;
-  }
+  -webkit-line-clamp: 1;
+  line-height: 1.3;
 }
 
 .post__meta {
-  margin-bottom: 5px !important;
+  margin: 0;
   font-size: $post-meta-size;
-  color: rgba(0, 0, 0, 0.5);
+  color: $text-light;
+  line-height: 1.3;
 }
 
-// Footer section
+// Footer section - IMPROVED
 .post__footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto; // Push to bottom
   flex: 0 0 auto; // Don't grow
-  min-height: 30px; // Consistent height
-  // No padding - matches original d-flex justify-content-between structure
+  min-height: 32px; // Consistent height
+  padding-top: 8px;
+  border-top: 1px solid #f1f3f4;
 }
 
-// Price
+// Price - IMPROVED
 .post__price {
-  padding: 2px 4px;
+  padding: 4px 8px;
   font-family: $font-family-bold;
   font-size: $post-price-size;
-  line-height: 1.125;
+  font-weight: 700;
+  line-height: 1.2;
   color: $primary-color;
-  background-color: rgba($secondary-color, 0.5);
-  border-radius: 5px;
+  background-color: rgba($secondary-color, 0.15);
+  border: 1px solid rgba($secondary-color, 0.3);
+  border-radius: 6px;
+  white-space: nowrap;
 
   &--secondary {
-    background-color: #ff3030;
+    background: linear-gradient(135deg, #ff3030, #ff6b6b);
     color: $white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(255, 48, 48, 0.2);
   }
 }
 
-// Features section
+// Features section - IMPROVED
 .post__features {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .post__feature {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: rgba($primary-color, 0.1);
+  border-radius: 4px;
+  cursor: help;
+  transition: all 0.3s ease;
 
   &:hover {
+    background-color: rgba($primary-color, 0.2);
     transform: scale(1.1);
   }
 
   img {
-    width: 100%;
-    height: 100%;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
   }
 }
 
-// Animations
+// Animations - SUBTLER
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0px rgba(255, 48, 48, 0);
   }
 
   50% {
-    box-shadow: 0 0 0 6px #ff3030;
+    box-shadow: 0 0 0 6px rgba(255, 48, 48, 0.3);
   }
 
   100% {
     box-shadow: 0 0 0 0px rgba(255, 48, 48, 0);
+  }
+}
+
+@keyframes compactBounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes subtleGradient {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    background-position: 100% 50%;
+    filter: hue-rotate(5deg);
+  }
+}
+
+@keyframes subtleGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 0, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 4px rgba(255, 255, 0, 0.9));
   }
 }
 
@@ -440,4 +505,63 @@ $post-price-size: 1.08rem; // Equivalent to 1.6rem in original
   outline: 2px solid $secondary-color;
   outline-offset: 2px;
   border-radius: $border-radius;
+}
+
+// Mobile optimizations
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .post__storeSection {
+    .post__store {
+      padding: 6px 10px;
+      min-height: 32px;
+    }
+
+    .post__storeName {
+      font-size: 0.8rem;
+    }
+  }
+
+  .post__features {
+    gap: 4px;
+  }
+
+  .post__feature {
+    width: 20px;
+    height: 20px;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  // Smaller badge on mobile
+  .post__chanceContent {
+    padding: 3px 6px;
+    font-size: 0.6rem;
+    gap: 3px;
+  }
+
+  .post__chanceIcon {
+    font-size: 0.65rem;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .post__item--pulsed {
+    animation: none;
+  }
+
+  .post__chance {
+    animation: none;
+  }
+
+  .post__chanceContent {
+    animation: none;
+  }
+
+  .post__chanceIcon {
+    animation: none;
+    filter: none;
+  }
 }
