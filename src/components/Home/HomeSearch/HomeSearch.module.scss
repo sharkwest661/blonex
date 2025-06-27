@@ -116,8 +116,8 @@
 
   &:hover,
   &:focus {
-    background-color: #ffe600;
-    background-image: url("/assets/images/search.svg");
+    background: $secondary-color url("/assets/images/search.svg") no-repeat
+      center/24px 24px;
     background-repeat: no-repeat;
     background-position: center;
 
@@ -128,7 +128,6 @@
 
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.6;
   }
 
   // Remove default button focus outline
