@@ -1,9 +1,8 @@
-// src/components/PostCard/PostCard.tsx - TURBO.AZ STYLE VERSION
+// src/components/PostCard/PostCard.tsx - UPDATED IMPORTS
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
 import { useFavoritesStoreHydrated } from "@/stores/useFavoritesStore";
 import type { Post, PostFeature } from "@/types/post.types";
 import styles from "./PostCard.module.scss";
@@ -22,6 +21,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
+  // ✅ FIX: Use hydration-safe favorites store
   const { favorites, toggleFavorite } = useFavoritesStoreHydrated();
   const isFavorite = favorites.includes(post.id);
 
@@ -49,114 +49,141 @@ export const PostCard: React.FC<PostCardProps> = ({
     return dateString;
   };
 
+  // Determine title class based on post type
+  const getTitleClass = () => {
+    if (post.type === "vip") {
+      return styles.post__title;
+    }
+    return styles.other_post_title;
+  };
+
+  // Determine if should show subtitle (only for VIP)
+  const shouldShowSubtitle = post.type === "vip" && post.subtitle;
+
   return (
-    <Link href={post.href} className={`${styles.postCard} ${className || ""}`}>
+    <div className={`${styles.post__item} ${className || ""}`}>
       {/* Image Section */}
-      <div className={styles.postCard__imageContainer}>
+      <div className={styles.post__img}>
         {!imageError ? (
           <Image
-            src={post.imageUrl || "/assets/images/no-image.png"}
+            src={post.imageUrl}
             alt={post.title}
             fill
-            className={styles.postCard__image}
+            sizes="(max-width: 576px) 50vw, (max-width: 767px) 33vw, (max-width: 1024px) 25vw, 20vw"
+            className={styles.post__image}
             onLoad={handleImageLoad}
             onError={handleImageError}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: "cover" }}
           />
         ) : (
-          <div className={styles.postCard__imagePlaceholder}>
-            <span>Şəkil yoxdur</span>
+          <div className={styles.post__imagePlaceholder}>
+            <span>Şəkil yüklənmədi</span>
           </div>
         )}
 
         {/* Overlays */}
-        <div className={styles.postCard__overlays}>
+        <div className={styles.post__attributes}>
           {/* VIP Badge */}
-          {post.type === "vip" && (
-            <div className={styles.postCard__vipBadge}>VIP</div>
+          {(post.hasVipBadge || post.type === "vip") && (
+            <span
+              className={styles.post__vip}
+              title="VIP elan"
+              aria-label="VIP elan"
+            />
           )}
 
           {/* Premium Badge */}
-          {post.type === "premium" && (
-            <div className={styles.postCard__premiumBadge}>Premium</div>
+          {(post.hasPremiumBadge || post.type === "vip") && (
+            <span
+              className={styles.post__premium}
+              title="Premium elan"
+              aria-label="Premium elan"
+            />
           )}
 
-          {/* Favorite Button */}
+          {/* Favorites Button */}
           <button
-            className={`${styles.postCard__favoriteBtn} ${
-              isFavorite ? styles.postCard__favoriteBtn__active : ""
+            type="button"
+            className={`${styles.post__favorites} ${
+              isFavorite ? styles.active : ""
             }`}
             onClick={handleFavoriteClick}
             aria-label={
               isFavorite ? "Seçdiklərdən çıxar" : "Seçdiklərə əlavə et"
             }
-          >
-            <Heart
-              size={16}
-              fill={isFavorite ? "currentColor" : "none"}
-              strokeWidth={2}
-            />
-          </button>
+            title={isFavorite ? "Seçdiklərdən çıxar" : "Seçdiklərə əlavə et"}
+          />
         </div>
 
-        {/* Store Badge */}
+        {/* Store Info (if applicable) */}
         {post.isStore && post.storeInfo && (
-          <div className={styles.postCard__storeBadge}>
+          <Link
+            href={post.storeInfo.href}
+            className={styles.post__store}
+            onClick={(e) => e.stopPropagation()}
+          >
             <Image
               src={post.storeInfo.logo}
               alt={post.storeInfo.name}
-              width={14}
-              height={14}
+              width={16}
+              height={16}
             />
             <span>{post.storeInfo.name}</span>
-          </div>
+          </Link>
         )}
       </div>
 
-      {/* Content Section */}
-      <div className={styles.postCard__content}>
-        {/* Title */}
-        <h3 className={styles.postCard__title}>{post.title}</h3>
+      {/* Info Section */}
+      <div className={styles.post__info}>
+        <div className={styles.post__content}>
+          {/* Title */}
+          <Link href={post.href} className={getTitleClass()}>
+            {post.title}
+          </Link>
 
-        {/* Subtitle for VIP */}
-        {post.type === "vip" && post.subtitle && (
-          <p className={styles.postCard__subtitle}>{post.subtitle}</p>
-        )}
+          {/* Subtitle (only for VIP) */}
+          {shouldShowSubtitle && (
+            <Link href={post.href} className={styles.post__title2}>
+              {post.subtitle}
+            </Link>
+          )}
 
-        {/* Meta */}
-        <div className={styles.postCard__meta}>
-          <span className={styles.postCard__location}>{post.location}</span>
-          <span className={styles.postCard__date}>{formatDate(post.date)}</span>
+          {/* Meta Info */}
+          <p className={styles.post__meta}>
+            {post.location}, {formatDate(post.date)}
+          </p>
         </div>
 
-        {/* Price and Features */}
-        <div className={styles.postCard__footer}>
-          <div className={styles.postCard__price}>
+        {/* Footer */}
+        <div className={styles.post__footer}>
+          {/* Price */}
+          <div className={styles.post__price}>
             {formatPrice(post.price, post.currency)}
           </div>
 
           {/* Features */}
           {post.features.length > 0 && (
-            <div className={styles.postCard__features}>
-              {post.features.slice(0, 2).map((feature, index) => (
-                <div
+            <div className={styles.post__features}>
+              {post.features.map((feature, index) => (
+                <span
                   key={index}
-                  className={styles.postCard__feature}
+                  className={styles.post__feature}
                   title={feature.tooltip}
+                  aria-label={feature.tooltip}
                 >
                   <Image
                     src={feature.icon}
                     alt={feature.tooltip}
-                    width={16}
-                    height={16}
+                    width={20}
+                    height={20}
                   />
-                </div>
+                </span>
               ))}
             </div>
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
