@@ -1,0 +1,256 @@
+@import "../../styles/variables.scss";
+
+.productInfo {
+  width: 100%;
+}
+
+// Product Attributes (ID, views, favorite)
+.productAttributes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.productId {
+  font-size: $font-size-small;
+  color: $text-light;
+  font-family: $font-family-main;
+}
+
+.productStats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.productView {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: $font-size-small;
+  color: $text-light;
+  font-family: $font-family-main;
+}
+
+.productFavorite {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: $text-light;
+  font-size: $font-size-small;
+  font-family: $font-family-main;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-decoration: underline;
+
+  &:hover {
+    color: $primary-color;
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+
+  &.active {
+    color: #ff4757;
+  }
+}
+
+// Breadcrumb
+.breadcrumb {
+  margin-bottom: 15px;
+}
+
+.breadcrumbList {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: $font-size-small;
+}
+
+.breadcrumbItem {
+  &:not(:last-child)::after {
+    content: ">";
+    margin: 0 8px;
+    color: $text-light;
+  }
+}
+
+.breadcrumbLink {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: darken($primary-color, 10%);
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+}
+
+.breadcrumbCurrent {
+  color: $text-light;
+}
+
+// Title
+.productTitle {
+  font-size: 2.4rem;
+  font-family: $font-family-main;
+  font-weight: bold;
+  color: $text-dark;
+  line-height: 1.3;
+  margin-bottom: 10px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 2rem;
+  }
+}
+
+// Date
+.productDate {
+  font-size: $font-size-small;
+  color: $text-light;
+  margin-bottom: 15px;
+}
+
+// Price Section
+.priceSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.productPrice {
+  font-size: 2.8rem;
+  font-family: $font-family-main;
+  font-weight: bold;
+  color: $primary-color;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 2.2rem;
+  }
+}
+
+.productState {
+  padding: 4px 12px;
+  background-color: #28a745;
+  color: $white;
+  font-size: $font-size-small;
+  font-weight: 500;
+  border-radius: $border-radius;
+}
+
+// Features
+.productFeatures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.productFeature {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: $font-size-small;
+  color: $text-dark;
+  font-family: $font-family-main;
+
+  svg {
+    color: $text-light;
+  }
+}
+
+// Specifications Table
+.specificationsSection {
+  margin-bottom: 25px;
+}
+
+.specificationsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: $font-family-main;
+
+  tr {
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  th,
+  td {
+    padding: 12px 0;
+    text-align: left;
+    vertical-align: top;
+  }
+}
+
+.specKey {
+  width: 30%;
+  font-weight: 600;
+  color: $text-dark;
+  font-size: $font-size-base;
+  padding-right: 20px;
+}
+
+.specValue {
+  color: $text-dark;
+  font-size: $font-size-base;
+}
+
+// Description
+.descriptionSection {
+  margin-top: 25px;
+}
+
+.descriptionContent {
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  line-height: 1.6;
+  color: $text-dark;
+}
+
+.descriptionParagraph {
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:first-child {
+    font-weight: 600;
+    color: $primary-color;
+  }
+}
+
+.descriptionListItem {
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+
+  &::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: $primary-color;
+    font-weight: bold;
+  }
+}

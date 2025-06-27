@@ -1,0 +1,154 @@
+@import "../../styles/variables.scss";
+
+.productDetailPage {
+  min-height: 100vh;
+  background-color: $background-light;
+}
+
+// Mobile Search Section
+.mobileSearchSection {
+  padding-bottom: 0;
+  display: block;
+
+  @media screen and (min-width: $breakpoint-md) {
+    display: none;
+  }
+}
+
+.container {
+  padding: 0 $container-padding;
+  max-width: $container-max-width;
+  margin: 0 auto;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 0 15px;
+  }
+}
+
+.search {
+  padding: 15px 0;
+}
+
+.searchGroup {
+  display: flex;
+  position: relative;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.searchInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #dee2e6;
+  border-right: none;
+  font-size: $font-size-base;
+  font-family: $font-family-main;
+  color: $text-dark;
+  background-color: $white;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  &::placeholder {
+    color: $text-light;
+  }
+}
+
+.searchAppend {
+  display: flex;
+}
+
+.searchBtn {
+  padding: 12px 16px;
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  color: $white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: darken($primary-color, 5%);
+    border-color: darken($primary-color, 5%);
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+}
+
+// Product Section
+.productSection {
+  padding: 30px 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 20px 0;
+  }
+}
+
+.product {
+  background-color: $white;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leftColumn {
+  padding: 30px;
+  border-right: 1px solid #eee;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 20px;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+.rightColumn {
+  padding: 30px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 20px;
+  }
+}
+
+// Complaint Button
+.complaintBtn {
+  display: inline-block;
+  margin: 20px 0;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  color: $text-light;
+  font-size: $font-size-small;
+  font-family: $font-family-main;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $primary-color;
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+}

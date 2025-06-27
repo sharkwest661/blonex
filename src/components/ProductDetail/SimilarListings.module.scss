@@ -1,0 +1,244 @@
+@import "../../styles/variables.scss";
+
+.similarListings {
+  padding: 40px 0;
+  background-color: $background-light;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 30px 0;
+  }
+}
+
+.container {
+  padding: 0 $container-padding;
+  max-width: $container-max-width;
+  margin: 0 auto;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 0 15px;
+  }
+}
+
+.sectionTitle {
+  font-family: $font-family-main;
+  font-weight: bold;
+  font-size: 2.4rem;
+  color: $text-dark;
+  margin-bottom: 30px;
+  text-align: left;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+}
+
+// Main Wrapper
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 30px;
+  align-items: start;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    grid-template-columns: 1fr 250px;
+    gap: 20px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+// Listings Grid
+.listingsGrid {
+  width: 100%;
+}
+
+.postList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+// Banner Items in Grid
+.bannerItem {
+  grid-column: span 1;
+  border-radius: $border-radius;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.bannerImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+
+  .bannerItem:hover & {
+    transform: scale(1.02);
+  }
+}
+
+// Sidebar
+.sidebar {
+  width: 100%;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    order: -1; // Show banner above listings on mobile
+  }
+}
+
+.stickyBanner {
+  position: sticky;
+  top: 20px;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    position: relative;
+    top: auto;
+  }
+}
+
+.desktopBanner {
+  display: block;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none;
+  }
+}
+
+.mobileBanner {
+  display: none;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: block;
+  }
+}
+
+.sidebarBannerImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+
+  .stickyBanner:hover & {
+    transform: scale(1.02);
+  }
+}
+
+// Responsive Grid Adjustments
+@media screen and (min-width: 1200px) {
+  .postList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .postList {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// Loading States (for future use)
+.loadingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.loadingItem {
+  height: 400px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: $border-radius;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Empty State
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: $text-light;
+
+  h3 {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    color: $text-dark;
+  }
+
+  p {
+    font-size: $font-size-base;
+    margin: 0;
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .bannerItem,
+  .stickyBanner,
+  .bannerImage,
+  .sidebarBannerImage {
+    transition: none;
+  }
+
+  .bannerItem:hover,
+  .stickyBanner:hover {
+    transform: none;
+  }
+
+  .bannerItem:hover .bannerImage,
+  .stickyBanner:hover .sidebarBannerImage {
+    transform: none;
+  }
+
+  .loadingItem {
+    animation: none;
+    background: #f0f0f0;
+  }
+}

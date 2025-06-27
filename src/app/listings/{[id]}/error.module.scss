@@ -1,0 +1,156 @@
+@import "../../../styles/variables.scss";
+
+.errorPage {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $background-light;
+}
+
+.errorContent {
+  text-align: center;
+  max-width: 600px;
+  padding: 40px 20px;
+}
+
+.errorIcon {
+  color: #e74c3c;
+  margin-bottom: 30px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.errorTitle {
+  font-family: $font-family-main;
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: $text-dark;
+  margin-bottom: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 2rem;
+  }
+}
+
+.errorMessage {
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  color: $text-light;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.errorDetails {
+  text-align: left;
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: $border-radius;
+  border: 1px solid #e9ecef;
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: $primary-color;
+
+    &:hover {
+      color: darken($primary-color, 10%);
+    }
+  }
+}
+
+.errorStack {
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 12px;
+  color: #6c757d;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.errorActions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.retryButton,
+.homeButton,
+.searchButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: $border-radius;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    width: 200px;
+    justify-content: center;
+  }
+}
+
+.retryButton {
+  background-color: $primary-color;
+  color: $white;
+  border: none;
+
+  &:hover {
+    background-color: darken($primary-color, 5%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba($primary-color, 0.3);
+  }
+}
+
+.homeButton {
+  background-color: #28a745;
+  color: $white;
+
+  &:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+  }
+}
+
+.searchButton {
+  background-color: #17a2b8;
+  color: $white;
+
+  &:hover {
+    background-color: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+  }
+}
