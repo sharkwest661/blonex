@@ -1,17 +1,22 @@
 // src/components/Home/HomeSearch/HomeSearch.module.scss
 @import "../../../styles/variables.scss";
 
+// Search container styling is now handled by Container components
+// This file focuses on the search component itself
+
+// Main search component
 .search {
   position: relative;
   width: calc(100% - 10px);
   max-width: 690px;
-  margin: 0 auto $spacing-sm;
+  margin: 0 auto 30px;
   -webkit-box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    margin: 0 auto $spacing-sm;
+    width: 100%;
+    margin: 0 auto 32px;
     padding: 16px 8px;
     background-color: $white;
   }
@@ -36,24 +41,27 @@
   }
 }
 
+.search__append {
+  position: static;
+}
+
 .search__input {
   flex: 1;
   height: 50px;
-  padding: 0 110px 0 16px; // Increased right padding for button width (100px + padding)
+  padding: 0 110px 0 16px;
   border: 0;
   background: transparent;
   font-size: $font-size-base;
   font-family: $font-family-main;
   color: $text-color;
   outline: none;
-  padding-right: 40px;
   -webkit-border-radius: 10px !important;
   -moz-border-radius: 10px !important;
   border-radius: 10px !important;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     height: 30px;
-    padding: 0 70px 0 12px; // Adjusted for mobile button width (60px + padding)
+    padding: 0 70px 0 12px;
     font-size: $font-size-small;
   }
 
@@ -65,24 +73,6 @@
   &:focus {
     outline: none;
   }
-}
-
-.search__append {
-  position: absolute;
-  right: 5px;
-  top: 0;
-  bottom: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -moz-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  z-index: 3;
 }
 
 .search__btn {
@@ -271,7 +261,7 @@
 
   .search__input {
     height: 40px;
-    padding: 10px 40px 10px 8px; // Adjusted for small button
+    padding: 10px 40px 10px 8px;
     background-color: transparent;
     color: $white;
 

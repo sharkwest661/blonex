@@ -12,15 +12,7 @@ const HomePage: React.FC = () => {
         <section id="home_filters_sec">
           <Container fluid noPadding>
             <section className="d-md-block" id="neql_search">
-              <Container>
-                <Container fluid className="forpadding0">
-                  <div className="row" id="dekstop_search_bar_row">
-                    <div className="" id="dekstop_search_bar">
-                      <HomeFilter />
-                    </div>
-                  </div>
-                </Container>
-              </Container>
+              <HomeFilter />
             </section>
 
             {/* Categories Navigation Section */}

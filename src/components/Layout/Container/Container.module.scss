@@ -7,16 +7,26 @@
   max-width: 95%;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 4px; // ✅ REDUCED from 20px to 4px
-  padding-right: 4px; // ✅ REDUCED from 20px to 4px
+  padding-left: 20px;
+  padding-right: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
 // Fluid container - full width with minimal padding
 .containerFluid {
   width: 100%;
   max-width: 100%;
-  padding-left: 4px; // ✅ Add minimal padding for fluid too
-  padding-right: 4px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
 // No padding modifier
@@ -25,26 +35,51 @@
   padding-right: 0 !important;
 }
 
-// Row class - reduce negative margins to match new padding
+// Row class
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -4px !important; // ✅ REDUCED from -20px to -4px
-  margin-left: -4px !important; // ✅ REDUCED from -20px to -4px
+  margin-right: -20px;
+  margin-left: -20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-right: -8px;
+    margin-left: -8px;
+  }
 }
 
-// Column class - reduce padding to match
+// Column class
 .col {
   position: relative;
   width: 100%;
-  padding-right: 4px; // ✅ REDUCED from 20px to 4px
-  padding-left: 4px; // ✅ REDUCED from 20px to 4px
+  padding-right: 20px;
+  padding-left: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
 }
 
-// Responsive adjustments
-@media screen and (max-width: $breakpoint-md) {
-  .container {
-    padding-left: 2px; // ✅ Even smaller on mobile
-    padding-right: 2px;
-  }
+// Search-specific container overrides
+.searchContainer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.searchContainerFluid {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.searchRow {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  clear: none !important;
+  display: block !important;
 }

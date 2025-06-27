@@ -1,63 +1,21 @@
 // src/components/Home/HomeFilter/HomeFilter.module.scss
 @import "../../../styles/variables.scss";
 
-.main_container {
-  width: 1600px;
-  max-width: 95%;
-  margin: 0 auto;
-}
-
-.containerFluid {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding-left: 8px !important;
-    padding-right: 8px !important;
-  }
-}
-
-.forpadding0 {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
-.row {
-  clear: left;
-  margin-right: -20px !important;
-  margin-left: -20px !important;
-}
-
 .homeFilters {
   padding-bottom: 0 !important;
-}
-
-.dMdBlock {
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: block;
-  }
-}
-
-.neqlSearch {
   margin-bottom: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
-
-  .main_container {
-    max-width: 100%;
-  }
 }
 
 .dekstopSearchBar {
   max-width: 690px !important;
   padding: 0 !important;
   margin: 0 auto !important;
-  margin-bottom: $spacing-xl !important; // ✅ FIXED: was 20px, now 16px (normal spacing)
+  margin-bottom: 20px !important;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 auto !important;
-    margin-bottom: $spacing-xl !important; // ✅ FIXED: consistent mobile spacing
+    margin-bottom: 20px !important;
   }
 }
