@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Crown, Star, TrendingUp, Power } from "lucide-react";
 import styles from "./PromotionActions.module.scss";
