@@ -1,4 +1,4 @@
-// src/components/Layout/Header/Header.tsx - Updated with Login Modal Integration
+// src/components/Layout/Header/Header.tsx - FIXED: Added onLoginClick prop
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
@@ -71,6 +71,7 @@ const Header: React.FC = () => {
                 isOpen={isMenuOpen}
                 onToggle={toggleMenu}
                 onClose={closeMenu}
+                onLoginClick={openLoginModal} // ✅ FIXED: Added missing prop
               />
 
               {/* Logo - Center on mobile, left on desktop */}

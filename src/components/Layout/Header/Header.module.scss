@@ -1,138 +1,140 @@
-// src/components/Layout/Header/Header.module.scss
+// src/components/Layout/Header/Header.module.scss - FIXED for mobile menu positioning
 @import "../../../styles/variables.scss";
 
-// Header styles
 .header {
-  color: $primary-color;
-  background-color: $white !important;
+  position: relative;
+  z-index: 100;
 }
 
 // Navbar background
 .navbar_bg {
-  background-color: $primary-color !important;
+  background-color: $primary-color;
+  position: relative;
+  z-index: 1;
+  overflow: visible; // ✅ FIXED: Ensure hamburger button is not clipped
 }
 
-// Main navbar layout
+// Main navbar container
 .navbar {
-  position: relative;
-  padding: 20px 0;
   display: flex;
   align-items: center;
-  justify-content: space-between; // Logo left, content right on desktop
+  justify-content: space-between;
+  padding: 12px 20px;
   min-height: 64px;
+  position: relative; // ✅ For absolute positioned elements
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 16px 0;
-    justify-content: center; // Center logo on mobile
-    position: relative;
+    padding: 16px 20px;
+    justify-content: center; // ✅ Center logo on mobile
+    overflow: visible; // ✅ FIXED: Ensure hamburger button is not clipped
   }
 }
 
-// Logo - Left side on desktop, center on mobile
+// Logo
 .navbarBrand {
-  margin: 0;
-  z-index: 10; // Above mobile menu
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  z-index: 2; // ✅ Ensure logo is above hamburger
 
   img {
-    height: 44px;
+    height: auto;
+    max-height: 44px;
     width: auto;
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    // Center the logo on mobile
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    // Logo centered on mobile
+    position: relative;
+    z-index: 2;
 
     img {
-      height: 28px;
+      max-width: 64px; // ✅ FIXED: Max width 64px on mobile
+      height: auto; // ✅ FIXED: Auto height to maintain aspect ratio
     }
   }
 }
 
-// Mobile New Ad Button - Only visible on mobile
+// Mobile new ad button (right side on mobile)
 .mobileNewAdBtn {
-  display: none;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    right: 0;
-    width: 36px;
-    height: 36px;
-    background-color: $secondary-color;
-    color: $primary-color;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    z-index: 10;
-
-    &:hover,
-    &:focus {
-      background-color: darken($secondary-color, 10%);
-      transform: scale(1.05);
-    }
-
-    &:focus {
-      outline: 2px solid $white;
-      outline-offset: 2px;
-    }
-  }
-}
-
-// Right side container - Desktop only
-.navbarRight {
   display: flex;
   align-items: center;
-  gap: 16px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    display: none; // Hidden on mobile, replaced by mobile menu
-  }
-}
-
-// Navigation links container
-.header__links {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-// Individual navigation links
-.header__link {
-  display: flex;
-  align-items: center;
-  height: 46px;
-  padding: 10px 12px;
-  color: $white;
-  border-radius: $border-radius;
-  transition: all 0.3s ease;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: $secondary-color;
+  color: $primary-color;
+  border-radius: 8px;
   text-decoration: none;
-  font-size: $font-size-base;
-  font-family: $font-family-main;
+  transition: all 0.3s ease;
+  position: absolute; // ✅ FIXED: Position on right side
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+
+  @media screen and (min-width: $breakpoint-md) {
+    display: none; // Hide on desktop
+  }
 
   &:hover,
   &:focus {
-    color: $white;
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  // Icons
-  &:before {
-    content: "";
-    display: block;
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    background-color: darken($secondary-color, 10%);
+    transform: translateY(-50%) scale(1.05);
   }
 }
 
-// Specific link icons
+// Desktop navigation (right side)
+.navbarRight {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none; // Hide on mobile
+  }
+}
+
+// Desktop header links container
+.header__links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+// Header links styling
+.header__link {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 32px;
+  color: $white;
+  font-size: $font-size-base;
+  font-family: $font-family-main;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &:hover,
+  &:focus {
+    color: $secondary-color;
+    transform: translateY(-1px);
+  }
+}
+
+// Specific icon styles for header links
 .header__link--favorites:before {
   background-image: url("../../../../public/assets/images/favorite_white-icon.svg");
 }
@@ -176,6 +178,7 @@
 @media screen and (min-width: $breakpoint-md) {
   .navbar {
     padding: 20px 0;
+    justify-content: space-between; // ✅ Space between on desktop only
   }
 
   .header__links {
@@ -189,6 +192,13 @@
   outline: 2px solid $secondary-color;
   outline-offset: 2px;
 }
+
+.mobileNewAdBtn:focus {
+  outline: 2px solid $white;
+  outline-offset: 2px;
+}
+
+// No-scroll is handled in JavaScript via document.body.classList
 
 // Legacy styles for compatibility (if you had them before)
 .navbarToggler {

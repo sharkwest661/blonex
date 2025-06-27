@@ -1,7 +1,7 @@
-// src/components/Layout/Header/MobileMenu/MobileMenu.module.scss - UPDATED
+// src/components/Layout/Header/MobileMenu/MobileMenu.module.scss - FIXED
 @import "../../../../styles/variables.scss";
 
-// Menu toggle button (hamburger) - FIXED: Colors for primary header
+// Menu toggle button (hamburger) - FIXED: Colors and left positioning
 .menuToggle {
   display: flex;
   align-items: center;
@@ -10,10 +10,16 @@
   height: 40px;
   background: transparent;
   border: none;
-  color: $white; // ✅ FIXED: White icon on primary background
+  color: $secondary-color; // ✅ FIXED: Secondary color
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 8px;
+  position: absolute; // ✅ FIXED: Position on left side
+  left: 20px; // ✅ FIXED: Left side positioning
+  top: 50%; // ✅ FIXED: Center vertically
+  transform: translateY(-50%); // ✅ FIXED: Only center vertically
+  z-index: 1000; // ✅ FIXED: High z-index to ensure it's clickable
+  pointer-events: auto; // ✅ FIXED: Ensure it's clickable
 
   @media screen and (min-width: $breakpoint-md) {
     display: none; // Hide on desktop
@@ -21,12 +27,23 @@
 
   &:hover,
   &:focus {
-    background-color: rgba($white, 0.1); // ✅ FIXED: White overlay on hover
-    transform: scale(1.05);
+    background-color: rgba(
+      $secondary-color,
+      0.1
+    ); // ✅ FIXED: Secondary color overlay
+    transform: translateY(-50%) scale(1.05); // ✅ FIXED: Maintain vertical center while scaling
   }
 
   &.active {
-    background-color: rgba($white, 0.2); // ✅ FIXED: White overlay when active
+    background-color: rgba(
+      $secondary-color,
+      0.2
+    ); // ✅ FIXED: Secondary color overlay when active
+  }
+
+  // ✅ FIXED: Debug styles to make sure button is visible and clickable
+  &:active {
+    background-color: rgba($secondary-color, 0.3);
   }
 }
 
@@ -42,21 +59,21 @@
   transition: opacity 0.3s ease;
 }
 
-// Mobile menu container - FIXED: Opens from LEFT
+// Mobile menu container - Opens from LEFT
 .mobileMenu {
   position: fixed;
   top: 0;
-  left: -100%; // ✅ FIXED: Changed from right to left
+  left: -100%;
   width: 320px;
   max-width: 85vw;
   height: 100vh;
   background-color: $white;
-  z-index: 999;
-  transition: left 0.3s ease; // ✅ FIXED: Changed from right to left
-  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15); // ✅ FIXED: Shadow on right side
+  z-index: 1001;
+  transition: left 0.3s ease;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
 
   &.open {
-    left: 0; // ✅ FIXED: Changed from right to left
+    left: 0;
   }
 
   @media screen and (min-width: $breakpoint-md) {
@@ -75,8 +92,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba($primary-color, 0.1);
   background-color: $white;
 }
 
@@ -88,146 +105,145 @@
 }
 
 .closeButton {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent;
-  color: $text-color;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  color: $primary-color;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 
   &:hover,
   &:focus {
-    background-color: rgba($text-color, 0.1);
+    background-color: rgba($primary-color, 0.1);
   }
 }
 
 // Search section
 .searchSection {
-  padding: 20px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba($primary-color, 0.1);
 }
 
 .searchBar {
   position: relative;
   display: flex;
   align-items: center;
+  background-color: $background-color;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .searchIcon {
   position: absolute;
   left: 12px;
-  color: #999;
+  color: $text-light;
   z-index: 1;
 }
 
 .searchInput {
-  width: 100%;
-  height: 48px;
-  padding: 0 50px 0 44px; // Right padding for submit button
-  border: 2px solid #e0e0e0;
-  border-radius: 24px;
-  font-size: 16px;
+  flex: 1;
+  height: 44px;
+  padding: 0 50px 0 44px;
+  border: none;
+  background: transparent;
+  font-size: $font-size-base;
+  font-family: $font-family-main;
+  color: $text-color;
   outline: none;
-  transition: border-color 0.2s ease;
-
-  &:focus {
-    border-color: $secondary-color;
-  }
 
   &::placeholder {
-    color: #999;
+    color: $text-light;
   }
 }
 
 .searchSubmit {
   position: absolute;
-  right: 4px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border: none;
-  background-color: $secondary-color;
-  color: $primary-color;
-  border-radius: 50%;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: $secondary-color;
+  border: none;
+  border-radius: 6px;
+  color: $primary-color;
+  cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover,
   &:focus {
     background-color: darken($secondary-color, 10%);
-    transform: translateY(-50%) scale(1.05);
   }
 }
 
 // User section
 .userSection {
   padding: 16px 20px;
-  border-bottom: 1px solid #f0f0f0;
-  display: flex;
-  gap: 12px;
+  border-bottom: 1px solid rgba($primary-color, 0.1);
 }
 
 .userInfo,
 .loginButton,
 .favoritesButton {
-  flex: 1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   padding: 12px 16px;
+  margin-bottom: 8px;
   border-radius: 8px;
+  font-size: $font-size-base;
+  font-family: $font-family-main;
   text-decoration: none;
-  color: $primary-color;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  font-size: 14px;
-  border: none;
+  transition: all 0.2s ease;
   cursor: pointer;
-  background: transparent;
-
-  &:hover,
-  &:focus {
-    background-color: #f8f9fa;
-    color: $primary-color;
-  }
 }
 
 .userInfo {
-  background-color: #f8f9fa;
-  pointer-events: none;
+  color: $primary-color;
+  background-color: rgba($primary-color, 0.05);
   cursor: default;
 }
 
 .loginButton {
-  background-color: transparent;
-  border: 1px solid $primary-color;
+  background: transparent;
+  border: 1px solid rgba($primary-color, 0.2);
+  color: $primary-color;
+  width: 100%;
 
   &:hover,
   &:focus {
-    background-color: $primary-color;
-    color: $white;
+    background-color: rgba($primary-color, 0.05);
+    border-color: $primary-color;
+  }
+}
+
+.favoritesButton {
+  color: $primary-color;
+  background: transparent;
+
+  &:hover,
+  &:focus {
+    background-color: rgba($primary-color, 0.05);
   }
 }
 
 .favoritesCount {
   color: $secondary-color;
   font-weight: 600;
-  margin-left: 4px;
 }
 
 // Quick actions
 .quickActions {
   padding: 16px 20px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba($primary-color, 0.1);
 }
 
 .addListing {
@@ -236,27 +252,27 @@
   justify-content: center;
   gap: 8px;
   width: 100%;
-  height: 48px;
+  padding: 14px 16px;
   background-color: $secondary-color;
   color: $primary-color;
+  border-radius: 8px;
   text-decoration: none;
-  border-radius: 24px;
+  font-size: $font-size-base;
+  font-family: $font-family-main;
   font-weight: 600;
-  font-size: 16px;
   transition: all 0.2s ease;
 
   &:hover,
   &:focus {
     background-color: darken($secondary-color, 10%);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba($secondary-color, 0.3);
   }
 }
 
 // Navigation
 .navigation {
   flex: 1;
-  padding: 20px;
+  padding: 16px 20px;
   overflow-y: auto;
 }
 
@@ -318,7 +334,7 @@
   }
 }
 
-// Focus states for accessibility - FIXED: For primary header
+// Focus states for accessibility - FIXED: Updated colors
 .loginButton:focus,
 .favoritesButton:focus,
 .addListing:focus,
@@ -328,13 +344,13 @@
 }
 
 .menuToggle:focus {
-  outline: 2px solid $white; // ✅ FIXED: White outline for hamburger on primary background
+  outline: 2px solid $secondary-color; // ✅ FIXED: Secondary color outline for hamburger
   outline-offset: 2px;
 }
 
-// Animation for menu content - FIXED: From left
+// Animation for menu content
 .menuContent {
-  animation: slideInFromLeft 0.3s ease; // ✅ FIXED: Changed direction
+  animation: slideInFromLeft 0.3s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -342,10 +358,9 @@
 }
 
 @keyframes slideInFromLeft {
-  // ✅ FIXED: New animation from left
   from {
     opacity: 0;
-    transform: translateX(-20px); // ✅ FIXED: Slide from left
+    transform: translateX(-20px);
   }
   to {
     opacity: 1;
