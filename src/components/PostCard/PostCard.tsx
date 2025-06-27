@@ -83,11 +83,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const shouldPulse = post.type === "premium";
 
   return (
-    <div
-      className={`${styles.post__item} ${
-        shouldPulse ? styles["post__item--pulsed"] : ""
-      } ${className || ""}`}
-    >
+    <div className={`${styles.post__item} ${className || ""}`}>
       {/* Image Section */}
       <div className={styles.post__img}>
         <Link href={post.href} className={styles.imageLink}>
