@@ -1,7 +1,7 @@
-// src/app/favorites/page.module.scss
+// src/app/favorites/page.module.scss - BUILD SAFE VERSION
 @import "../../styles/variables.scss";
 
-// Mobile search section - only show on mobile (matches d-md-none)
+// Mobile search section - only show on mobile
 .mobileSearchSection {
   padding-bottom: 0;
 
@@ -10,71 +10,35 @@
   }
 }
 
-// Mobile search wrapper to make it look like mobile search
+// ✅ FIXED: Simplified mobile search wrapper without deep nesting
 .mobileSearchWrapper {
-  // Override the small variant to look better on mobile
-  .search {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    background-color: transparent !important;
-  }
+  // Simplified styles without deep selector nesting
+  background-color: transparent;
 
-  .search__group {
-    background-color: $white !important;
-    border: 1px solid #e0e0e0 !important;
-    border-radius: 8px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-
-    &:focus-within {
-      border-color: $secondary-color !important;
-      box-shadow: 0 2px 12px rgba(255, 193, 7, 0.2) !important;
-    }
-  }
-
-  .search__input {
-    height: 48px !important;
-    padding: 0 60px 0 16px !important;
-    color: $text-color !important;
-    font-size: $font-size-base !important;
-
-    &::placeholder {
-      color: $text-light !important;
-      font-style: italic !important;
-    }
-  }
-
-  .search__btn {
-    width: 32px !important;
-    height: 32px !important;
-    background: $secondary-color url("/assets/images/search.svg") no-repeat
-      center/18px 18px !important;
-    border-radius: 6px !important;
-    margin-right: 8px !important;
-
-    &:hover,
-    &:focus {
-      background-color: darken($secondary-color, 10%) !important;
-      background-image: url("/assets/images/search.svg") !important;
-    }
+  // Target direct child elements more safely
+  > div {
+    background-color: $white;
+    border: 1px solid #e0e0e0;
+    border-radius: $spacing-md; // 8px
+    box-shadow: $shadow-md;
   }
 }
 
 .pageTitle {
-  margin-bottom: 30px;
+  margin-bottom: $spacing-4xl; // 40px
   font-family: $font-family-bold;
-  font-size: 2.4rem;
+  font-size: $font-size-section-title; // 2.4rem
   color: $primary-color;
   line-height: 1.2;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    margin-bottom: 20px;
-    font-size: 2rem;
+    margin-bottom: $spacing-3xl; // 32px
+    font-size: $font-size-2xl; // 2rem
   }
 }
 
 .favoritesGrid {
-  // Additional styling for favorites-specific grid if needed
-  // The PostGrid component already handles loading/error states
+  // Simple container styles - no complex selectors
+  width: 100%;
+  min-height: 200px;
 }

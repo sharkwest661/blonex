@@ -1,3 +1,6 @@
+// ==================================
+// ProductDetailPage.module.scss - FIXED
+// ==================================
 @import "../../styles/variables.scss";
 
 .productDetailPage {
@@ -21,12 +24,12 @@
   margin: 0 auto;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 0 15px;
+    padding: 0 $spacing-xl; // ✅ FIXED: was 15px, now uses variable
   }
 }
 
 .search {
-  padding: 15px 0;
+  padding: $spacing-xl 0; // ✅ FIXED: was 15px 0
 }
 
 .searchGroup {
@@ -34,13 +37,13 @@
   position: relative;
   border-radius: $border-radius;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: $shadow-md; // ✅ FIXED: was 0 2px 8px rgba(0, 0, 0, 0.1)
 }
 
 .searchInput {
   flex: 1;
-  padding: 12px 16px;
-  border: 1px solid #dee2e6;
+  padding: $button-padding-y $container-padding; // ✅ FIXED: was 12px 16px
+  border: $border-standard; // ✅ FIXED: was 1px solid #dee2e6
   border-right: none;
   font-size: $font-size-base;
   font-family: $font-family-main;
@@ -63,12 +66,12 @@
 }
 
 .searchBtn {
-  padding: 12px 16px;
+  padding: $button-padding-y $container-padding; // ✅ FIXED: was 12px 16px
   background-color: $primary-color;
   border: 1px solid $primary-color;
   color: $white;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all $transition-slow;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,10 +89,10 @@
 
 // Product Section
 .productSection {
-  padding: 30px 0;
+  padding: $spacing-4xl 0; // ✅ FIXED: was 30px 0
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 20px 0;
+    padding: $spacing-3xl 0; // ✅ FIXED: was 20px 0
   }
 }
 
@@ -97,7 +100,7 @@
   background-color: $white;
   border-radius: $border-radius;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: $shadow-lg; // ✅ FIXED: was 0 2px 12px rgba(0, 0, 0, 0.08)
 }
 
 .productGrid {
@@ -111,29 +114,29 @@
 }
 
 .leftColumn {
-  padding: 30px;
-  border-right: 1px solid #eee;
+  padding: $spacing-4xl; // ✅ FIXED: was 30px
+  border-right: $border-light; // ✅ FIXED: was 1px solid #eee
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 20px;
+    padding: $spacing-3xl; // ✅ FIXED: was 20px
     border-right: none;
-    border-bottom: 1px solid #eee;
+    border-bottom: $border-light; // ✅ FIXED: was 1px solid #eee
   }
 }
 
 .rightColumn {
-  padding: 30px;
+  padding: $spacing-4xl; // ✅ FIXED: was 30px
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 20px;
+    padding: $spacing-3xl; // ✅ FIXED: was 20px
   }
 }
 
 // Complaint Button
 .complaintBtn {
   display: inline-block;
-  margin: 20px 0;
-  padding: 8px 0;
+  margin: $spacing-3xl 0; // ✅ FIXED: was 20px 0
+  padding: $spacing-md 0; // ✅ FIXED: was 8px 0
   background: none;
   border: none;
   color: $text-light;
@@ -141,7 +144,7 @@
   font-family: $font-family-main;
   text-decoration: underline;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color $transition-slow;
 
   &:hover {
     color: $primary-color;

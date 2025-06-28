@@ -105,5 +105,19 @@ $opacity-disabled: 0.6;
 $opacity-muted: 0.7;
 $opacity-overlay: 0.24;
 
-// ✅ NEW: Container Padding
+// ✅ FIXED: Container Variables (Previously Missing)
 $container-padding: 16px; // Padding for main container
+$container-max-width: 1600px; // Maximum container width
+$container-max-width-percentage: 95%; // Container max-width as percentage
+
+// ✅ NEW: Border Variables
+$border-standard: 1px solid #dee2e6;
+$border-light: 1px solid #eee;
+
+// ✅ NEW: Button Variables
+$button-padding-x: 16px;
+$button-padding-y: 12px;
+$button-padding-sm-x: 12px;
+$button-padding-sm-y: 8px;
+$button-padding-lg-x: 20px;
+$button-padding-lg-y: 14px;

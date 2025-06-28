@@ -66,8 +66,12 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
           className={styles.mainSwiper}
         >
           {images.map((image, index) => (
-            <SwiperSlide key={index} className={styles.mainSlide}>
-              <div className="swiper-zoom-container">
+            <SwiperSlide
+              key={index}
+              className={`${styles.mainSlide} ${isZoomed ? styles.zoomed : ""}`}
+            >
+              {/* ✅ FIXED: Use CSS Modules class instead of global swiper-zoom-container */}
+              <div className={styles.zoomContainer}>
                 <Image
                   src={image}
                   alt={`${title} - görünüş ${index + 1}`}
