@@ -54,6 +54,14 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
   const toggleCredit = useVehicleFilterStore((state) => state.toggleCredit);
   const toggleBarter = useVehicleFilterStore((state) => state.toggleBarter);
 
+  // Additional filter states for fields not in store yet
+  const [minEngineVolume, setMinEngineVolume] = useState<string>("");
+  const [maxEngineVolume, setMaxEngineVolume] = useState<string>("");
+  const [minPower, setMinPower] = useState<string>("");
+  const [maxPower, setMaxPower] = useState<string>("");
+  const [driveType, setDriveType] = useState<string>("");
+  const [seatsCount, setSeatsCount] = useState<string>("");
+
   // Get current model options based on selected make
   const currentModelOptions =
     make && modelOptions[make as keyof typeof modelOptions]
@@ -111,6 +119,12 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
   // Handle reset
   const handleReset = useCallback(() => {
     resetFilters();
+    setMinEngineVolume("");
+    setMaxEngineVolume("");
+    setMinPower("");
+    setMaxPower("");
+    setDriveType("");
+    setSeatsCount("");
   }, [resetFilters]);
 
   // Handle apply
@@ -226,25 +240,25 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                   <div className={styles.inputGroup}>
                     <input
                       type="number"
+                      placeholder="Min"
                       value={minPrice || ""}
                       onChange={(e) => handlePriceChange(e, "min")}
-                      placeholder="Min qiymət"
                       className={styles.rangeInput}
                       min="1"
                     />
-                    <span className={styles.rangeLabel}>AZN</span>
+                    <span className={styles.rangeLabel}>min</span>
                   </div>
                   <span className={styles.rangeSeparator}>-</span>
                   <div className={styles.inputGroup}>
                     <input
                       type="number"
+                      placeholder="Max"
                       value={maxPrice || ""}
                       onChange={(e) => handlePriceChange(e, "max")}
-                      placeholder="Max qiymət"
                       className={styles.rangeInput}
                       min="1"
                     />
-                    <span className={styles.rangeLabel}>AZN</span>
+                    <span className={styles.rangeLabel}>maks</span>
                   </div>
                 </div>
               </div>
@@ -273,25 +287,121 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
                   <div className={styles.inputGroup}>
                     <input
                       type="number"
+                      placeholder="Min"
                       value={minYear || ""}
                       onChange={(e) => handleYearChange(e, "min")}
-                      placeholder="Min il"
                       className={styles.rangeInput}
                       min="1900"
                       max={new Date().getFullYear()}
                     />
+                    <span className={styles.rangeLabel}>min</span>
                   </div>
                   <span className={styles.rangeSeparator}>-</span>
                   <div className={styles.inputGroup}>
                     <input
                       type="number"
+                      placeholder="Max"
                       value={maxYear || ""}
                       onChange={(e) => handleYearChange(e, "max")}
-                      placeholder="Max il"
                       className={styles.rangeInput}
                       min="1900"
                       max={new Date().getFullYear()}
                     />
+                    <span className={styles.rangeLabel}>maks</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Engine Volume Section */}
+          <div className={styles.filterSection}>
+            <button
+              className={styles.sectionHeader}
+              onClick={() => toggleSection("engine")}
+              aria-expanded={activeSection === "engine"}
+            >
+              <span>Həcm (sm³)</span>
+              <ChevronDown
+                size={20}
+                className={`${styles.arrow} ${
+                  activeSection === "engine" ? styles.expanded : ""
+                }`}
+              />
+            </button>
+
+            {activeSection === "engine" && (
+              <div className={styles.sectionContent}>
+                <div className={styles.rangeInputs}>
+                  <div className={styles.inputGroup}>
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={minEngineVolume}
+                      onChange={(e) => setMinEngineVolume(e.target.value)}
+                      className={styles.rangeInput}
+                      min="0"
+                    />
+                    <span className={styles.rangeLabel}>min</span>
+                  </div>
+                  <span className={styles.rangeSeparator}>-</span>
+                  <div className={styles.inputGroup}>
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={maxEngineVolume}
+                      onChange={(e) => setMaxEngineVolume(e.target.value)}
+                      className={styles.rangeInput}
+                      min="0"
+                    />
+                    <span className={styles.rangeLabel}>maks</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Power Section */}
+          <div className={styles.filterSection}>
+            <button
+              className={styles.sectionHeader}
+              onClick={() => toggleSection("power")}
+              aria-expanded={activeSection === "power"}
+            >
+              <span>Güc (AT)</span>
+              <ChevronDown
+                size={20}
+                className={`${styles.arrow} ${
+                  activeSection === "power" ? styles.expanded : ""
+                }`}
+              />
+            </button>
+
+            {activeSection === "power" && (
+              <div className={styles.sectionContent}>
+                <div className={styles.rangeInputs}>
+                  <div className={styles.inputGroup}>
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={minPower}
+                      onChange={(e) => setMinPower(e.target.value)}
+                      className={styles.rangeInput}
+                      min="0"
+                    />
+                    <span className={styles.rangeLabel}>min</span>
+                  </div>
+                  <span className={styles.rangeSeparator}>-</span>
+                  <div className={styles.inputGroup}>
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={maxPower}
+                      onChange={(e) => setMaxPower(e.target.value)}
+                      className={styles.rangeInput}
+                      min="0"
+                    />
+                    <span className={styles.rangeLabel}>maks</span>
                   </div>
                 </div>
               </div>
@@ -455,6 +565,80 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
             )}
           </div>
 
+          {/* Drive Type Section */}
+          <div className={styles.filterSection}>
+            <button
+              className={styles.sectionHeader}
+              onClick={() => toggleSection("driveType")}
+              aria-expanded={activeSection === "driveType"}
+            >
+              <span>Ötürücü</span>
+              <ChevronDown
+                size={20}
+                className={`${styles.arrow} ${
+                  activeSection === "driveType" ? styles.expanded : ""
+                }`}
+              />
+            </button>
+
+            {activeSection === "driveType" && (
+              <div className={styles.sectionContent}>
+                <Select
+                  options={[
+                    { value: "front", label: "Ön məhsur" },
+                    { value: "rear", label: "Arxa məhsur" },
+                    { value: "all", label: "Tam məhsur" },
+                  ]}
+                  value={
+                    driveType ? { value: driveType, label: driveType } : null
+                  }
+                  onChange={(value) => setDriveType(value || "")}
+                  placeholder="Ötürücü seçin"
+                  className={styles.select}
+                  variant="filter"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Seats Count Section */}
+          <div className={styles.filterSection}>
+            <button
+              className={styles.sectionHeader}
+              onClick={() => toggleSection("seats")}
+              aria-expanded={activeSection === "seats"}
+            >
+              <span>Yerlərin sayı</span>
+              <ChevronDown
+                size={20}
+                className={`${styles.arrow} ${
+                  activeSection === "seats" ? styles.expanded : ""
+                }`}
+              />
+            </button>
+
+            {activeSection === "seats" && (
+              <div className={styles.sectionContent}>
+                <Select
+                  options={[
+                    { value: "2", label: "2" },
+                    { value: "4", label: "4" },
+                    { value: "5", label: "5" },
+                    { value: "7", label: "7" },
+                    { value: "8+", label: "8+" },
+                  ]}
+                  value={
+                    seatsCount ? { value: seatsCount, label: seatsCount } : null
+                  }
+                  onChange={(value) => setSeatsCount(value || "")}
+                  placeholder="Yerlərin sayını seçin"
+                  className={styles.select}
+                  variant="filter"
+                />
+              </div>
+            )}
+          </div>
+
           {/* City Section */}
           <div className={styles.filterSection}>
             <button
@@ -501,7 +685,7 @@ const VehicleFilterOverlay: React.FC<VehicleFilterOverlayProps> = ({
               onClick={() => toggleSection("condition")}
               aria-expanded={activeSection === "condition"}
             >
-              <span>Vəziyyəti</span>
+              <span>Vəziyyət</span>
               <ChevronDown
                 size={20}
                 className={`${styles.arrow} ${
