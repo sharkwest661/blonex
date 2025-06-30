@@ -22,7 +22,7 @@ const sampleListings = [
     currency: "₼",
     location: "Bakı",
     date: "28.04.2021",
-    image: "/assets/img/example/carousel1.png",
+    image: "/assets/images/example/carousel1.png",
     isVip: true,
   },
   {
@@ -32,7 +32,7 @@ const sampleListings = [
     currency: "₼",
     location: "Bakı",
     date: "27.04.2021",
-    image: "/assets/img/example/post1.png",
+    image: "/assets/images/example/post1.png",
     isVip: false,
   },
   {
@@ -42,7 +42,7 @@ const sampleListings = [
     currency: "₼",
     location: "Gəncə",
     date: "26.04.2021",
-    image: "/assets/img/example/post2.png",
+    image: "/assets/images/example/post2.png",
     isVip: true,
   },
   {
@@ -52,7 +52,7 @@ const sampleListings = [
     currency: "₼",
     location: "Bakı",
     date: "25.04.2021",
-    image: "/assets/img/example/post3.png",
+    image: "/assets/images/example/post3.png",
     isVip: false,
   },
   {
@@ -62,7 +62,7 @@ const sampleListings = [
     currency: "₼",
     location: "Sumqayıt",
     date: "24.04.2021",
-    image: "/assets/img/example/carousel1.png",
+    image: "/assets/images/example/carousel1.png",
     isVip: false,
   },
   {
@@ -72,7 +72,7 @@ const sampleListings = [
     currency: "₼",
     location: "Bakı",
     date: "23.04.2021",
-    image: "/assets/img/example/post1.png",
+    image: "/assets/images/example/post1.png",
     isVip: false,
   },
 ];

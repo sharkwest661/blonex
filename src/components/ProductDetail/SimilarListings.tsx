@@ -47,7 +47,7 @@ const generateMockListings = (): Post[] => {
     if (barter) {
       features.push({
         type: "barter",
-        icon: "/assets/img/barter.svg",
+        icon: "/assets/images/barter.svg",
         tooltip: "Barter mümkündür",
         enabled: true,
       });
@@ -56,7 +56,7 @@ const generateMockListings = (): Post[] => {
     if (credit) {
       features.push({
         type: "credit",
-        icon: "/assets/img/percent.svg",
+        icon: "/assets/images/percent.svg",
         tooltip: "Kredit mümkündür",
         enabled: true,
       });
@@ -72,7 +72,7 @@ const generateMockListings = (): Post[] => {
     currency: "₼",
     location: index % 2 === 0 ? "Bakı" : "Gəncə",
     date: `${25 + index}.04.2021, 16:${30 + index}`,
-    imageUrl: `/assets/img/example/${product.image}`,
+    imageUrl: `/assets/images/example/${product.image}`,
     href: `/listings/${product.id}`,
     type: index % 3 === 0 ? "vip" : index % 3 === 1 ? "premium" : "recent",
     hasVipBadge: index % 3 === 0,
@@ -82,7 +82,7 @@ const generateMockListings = (): Post[] => {
       index % 2 === 0
         ? {
             name: index % 4 === 0 ? "Kontakt Home" : "World Telecom",
-            logo: "/assets/img/example/seller.svg",
+            logo: "/assets/images/example/seller.svg",
             href: `/store/${product.id}`,
           }
         : undefined,
@@ -113,7 +113,7 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
     items.push({
       id: "banner-1",
       type: "banner",
-      image: "/assets/img/example/banner.png",
+      image: "/assets/images/example/banner.png",
       href: "/promo/banner-1",
       alt: "Reklam banneri",
     });

@@ -56,10 +56,10 @@ const getMockProductData = (productId: string): ProductData => {
     viewCount: 1974,
     lastUpdated: "28.04.2021",
     images: [
-      "/assets/img/example/carousel1.png",
-      "/assets/img/example/post2.png",
-      "/assets/img/example/post3.png",
-      "/assets/img/example/post1.png",
+      "/assets/images/example/carousel1.png",
+      "/assets/images/example/post2.png",
+      "/assets/images/example/post3.png",
+      "/assets/images/example/post1.png",
     ],
     breadcrumb: [
       { name: "ELEKTRONİKA", href: "/category/electronics" },
