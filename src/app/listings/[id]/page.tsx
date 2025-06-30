@@ -26,7 +26,7 @@ export async function generateMetadata({
     price: 1655,
     currency: "₼",
     location: "Bakı",
-    images: ["/assets/img/example/carousel1.png"],
+    images: ["/assets/images/example/carousel1.png"],
   };
 
   return {

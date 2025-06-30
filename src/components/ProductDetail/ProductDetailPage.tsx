@@ -89,7 +89,7 @@ Xiaomi Redmi 9T
 • Metro çıxışlarına, ünvana və bölgələrə çatdırılma var.`,
     storeInfo: {
       name: "World Telecom",
-      logo: "/assets/img/example/store-logo.png",
+      logo: "/assets/images/example/store-logo.png",
       address: "Nizami ray., Aşıq Mollacümə küç. 124",
       hours: "10:00-21:00",
       phones: ["+994 55 123 45 67", "+994 50 987 65 43"],
