@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { PostCard } from "../PostCard";
@@ -24,8 +25,19 @@ const isBannerAd = (item: GridItem): item is BannerAd => {
   return "type" in item && item.type === "banner";
 };
 
-const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
-  // Helper function to create features array
+// Generate unique mock listings to avoid duplicate keys
+const generateMockListings = (): Post[] => {
+  const products = [
+    { title: "Samsung Galaxy S12 Ultra", image: "post1.png", id: "2001" },
+    { title: "iPhone 11 Pro Max 256GB", image: "post2.png", id: "2002" },
+    { title: "MacBook Pro 13 M1 2021", image: "post3.png", id: "2003" },
+    { title: "iPad Air 4 WiFi 64GB", image: "carousel1.png", id: "2004" },
+    { title: "AirPods Pro 2nd Gen", image: "post1.png", id: "2005" },
+    { title: "Samsung Galaxy Tab S8", image: "post2.png", id: "2006" },
+    { title: "iPhone 13 128GB Blue", image: "post3.png", id: "2007" },
+    { title: "Google Pixel 6 Pro", image: "carousel1.png", id: "2008" },
+  ];
+
   const createFeatures = (
     barter: boolean = false,
     credit: boolean = false
@@ -35,7 +47,7 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
     if (barter) {
       features.push({
         type: "barter",
-        icon: "/assets/img/barter.svg", // Will be replaced by Lucide icon in PostCard
+        icon: "/assets/img/barter.svg",
         tooltip: "Barter mümkündür",
         enabled: true,
       });
@@ -44,7 +56,7 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
     if (credit) {
       features.push({
         type: "credit",
-        icon: "/assets/img/percent.svg", // Will be replaced by Lucide icon in PostCard
+        icon: "/assets/img/percent.svg",
         tooltip: "Kredit mümkündür",
         enabled: true,
       });
@@ -53,98 +65,51 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
     return features;
   };
 
-  // Mock data - replace with actual API call using Post interface
-  const mockListings: Post[] = [
-    {
-      id: "2001",
-      title: "Samsung Galaxy S12 16/256GB, Space Gray...",
-      price: 2180,
-      currency: "₼",
-      location: "Bakı",
-      date: "28.01.2021, 16:34",
-      imageUrl: "/assets/img/example/post1.png",
-      href: "/listing/2001", // Correct listing URL
-      type: "vip",
-      hasVipBadge: true,
-      features: createFeatures(true, true),
-      storeInfo: {
-        name: "Kontakt Home",
-        logo: "/assets/img/example/seller.svg",
-        href: "/store/kontakt-home",
-      },
-      isStore: true,
-    },
-    {
-      id: "2002",
-      title: "Samsung Galaxy S12",
-      price: 2180,
-      currency: "₼",
-      location: "Bakı",
-      date: "28.01.2021, 16:34",
-      imageUrl: "/assets/img/example/post2.png",
-      href: "/listing/2002", // Correct listing URL
-      type: "vip",
-      hasVipBadge: true,
-      features: createFeatures(true, true),
-      storeInfo: {
-        name: "World Telecom",
-        logo: "/assets/img/example/seller.svg",
-        href: "/store/world-telecom",
-      },
-      isStore: true,
-    },
-    {
-      id: "2003",
-      title: "Samsung Galaxy S12",
-      price: 2180,
-      currency: "₼",
-      location: "Bakı",
-      date: "28.01.2021, 16:34",
-      imageUrl: "/assets/img/example/post3.png",
-      href: "/listing/2003", // Correct listing URL
-      type: "premium",
-      hasPremiumBadge: true,
-      features: createFeatures(),
-    },
-    {
-      id: "2004",
-      title: "Samsung Galaxy S12",
-      price: 2180,
-      currency: "₼",
-      location: "Bakı",
-      date: "28.01.2021, 16:34",
-      imageUrl: "/assets/img/example/post4.png",
-      href: "/listing/2004", // Correct listing URL
-      type: "vip",
-      hasVipBadge: true,
-      features: createFeatures(true, true),
-    },
-    {
-      id: "2005",
-      title: "Samsung Galaxy S12",
-      price: 2180,
-      currency: "₼",
-      location: "Bakı",
-      date: "28.01.2021, 16:34",
-      imageUrl: "/assets/img/example/post5.png",
-      href: "/listing/2005", // Correct listing URL
-      type: "vip",
-      hasVipBadge: true,
-      features: createFeatures(true, true),
-    },
-  ];
+  return products.map((product, index) => ({
+    id: product.id,
+    title: product.title,
+    price: 1500 + index * 200, // Varied prices
+    currency: "₼",
+    location: index % 2 === 0 ? "Bakı" : "Gəncə",
+    date: `${25 + index}.04.2021, 16:${30 + index}`,
+    imageUrl: `/assets/img/example/${product.image}`,
+    href: `/listings/${product.id}`,
+    type: index % 3 === 0 ? "vip" : index % 3 === 1 ? "premium" : "recent",
+    hasVipBadge: index % 3 === 0,
+    hasPremiumBadge: index % 3 === 1,
+    features: createFeatures(index % 2 === 0, index % 3 === 0),
+    storeInfo:
+      index % 2 === 0
+        ? {
+            name: index % 4 === 0 ? "Kontakt Home" : "World Telecom",
+            logo: "/assets/img/example/seller.svg",
+            href: `/store/${product.id}`,
+          }
+        : undefined,
+    isStore: index % 2 === 0,
+  }));
+};
+
+const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
+  const [mounted, setMounted] = useState(false);
+  const [mockListings, setMockListings] = useState<Post[]>([]);
+
+  // Fix hydration issues
+  useEffect(() => {
+    setMockListings(generateMockListings());
+    setMounted(true);
+  }, []);
 
   // Create grid items with banners interspersed
   const createGridItems = (): GridItem[] => {
+    if (!mounted || mockListings.length === 0) return [];
+
     const items: GridItem[] = [];
 
-    // Add first batch of listings
+    // Add first batch of listings (first 3)
     items.push(...mockListings.slice(0, 3));
 
-    // Add more listings
-    items.push(...mockListings.slice(0, 5));
-
-    // Add banner ad
+    // Add banner ad after first 3 items
     items.push({
       id: "banner-1",
       type: "banner",
@@ -153,8 +118,8 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
       alt: "Reklam banneri",
     });
 
-    // Add remaining listings
-    items.push(...mockListings.slice(0, 3));
+    // Add remaining listings (next 5)
+    items.push(...mockListings.slice(3, 8));
 
     return items;
   };
@@ -193,52 +158,31 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
     );
   };
 
+  // Don't render until mounted to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <section className={`${styles.similarListings} ${className || ""}`}>
+        <div className={styles.similarGrid}>
+          {/* Render loading skeletons */}
+          {[...Array(8)].map((_, index) => (
+            <div key={`skeleton-${index}`} className={styles.skeletonCard}>
+              <div className={styles.skeletonImage}></div>
+              <div className={styles.skeletonContent}>
+                <div className={styles.skeletonTitle}></div>
+                <div className={styles.skeletonPrice}></div>
+                <div className={styles.skeletonLocation}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className={`${styles.similarListings} ${className || ""}`}>
-      <div className={styles.container}>
-        <h2 className={styles.sectionTitle}>Bənzər elanlar</h2>
-
-        <div className={styles.wrapper}>
-          {/* Listings Grid */}
-          <div className={styles.listingsGrid}>
-            <div className={styles.postList}>
-              {gridItems.map((item, index) => renderGridItem(item, index))}
-            </div>
-          </div>
-
-          {/* Sidebar Banner */}
-          <div className={styles.sidebar}>
-            <div className={styles.stickyBanner}>
-              {/* Desktop Banner */}
-              <Link
-                href="/promo/sidebar-banner"
-                className={styles.desktopBanner}
-              >
-                <Image
-                  src="/assets/img/example/banner1.png"
-                  alt="Yan banner"
-                  width={300}
-                  height={400}
-                  className={styles.sidebarBannerImage}
-                />
-              </Link>
-
-              {/* Mobile Banner */}
-              <Link
-                href="/promo/sidebar-banner-mobile"
-                className={styles.mobileBanner}
-              >
-                <Image
-                  src="/assets/img/example/banner-mob.png"
-                  alt="Mobil banner"
-                  width={350}
-                  height={200}
-                  className={styles.sidebarBannerImage}
-                />
-              </Link>
-            </div>
-          </div>
-        </div>
+      <div className={styles.similarGrid}>
+        {gridItems.map((item, index) => renderGridItem(item, index))}
       </div>
     </section>
   );

@@ -7,7 +7,7 @@ interface ProductInfoProps {
   product: {
     id: string;
     title: string;
-    price: number;
+    price: number | string; // Accept both number and string to handle formatted prices
     currency: string;
     condition: string;
     location: string;
@@ -51,6 +51,12 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       );
     });
   };
+
+  // Format price consistently - handle both number and string
+  const displayPrice =
+    typeof product.price === "string"
+      ? product.price
+      : product.price.toLocaleString();
 
   return (
     <div className={styles.productInfo}>
@@ -105,7 +111,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
       {/* Price and Condition */}
       <div className={styles.priceSection}>
         <span className={styles.productPrice}>
-          {product.price.toLocaleString()} {product.currency}
+          {displayPrice} {product.currency}
         </span>
         <span className={styles.productState}>{product.condition}</span>
       </div>

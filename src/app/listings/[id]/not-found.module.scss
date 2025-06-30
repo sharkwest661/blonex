@@ -1,0 +1,271 @@
+@import "../../../styles/variables.scss";
+
+.notFoundPage {
+  min-height: 100vh;
+  background-color: $background-color;
+  padding: 60px 0;
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 40px 0;
+  }
+}
+
+.notFoundContent {
+  background-color: $white;
+  border-radius: $border-radius;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 40px 20px;
+    margin: 0 15px;
+  }
+}
+
+// Icon styling
+.iconContainer {
+  margin-bottom: 30px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-bottom: 20px;
+  }
+}
+
+.searchIcon {
+  color: $text-light;
+  opacity: 0.6;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+// Error content
+.errorContent {
+  margin-bottom: 40px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-bottom: 30px;
+  }
+}
+
+.errorTitle {
+  font-size: 32px;
+  font-weight: 600;
+  color: $text-color;
+  margin-bottom: 15px;
+  font-family: $font-family-main;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 28px;
+  }
+}
+
+.errorMessage {
+  font-size: $font-size-base;
+  color: $text-light;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+// Action buttons
+.actionButtons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+}
+
+.homeButton,
+.listingsButton,
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: $border-radius;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    justify-content: center;
+    padding: 14px 20px;
+  }
+}
+
+.homeButton {
+  background-color: $primary-color;
+  color: $white;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    transform: translateY(-1px);
+  }
+}
+
+.listingsButton {
+  background-color: $white;
+  color: $primary-color;
+  border: 2px solid $primary-color;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $white;
+    transform: translateY(-1px);
+  }
+}
+
+.backButton {
+  background-color: $white;
+  color: $text-light;
+  border: 1px solid $border-color;
+
+  &:hover {
+    background-color: $background-color;
+    border-color: $text-light;
+    transform: translateY(-1px);
+  }
+}
+
+// Suggestions section
+.suggestions {
+  margin-bottom: 40px;
+  text-align: left;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-bottom: 30px;
+  }
+}
+
+.suggestionsTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-color;
+  margin-bottom: 15px;
+  font-family: $font-family-main;
+  text-align: center;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 16px;
+  }
+}
+
+.suggestionsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    position: relative;
+    padding: 8px 0 8px 20px;
+    color: $text-light;
+    font-size: $font-size-base;
+
+    &:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: $primary-color;
+      font-weight: bold;
+    }
+
+    @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+      font-size: $font-size-small;
+    }
+  }
+}
+
+// Quick links section
+.quickLinks {
+  text-align: center;
+}
+
+.quickLinksTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-color;
+  margin-bottom: 20px;
+  font-family: $font-family-main;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+}
+
+.categoryLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 8px;
+  }
+}
+
+.categoryLink {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: $background-color;
+  color: $text-color;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: $font-size-small;
+  font-family: $font-family-main;
+  transition: all 0.2s ease;
+  border: 1px solid $border-color;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $white;
+    border-color: $primary-color;
+    transform: translateY(-1px);
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+// Animation for the page load
+.notFoundContent {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

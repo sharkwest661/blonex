@@ -3,29 +3,30 @@
 // Base skeleton animation
 @keyframes shimmer {
   0% {
-    background-position: -468px 0;
+    background-position: -200px 0;
   }
   100% {
-    background-position: 468px 0;
+    background-position: calc(200px + 100%) 0;
   }
 }
 
 .skeleton {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 400% 100%;
-  animation: shimmer 1.2s ease-in-out infinite;
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
   border-radius: $border-radius;
 }
 
 .loadingPage {
   min-height: 100vh;
-  background-color: $background-light;
+  background-color: $background-color;
 }
 
-// Mobile Search Section
+// Mobile search section
 .mobileSearchSection {
-  padding: 15px 0;
-  display: block;
+  background-color: $white;
+  padding: 20px 0;
+  border-bottom: 1px solid $border-color;
 
   @media screen and (min-width: $breakpoint-md) {
     display: none;
@@ -38,9 +39,9 @@
   width: 100%;
 }
 
-// Main Product Section
+// Main product section
 .productSection {
-  padding: 30px 0;
+  padding: 40px 0;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     padding: 20px 0;
@@ -50,29 +51,22 @@
 .productGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
-  background-color: $white;
-  border-radius: $border-radius;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  gap: 40px;
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    gap: 30px;
+  }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
-.leftColumn {
-  padding: 30px;
-  border-right: 1px solid #eee;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 20px;
-    border-right: none;
-    border-bottom: 1px solid #eee;
-  }
-}
-
+.leftColumn,
 .rightColumn {
+  background-color: $white;
+  border-radius: $border-radius;
   padding: 30px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
@@ -80,9 +74,13 @@
   }
 }
 
-// Carousel Skeleton
+// Carousel skeleton
 .carouselSkeleton {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-bottom: 20px;
+  }
 }
 
 .mainImageSkeleton {
@@ -92,35 +90,33 @@
   margin-bottom: 15px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    height: 300px;
+    height: 250px;
   }
 }
 
 .thumbnailsSkeleton {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
 .thumbnailSkeleton {
   @extend .skeleton;
-  width: 80px;
-  height: 60px;
-  flex-shrink: 0;
+  height: 80px;
+  width: 100%;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    width: 60px;
-    height: 45px;
+    height: 60px;
   }
 }
 
-// Store Profile Skeleton
+// Store skeleton
 .storeSkeleton {
   display: flex;
-  align-items: center;
+  gap: 15px;
   padding: 20px;
-  background-color: $background-light;
+  border: 1px solid $border-color;
   border-radius: $border-radius;
-  margin-bottom: 20px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     display: none;
@@ -129,51 +125,48 @@
 
 .storeLogoSkeleton {
   @extend .skeleton;
-  width: 40px;
-  height: 40px;
-  margin-right: 15px;
-  border-radius: $border-radius;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .storeInfoSkeleton {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .storeNameSkeleton {
   @extend .skeleton;
-  height: 18px;
-  width: 120px;
-  margin-bottom: 8px;
+  height: 20px;
+  width: 60%;
 }
 
 .storeContactSkeleton {
   @extend .skeleton;
-  height: 14px;
-  width: 180px;
-  margin-bottom: 6px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
+  height: 16px;
+  width: 80%;
 }
 
-// Product Info Skeleton
+// Product info skeleton
 .productInfoSkeleton {
-  width: 100%;
+  margin-bottom: 30px;
 }
 
 .breadcrumbSkeleton {
   @extend .skeleton;
-  height: 16px;
+  height: 18px;
   width: 200px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .titleSkeleton {
   @extend .skeleton;
   height: 32px;
   width: 90%;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     height: 28px;
@@ -182,7 +175,7 @@
 
 .priceSkeleton {
   @extend .skeleton;
-  height: 40px;
+  height: 36px;
   width: 150px;
   margin-bottom: 20px;
 
@@ -194,31 +187,26 @@
 .featuresSkeleton {
   display: flex;
   gap: 15px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   flex-wrap: wrap;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    flex-direction: column;
-    gap: 10px;
-  }
 }
 
 .featureSkeleton {
   @extend .skeleton;
-  height: 20px;
-  width: 100px;
+  height: 32px;
+  width: 120px;
 }
 
-// Specifications Table Skeleton
+// Specifications table skeleton
 .specsSkeleton {
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
 .specRowSkeleton {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid $border-color;
 
   &:last-child {
     border-bottom: none;
@@ -228,57 +216,55 @@
 .specKeySkeleton {
   @extend .skeleton;
   height: 16px;
-  width: 80px;
-  margin-right: 20px;
+  width: 100px;
 }
 
 .specValueSkeleton {
   @extend .skeleton;
   height: 16px;
-  width: 120px;
+  width: 80px;
 }
 
-// Description Skeleton
+// Description skeleton
 .descriptionSkeleton {
-  margin-top: 25px;
+  margin-bottom: 30px;
 }
 
 .descriptionLineSkeleton {
   @extend .skeleton;
   height: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 
   &:nth-child(1) {
-    width: 100%;
+    width: 95%;
   }
   &:nth-child(2) {
-    width: 85%;
+    width: 88%;
   }
   &:nth-child(3) {
     width: 92%;
   }
   &:nth-child(4) {
-    width: 78%;
+    width: 75%;
   }
 }
 
-// Review Section Skeleton
-.reviewSkeleton {
-  margin-top: 30px;
-  padding-top: 30px;
-  border-top: 1px solid #eee;
+// Action buttons skeleton
+.actionsSkeleton {
+  display: flex;
+  gap: 15px;
 }
 
-.reviewButtonSkeleton {
+.actionButtonSkeleton {
   @extend .skeleton;
-  height: 40px;
-  width: 120px;
-  margin-left: auto;
+  height: 48px;
+  flex: 1;
 }
 
-// Similar Listings Section
+// Similar listings section
 .similarSection {
   padding: 40px 0;
+  background-color: $white;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     padding: 30px 0;

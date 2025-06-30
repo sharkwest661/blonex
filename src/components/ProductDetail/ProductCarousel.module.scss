@@ -1,18 +1,18 @@
 @import "../../styles/variables.scss";
 
 .productCarousel {
-  width: 100%;
+  width: 530px;
   max-width: 100%;
 }
 
 // Main Carousel
 .mainCarousel {
   position: relative;
-  margin-bottom: $spacing-xl; // ✅ FIXED: was 15px
+  margin-bottom: 15px;
   border-radius: $border-radius;
   overflow: hidden;
-  background-color: $background-light;
-  box-shadow: $shadow-md; // ✅ FIXED: was 0 2px 8px rgba(0, 0, 0, 0.1)
+  background-color: $background-color;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .mainSwiper {
@@ -40,7 +40,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: transform $transition-slow; // ✅ FIXED: was 0.3s ease
+  transition: transform 0.3s ease;
 }
 
 // Navigation Buttons
@@ -59,8 +59,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all $transition-slow;
-  box-shadow: $shadow-md; // ✅ FIXED: was 0 2px 8px rgba(0, 0, 0, 0.15)
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
     background: $white;
@@ -74,7 +74,7 @@
   }
 
   &:disabled {
-    opacity: $opacity-disabled; // ✅ FIXED: was 0.5
+    opacity: 0.5;
     cursor: not-allowed;
 
     &:hover {
@@ -84,18 +84,18 @@
 }
 
 .navPrev {
-  left: $spacing-xl; // ✅ FIXED: was 15px
+  left: 15px;
 }
 
 .navNext {
-  right: $spacing-xl; // ✅ FIXED: was 15px
+  right: 15px;
 }
 
 // Zoom Button
 .zoomButton {
   position: absolute;
-  top: $spacing-xl; // ✅ FIXED: was 15px
-  right: $spacing-xl; // ✅ FIXED: was 15px
+  top: 15px;
+  right: 15px;
   z-index: 10;
   width: 36px;
   height: 36px;
@@ -107,8 +107,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all $transition-slow;
-  box-shadow: $shadow-md; // ✅ FIXED: was 0 2px 8px rgba(0, 0, 0, 0.15)
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
   &:hover {
     background: $white;
@@ -124,11 +124,11 @@
 // Image Counter
 .imageCounter {
   position: absolute;
-  bottom: $spacing-xl; // ✅ FIXED: was 15px
-  left: $spacing-xl; // ✅ FIXED: was 15px
+  bottom: 15px;
+  left: 15px;
   z-index: 10;
-  padding: $spacing-sm $spacing-lg; // ✅ FIXED: was 6px 12px
-  background: rgba($text-dark, 0.8);
+  padding: 6px 12px;
+  background: rgba($text-color, 0.8);
   color: $white;
   font-size: $font-size-small;
   font-family: $font-family-main;
@@ -138,11 +138,11 @@
 
 // Thumbnail Carousel
 .thumbCarousel {
-  margin-top: $spacing-xl; // ✅ FIXED: was 15px
+  margin-top: 15px;
 }
 
 .thumbSwiper {
-  padding: $spacing-sm 0; // ✅ FIXED: was 5px 0
+  padding: 5px 0;
 }
 
 .thumbSlide {
@@ -153,8 +153,8 @@
   border-radius: $border-radius;
   overflow: hidden;
   border: 2px solid transparent;
-  transition: all $transition-slow;
-  background-color: $background-light;
+  transition: all 0.3s ease;
+  background-color: $background-color;
 
   &:hover {
     border-color: $primary-color;
@@ -190,4 +190,34 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+// Responsive adjustments
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .navButton {
+    width: 35px;
+    height: 35px;
+  }
+
+  .navPrev {
+    left: 10px;
+  }
+
+  .navNext {
+    right: 10px;
+  }
+
+  .zoomButton {
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .imageCounter {
+    bottom: 10px;
+    left: 10px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
 }

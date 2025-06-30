@@ -73,9 +73,10 @@ const ListingLoadingPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Review Section Skeleton */}
-              <div className={styles.reviewSkeleton}>
-                <div className={styles.reviewButtonSkeleton}></div>
+              {/* Action Buttons Skeleton */}
+              <div className={styles.actionsSkeleton}>
+                <div className={styles.actionButtonSkeleton}></div>
+                <div className={styles.actionButtonSkeleton}></div>
               </div>
             </div>
           </div>
