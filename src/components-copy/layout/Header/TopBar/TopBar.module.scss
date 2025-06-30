@@ -1,0 +1,196 @@
+@import "../../../../styles/variables";
+
+// TopBar specific styles
+.header__topbar {
+  padding: 8px 0;
+  background-color: #fff;
+  font-size: $font-size-small;
+  line-height: 1.14;
+  color: #013f44;
+}
+
+@media screen and (min-width: 768px) {
+  .header__topbar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__topbar {
+    display: none;
+  }
+}
+
+.header__logout {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.header__logout:before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  background: url("../../../../../public/assets/images/logout-icon.svg")
+    no-repeat center/cover;
+}
+
+.contact {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.contact__tel {
+  margin: 0 4px;
+}
+
+@media screen and (max-width: 767px) {
+  .contact__tel {
+    width: 100%;
+    margin: 0;
+    margin-top: 24px;
+    -webkit-box-ordinal-group: 3;
+    -webkit-order: 2;
+    -moz-box-ordinal-group: 3;
+    -ms-flex-order: 2;
+    order: 2;
+  }
+
+  .contact__tel a {
+    text-decoration: underline;
+  }
+}
+
+.contact__network {
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+  background-repeat: no-repeat;
+  background-position: center;
+  -moz-background-size: cover;
+  background-size: cover;
+  display: block;
+}
+
+.contact__network.facebook {
+  background-image: url("../../../../../public/assets/images/facebook-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact__network.facebook {
+    background-image: url("../../../../../public/assets/images/facebook4-icon.svg");
+  }
+}
+
+.contact__network.instagram {
+  background-image: url("../../../../../public/assets/images/instagram-icon.svg");
+}
+
+@media screen and (min-width: 768px) {
+  .contact__network.whatsapp,
+  .contact__network.telegram {
+    width: 20px;
+    height: 20px;
+    margin-right: 0;
+  }
+}
+
+.contact__network.whatsapp {
+  background-image: url("../../../../../public/assets/images/whatsapp-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact__network.whatsapp {
+    background-image: url("../../../../../public/assets/images/whatsapp2-icon.svg");
+  }
+}
+
+.contact__network.telegram {
+  background-image: url("../../../../../public/assets/images/telegram-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact__network.telegram {
+    background-image: url("../../../../../public/assets/images/telegram2-icon.svg");
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contact__network {
+    margin-right: 12px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contact {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+}
+
+.contact--secondary .contact__network.facebook {
+  background-image: url("../../../../../public/assets/images/facebook3-icon.svg");
+}
+
+.contact--secondary .contact__network.instagram {
+  background-image: url("../../../../../public/assets/images/instagram3-icon.svg");
+}
+
+.contact--secondary .contact__network.whatsapp {
+  background-image: url("../../../../../public/assets/images/whatsapp3-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact--secondary .contact__network.whatsapp {
+    background-image: url("../../../../../public/assets/images/whatsapp4-icon.svg");
+  }
+}
+
+.contact--secondary .contact__network.telegram {
+  background-image: url("../../../../../public/assets/images/telegram3-icon.svg");
+}
+
+@media screen and (max-width: 767px) {
+  .contact--secondary .contact__network.telegram {
+    background-image: url("../../../../../public/assets/images/telegram4-icon.svg");
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contact--secondary {
+    margin-bottom: 40px;
+  }
+}
