@@ -1,16 +1,16 @@
 // src/components/common/ErrorBoundary/ErrorBoundary.tsx
+"use client";
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import { AlertTriangle, RefreshCw, Home, Bug } from "lucide-react";
 import styles from "./ErrorBoundary.module.scss";
 
 interface ErrorBoundaryState {
   hasError: boolean;
-  error: Error | null;
-  errorInfo: ErrorInfo | null;
+  error?: Error;
+  errorInfo?: ErrorInfo;
   errorId: string;
 }
 
-interface ErrorBoundaryProps {
+export interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
@@ -27,16 +27,13 @@ export class ErrorBoundary extends Component<
 
   constructor(props: ErrorBoundaryProps) {
     super(props);
-
     this.state = {
       hasError: false,
-      error: null,
-      errorInfo: null,
       errorId: "",
     };
   }
 
-  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     // Update state so the next render will show the fallback UI
     return {
       hasError: true,
@@ -46,18 +43,17 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log error details
-    console.error("ErrorBoundary caught an error:", error, errorInfo);
+    // Log error to error reporting service
+    this.setState({ error, errorInfo });
 
-    // Update state with error info
-    this.setState({
-      error,
-      errorInfo,
-    });
-
-    // Call custom error handler if provided
+    // Call onError callback if provided
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
+    }
+
+    // Log to console in development
+    if (process.env.NODE_ENV === "development") {
+      console.error("ErrorBoundary caught an error:", error, errorInfo);
     }
 
     // Log to external service (implement as needed)
@@ -72,15 +68,6 @@ export class ErrorBoundary extends Component<
 
   private logErrorToService = (error: Error, errorInfo: ErrorInfo) => {
     // TODO: Implement logging to external service (Sentry, LogRocket, etc.)
-    // Example:
-    // Sentry.captureException(error, {
-    //   contexts: {
-    //     react: {
-    //       componentStack: errorInfo.componentStack,
-    //     },
-    //   },
-    // });
-
     console.group("🚨 Error Boundary Report");
     console.error("Error:", error);
     console.error("Error Info:", errorInfo);
@@ -88,11 +75,11 @@ export class ErrorBoundary extends Component<
     console.groupEnd();
   };
 
-  private handleRetry = () => {
+  handleRetry = () => {
     this.setState({
       hasError: false,
-      error: null,
-      errorInfo: null,
+      error: undefined,
+      errorInfo: undefined,
       errorId: "",
     });
   };
@@ -130,7 +117,7 @@ export class ErrorBoundary extends Component<
 
   render() {
     if (this.state.hasError) {
-      // Custom fallback UI
+      // Custom fallback UI provided
       if (this.props.fallback) {
         return this.props.fallback;
       }
@@ -142,70 +129,30 @@ export class ErrorBoundary extends Component<
         className,
       } = this.props;
 
+      // Default fallback UI
       return (
         <div
           className={`${styles.errorBoundary} ${className || ""}`}
           role="alert"
         >
           <div className={styles.errorContent}>
-            {/* Error Icon */}
-            <div className={styles.errorIcon}>
-              <AlertTriangle size={48} />
-            </div>
+            <div className={styles.errorIcon}>⚠️</div>
+            <h2 className={styles.errorTitle}>Səhifə yüklənmədi</h2>
+            <p className={styles.errorMessage}>
+              Təəssüf ki, səhifəni yükləyərkən xəta baş verdi. Zəhmət olmasa
+              yenidən cəhd edin.
+            </p>
 
-            {/* Error Message */}
-            <div className={styles.errorMessage}>
-              <h1 className={styles.errorTitle}>Xəta baş verdi</h1>
-              <p className={styles.errorDescription}>
-                Təəssüf ki, səhifəni yükləyərkən xəta baş verdi. Zəhmət olmasa,
-                yenidən cəhd edin.
+            {error && (
+              <p className={styles.errorCode}>
+                Xəta kodu: <code>{errorId}</code>
               </p>
+            )}
 
-              {error && (
-                <p className={styles.errorCode}>
-                  Xəta kodu: <code>{errorId}</code>
-                </p>
-              )}
-            </div>
-
-            {/* Action Buttons */}
-            <div className={styles.errorActions}>
-              {enableRetry && (
-                <button
-                  onClick={this.handleRetry}
-                  className={`${styles.errorButton} ${styles.errorButton__primary}`}
-                  type="button"
-                >
-                  <RefreshCw size={20} />
-                  Yenidən cəhd et
-                </button>
-              )}
-
-              <button
-                onClick={this.handleReload}
-                className={`${styles.errorButton} ${styles.errorButton__secondary}`}
-                type="button"
-              >
-                <RefreshCw size={20} />
-                Səhifəni yenilə
-              </button>
-
-              <button
-                onClick={this.handleGoHome}
-                className={`${styles.errorButton} ${styles.errorButton__secondary}`}
-                type="button"
-              >
-                <Home size={20} />
-                Ana səhifə
-              </button>
-            </div>
-
-            {/* Error Details Toggle */}
             {showErrorDetails && error && (
               <details className={styles.errorDetails}>
-                <summary className={styles.errorDetailsToggle}>
-                  <Bug size={16} />
-                  Texniki məlumatlar
+                <summary className={styles.errorSummary}>
+                  Texniki məlumat
                 </summary>
                 <div className={styles.errorDetailsContent}>
                   <div className={styles.errorDetailsSection}>
@@ -235,7 +182,7 @@ export class ErrorBoundary extends Component<
 
                   <button
                     onClick={this.copyErrorDetails}
-                    className={`${styles.errorButton} ${styles.errorButton__small}`}
+                    className={styles.copyButton}
                     type="button"
                   >
                     Məlumatları kopyala
@@ -244,14 +191,30 @@ export class ErrorBoundary extends Component<
               </details>
             )}
 
-            {/* Help Text */}
-            <div className={styles.errorHelp}>
-              <p>
-                Problem davam edərsə, bizə məlumat verin:{" "}
-                <a href="mailto:support@bolbol.az" className={styles.errorLink}>
-                  support@bolbol.az
-                </a>
-              </p>
+            <div className={styles.errorActions}>
+              {enableRetry && (
+                <button
+                  onClick={this.handleRetry}
+                  className={styles.retryButton}
+                  aria-label="Yenidən cəhd et"
+                >
+                  Yenidən cəhd et
+                </button>
+              )}
+              <button
+                onClick={this.handleReload}
+                className={styles.reloadButton}
+                aria-label="Səhifəni yenilə"
+              >
+                Səhifəni yenilə
+              </button>
+              <button
+                onClick={this.handleGoHome}
+                className={styles.homeButton}
+                aria-label="Ana səhifəyə qayıt"
+              >
+                Ana səhifə
+              </button>
             </div>
           </div>
         </div>

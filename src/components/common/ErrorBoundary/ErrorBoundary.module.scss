@@ -6,83 +6,62 @@
   align-items: center;
   justify-content: center;
   min-height: 400px;
-  padding: 40px 20px;
-  background-color: $background-color;
+  padding: $spacing-3xl;
+  background-color: $background-light;
 
-  // Full screen variant
-  &--fullscreen {
-    min-height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    background-color: $white;
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    min-height: 300px;
+    padding: $spacing-2xl;
   }
 }
 
 .errorContent {
-  max-width: 600px;
-  width: 100%;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-2xl;
+  max-width: 500px;
+  padding: $spacing-3xl;
   background-color: $white;
-  border-radius: $border-radius;
-  padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  text-align: center;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 24px;
-    margin: 0 16px;
+    max-width: 90%;
+    padding: $spacing-2xl;
+    gap: $spacing-xl;
   }
 }
 
 .errorIcon {
-  margin-bottom: 24px;
-  color: #dc3545;
-
-  svg {
-    display: block;
-    margin: 0 auto;
-  }
+  font-size: 4rem;
+  line-height: 1;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    margin-bottom: 16px;
-
-    svg {
-      width: 40px;
-      height: 40px;
-    }
-  }
-}
-
-.errorMessage {
-  margin-bottom: 32px;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    margin-bottom: 24px;
+    font-size: 3rem;
   }
 }
 
 .errorTitle {
-  font-size: $font-size-xl;
+  margin: 0;
   font-family: $font-family-bold;
-  font-weight: 600;
-  color: $primary-color;
-  margin: 0 0 16px 0;
+  font-size: $font-size-xl;
+  font-weight: 700;
+  color: $danger-color;
+  line-height: 1.2;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     font-size: $font-size-large;
-    margin-bottom: 12px;
   }
 }
 
-.errorDescription {
-  font-size: $font-size-base;
+.errorMessage {
+  margin: 0;
   font-family: $font-family-main;
-  color: $text-dark;
+  font-size: $font-size-base;
+  color: $text-color;
   line-height: 1.6;
-  margin: 0 0 16px 0;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     font-size: $font-size-small;
@@ -90,46 +69,129 @@
 }
 
 .errorCode {
+  margin: $spacing-sm 0 0;
+  font-family: $font-family-main;
   font-size: $font-size-small;
   color: $text-light;
-  margin: 0;
 
   code {
-    background-color: rgba($primary-color, 0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: "Courier New", monospace;
-    font-size: 12px;
+    background-color: $background-light;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    font-family: monospace;
+    font-size: $font-size-extra-small;
+  }
+}
+
+.errorDetails {
+  width: 100%;
+  margin-top: $spacing-xl;
+  padding: 0;
+  background-color: transparent;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  text-align: left;
+}
+
+.errorSummary {
+  font-family: $font-family-main;
+  font-size: $font-size-small;
+  font-weight: 600;
+  color: $text-color;
+  cursor: pointer;
+  padding: $spacing-sm;
+  background-color: $background-light;
+  border-radius: $border-radius $border-radius 0 0;
+  border: none;
+  width: 100%;
+  text-align: left;
+
+  &:hover {
+    color: $primary-color;
+    background-color: darken($background-light, 5%);
+  }
+}
+
+.errorDetailsContent {
+  padding: $spacing-sm;
+  background-color: $white;
+}
+
+.errorDetailsSection {
+  margin-bottom: $spacing-md;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h4 {
+    margin: 0 0 $spacing-xs;
+    font-family: $font-family-bold;
+    font-size: $font-size-small;
+    color: $text-dark;
+  }
+}
+
+.errorDetailsText {
+  margin: 0;
+  padding: $spacing-sm;
+  background-color: $background-light;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+  font-family: monospace;
+  font-size: $font-size-extra-small;
+  color: $text-color;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.copyButton {
+  margin-top: $spacing-sm;
+  padding: $spacing-xs $spacing-sm;
+  background-color: $primary-color;
+  color: $white;
+  border: none;
+  border-radius: $border-radius-sm;
+  font-family: $font-family-main;
+  font-size: $font-size-extra-small;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
   }
 }
 
 .errorActions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 24px;
+  gap: $spacing-xl;
+  margin-top: $spacing-sm;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex-direction: column;
-    align-items: center;
+    width: 100%;
+    gap: $spacing-sm;
   }
 }
 
-.errorButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
+.retryButton,
+.reloadButton,
+.homeButton {
+  padding: $spacing-sm $spacing-2xl;
   border: none;
   border-radius: $border-radius;
-  font-size: $font-size-base;
   font-family: $font-family-main;
-  font-weight: 500;
+  font-size: $font-size-base;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
 
   &:focus {
     outline: 2px solid $secondary-color;
@@ -137,215 +199,299 @@
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: $spacing-sm $spacing-xl;
+    font-size: $font-size-small;
+    min-width: auto;
     width: 100%;
-    justify-content: center;
-    padding: 14px 24px;
   }
 }
 
-.errorButton__primary {
-  background-color: $secondary-color;
-  color: $primary-color;
+.retryButton {
+  background-color: $primary-color;
+  color: $white;
 
-  &:hover:not(:disabled) {
-    background-color: darken($secondary-color, 10%);
+  &:hover {
+    background-color: darken($primary-color, 10%);
     transform: translateY(-1px);
+    box-shadow: $shadow-md;
   }
 
   &:active {
     transform: translateY(0);
+    box-shadow: $shadow-sm;
   }
 }
 
-.errorButton__secondary {
+.reloadButton,
+.homeButton {
   background-color: transparent;
   color: $primary-color;
-  border: 2px solid rgba($primary-color, 0.2);
+  border: 2px solid $primary-color;
 
-  &:hover:not(:disabled) {
-    background-color: rgba($primary-color, 0.05);
-    border-color: $primary-color;
+  &:hover {
+    background-color: $primary-color;
+    color: $white;
     transform: translateY(-1px);
+    box-shadow: $shadow-md;
   }
 
   &:active {
     transform: translateY(0);
+    box-shadow: $shadow-sm;
   }
 }
 
-.errorButton__small {
-  padding: 8px 16px;
-  font-size: $font-size-small;
-  margin-top: 16px;
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .retryButton,
+  .reloadButton,
+  .homeButton,
+  .copyButton {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .errorTitle {
+    color: $black;
+  }
+
+  .errorMessage {
+    color: $black;
+  }
+
+  .retryButton,
+  .reloadButton,
+  .homeButton {
+    border: 2px solid $black;
+  }
+
+  .retryButton {
+    background-color: $black;
+    color: $white;
+  }
+
+  .reloadButton,
+  .homeButton {
+    background-color: transparent;
+    color: $black;
+  }
+} // src/components/common/ErrorBoundary/ErrorBoundary.module.scss
+@import "../../../styles/variables.scss";
+
+.errorBoundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: $spacing-3xl;
+  background-color: $background-light;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    min-height: 300px;
+    padding: $spacing-2xl;
+  }
+}
+
+.errorContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-2xl;
+  max-width: 500px;
+  padding: $spacing-3xl;
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  text-align: center;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    max-width: 90%;
+    padding: $spacing-2xl;
+    gap: $spacing-xl;
+  }
+}
+
+.errorIcon {
+  font-size: 4rem;
+  line-height: 1;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 3rem;
+  }
+}
+
+.errorTitle {
+  margin: 0;
+  font-family: $font-family-bold;
+  font-size: $font-size-xl;
+  font-weight: 700;
+  color: $danger-color;
+  line-height: 1.2;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-large;
+  }
+}
+
+.errorMessage {
+  margin: 0;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  color: $text-color;
+  line-height: 1.6;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
 }
 
 .errorDetails {
-  margin: 32px 0 24px 0;
-  text-align: left;
-  border: 1px solid rgba($primary-color, 0.2);
+  width: 100%;
+  margin-top: $spacing-xl;
+  padding: $spacing-sm;
+  background-color: $background-light;
+  border: 1px solid $border-color;
   border-radius: $border-radius;
-  background-color: $background-color;
+  text-align: left;
 }
 
-.errorDetailsToggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 16px;
-  cursor: pointer;
-  font-size: $font-size-base;
+.errorSummary {
   font-family: $font-family-main;
-  font-weight: 500;
-  color: $primary-color;
-  user-select: none;
-  border-radius: $border-radius;
-  transition: background-color 0.2s ease;
+  font-size: $font-size-small;
+  font-weight: 600;
+  color: $text-color;
+  cursor: pointer;
+  padding: $spacing-xs 0;
 
   &:hover {
-    background-color: rgba($primary-color, 0.05);
-  }
-
-  &:focus {
-    outline: 2px solid $secondary-color;
-    outline-offset: -2px;
-  }
-
-  // Remove default summary styles
-  &::-webkit-details-marker {
-    display: none;
-  }
-
-  &::marker {
-    display: none;
-  }
-}
-
-.errorDetailsContent {
-  padding: 0 16px 16px 16px;
-  border-top: 1px solid rgba($primary-color, 0.1);
-}
-
-.errorDetailsSection {
-  margin-bottom: 16px;
-
-  h4 {
-    font-size: $font-size-small;
-    font-family: $font-family-bold;
-    font-weight: 600;
     color: $primary-color;
-    margin: 0 0 8px 0;
-  }
-
-  &:last-of-type {
-    margin-bottom: 0;
   }
 }
 
-.errorDetailsText {
+.errorStack {
+  margin: $spacing-sm 0 0;
+  padding: $spacing-sm;
   background-color: $white;
-  border: 1px solid rgba($primary-color, 0.1);
-  border-radius: 4px;
-  padding: 12px;
-  font-family: "Courier New", monospace;
-  font-size: 12px;
-  line-height: 1.4;
-  color: $text-dark;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  font-family: monospace;
+  font-size: $font-size-extra-small;
+  color: $text-color;
   white-space: pre-wrap;
-  word-break: break-word;
   overflow-x: auto;
   max-height: 200px;
   overflow-y: auto;
-  margin: 0;
+}
 
-  // Custom scrollbar
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
+.errorActions {
+  display: flex;
+  gap: $spacing-xl;
+  margin-top: $spacing-sm;
 
-  &::-webkit-scrollbar-track {
-    background: rgba($primary-color, 0.1);
-    border-radius: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba($primary-color, 0.3);
-    border-radius: 3px;
-
-    &:hover {
-      background: rgba($primary-color, 0.5);
-    }
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-direction: column;
+    width: 100%;
+    gap: $spacing-sm;
   }
 }
 
-.errorHelp {
-  padding-top: 24px;
-  border-top: 1px solid rgba($primary-color, 0.1);
-  font-size: $font-size-small;
-  color: $text-light;
+.retryButton,
+.homeButton {
+  padding: $spacing-sm $spacing-2xl;
+  border: none;
+  border-radius: $border-radius;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
 
-  p {
-    margin: 0;
-  }
-}
-
-.errorLink {
-  color: $primary-color;
-  text-decoration: underline;
-  transition: color 0.2s ease;
-
-  &:hover,
   &:focus {
-    color: darken($primary-color, 15%);
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: $spacing-sm $spacing-xl;
+    font-size: $font-size-small;
+    min-width: auto;
+    width: 100%;
   }
 }
 
-// Animation for error boundary appearance
-.errorBoundary {
-  animation: errorFadeIn 0.3s ease;
-}
+.retryButton {
+  background-color: $primary-color;
+  color: $white;
 
-@keyframes errorFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
   }
-  to {
-    opacity: 1;
+
+  &:active {
     transform: translateY(0);
+    box-shadow: $shadow-sm;
   }
 }
 
-// Compact variant for smaller error boundaries
-.errorBoundary--compact {
-  min-height: 200px;
-  padding: 20px;
+.homeButton {
+  background-color: transparent;
+  color: $primary-color;
+  border: 2px solid $primary-color;
 
-  .errorContent {
-    padding: 24px;
+  &:hover {
+    background-color: $primary-color;
+    color: $white;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
   }
 
-  .errorIcon svg {
-    width: 32px;
-    height: 32px;
+  &:active {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
   }
+}
 
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .retryButton,
+  .homeButton {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
   .errorTitle {
-    font-size: $font-size-large;
-    margin-bottom: 8px;
+    color: $black;
   }
 
-  .errorDescription {
-    font-size: $font-size-small;
-    margin-bottom: 8px;
+  .errorMessage {
+    color: $black;
   }
 
-  .errorActions {
-    margin-bottom: 16px;
+  .retryButton,
+  .homeButton {
+    border: 2px solid $black;
   }
 
-  .errorButton {
-    padding: 8px 16px;
-    font-size: $font-size-small;
+  .retryButton {
+    background-color: $black;
+    color: $white;
+  }
+
+  .homeButton {
+    background-color: transparent;
+    color: $black;
   }
 }
