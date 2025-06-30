@@ -4,6 +4,7 @@
 .header {
   position: relative;
   z-index: 100;
+  background-color: $white; // ✅ FIXED: Ensure header background is white
 }
 
 // Navbar background
