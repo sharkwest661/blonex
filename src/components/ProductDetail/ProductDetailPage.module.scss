@@ -82,6 +82,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
+  align-items: start; // ✅ ADD THIS LINE - prevents columns from stretching to match height
 
   @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
     gap: 30px;

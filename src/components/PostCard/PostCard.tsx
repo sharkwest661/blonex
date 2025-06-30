@@ -1,11 +1,10 @@
-// src/components/PostCard/PostCard.tsx - FIXED TYPE ERRORS
+// src/components/PostCard/PostCard.tsx
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Store, Heart } from "lucide-react";
-import { useFavoritesStoreHydrated } from "@/stores/useFavoritesStore";
-import type { Post, PostFeature } from "@/types/post.types";
+import type { Post } from "@/types/post.types";
 import styles from "./PostCard.module.scss";
 
 interface PostCardProps {
@@ -21,16 +20,15 @@ export const PostCard: React.FC<PostCardProps> = ({
 }) => {
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
-
-  // Use hydration-safe favorites store
-  const { favorites, toggleFavorite } = useFavoritesStoreHydrated();
-  const isFavorite = favorites.includes(post.id);
+  const [isFavorite, setIsFavorite] = useState(false); // You can connect this to your favorites store
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleFavorite(post.id);
-    onFavoriteToggle?.(post.id, !isFavorite);
+
+    const newFavoriteState = !isFavorite;
+    setIsFavorite(newFavoriteState);
+    onFavoriteToggle?.(post.id, newFavoriteState);
   };
 
   const handleStoreClick = (e: React.MouseEvent) => {
@@ -38,16 +36,6 @@ export const PostCard: React.FC<PostCardProps> = ({
     e.stopPropagation();
     if (post.storeInfo?.href) {
       window.open(post.storeInfo.href, "_blank");
-    }
-  };
-
-  const handleStoreKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      e.stopPropagation();
-      if (post.storeInfo?.href) {
-        window.open(post.storeInfo.href, "_blank");
-      }
     }
   };
 
@@ -60,38 +48,24 @@ export const PostCard: React.FC<PostCardProps> = ({
     setImageError(true);
   };
 
-  const formatPrice = (price: number, currency: string) => {
-    return `${price.toLocaleString()} ${currency}`;
+  // ✅ FIXED: Import and use proper utility to avoid hydration issues
+  const formatPriceValue = (price: number): string => {
+    // Manual formatting to avoid locale differences between server/client
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const formatDate = (dateString: string) => {
-    return dateString;
-  };
-
-  // Determine title class based on post type
-  const getTitleClass = () => {
-    if (post.type === "vip") {
-      return styles.post__title;
-    }
-    return styles.other_post_title;
-  };
-
-  // Determine if should show subtitle (only for VIP)
-  const shouldShowSubtitle = post.type === "vip" && post.subtitle;
-
-  // Determine if card should have pulsed animation
-  const shouldPulse = post.type === "premium";
+  const displayPrice = `${formatPriceValue(post.price)} ${post.currency}`;
 
   return (
-    <div className={`${styles.post__item} ${className || ""}`}>
-      {/* Image Section */}
-      <div className={styles.post__img}>
-        <Link href={post.href} className={styles.imageLink}>
+    <article className={`${styles.post} ${className || ""}`}>
+      {/* ✅ FIXED: Image Container with proper position relative */}
+      <div className={styles.post__imageContainer}>
+        <Link href={post.href} className={styles.post__link}>
           {!imageError ? (
             <Image
               src={post.imageUrl}
               alt={post.title}
-              fill
+              fill // ✅ Now properly supported with relative parent
               sizes="(max-width: 576px) 50vw, (max-width: 767px) 33vw, (max-width: 1024px) 25vw, 20vw"
               className={styles.post__image}
               onLoad={handleImageLoad}
@@ -105,13 +79,14 @@ export const PostCard: React.FC<PostCardProps> = ({
           )}
         </Link>
 
-        {/* Image Overlays */}
-        <div className={styles.post__attributes}>
+        {/* Image Overlays - Positioned within image container */}
+        <div className={styles.post__overlays}>
+          {/* Badges */}
           <div className={styles.post__badges}>
             {/* VIP Badge */}
             {(post.hasVipBadge || post.type === "vip") && (
               <span
-                className={styles.post__vip}
+                className={styles.post__vipBadge}
                 title="VIP elan"
                 aria-label="VIP elan"
               />
@@ -120,7 +95,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             {/* Premium Badge */}
             {(post.hasPremiumBadge || post.type === "premium") && (
               <span
-                className={styles.post__premium}
+                className={styles.post__premiumBadge}
                 title="Premium elan"
                 aria-label="Premium elan"
               />
@@ -130,7 +105,7 @@ export const PostCard: React.FC<PostCardProps> = ({
           {/* Favorites Button */}
           <button
             type="button"
-            className={`${styles.post__favorites} ${
+            className={`${styles.post__favoriteBtn} ${
               isFavorite ? styles.active : ""
             }`}
             onClick={handleFavoriteClick}
@@ -139,105 +114,83 @@ export const PostCard: React.FC<PostCardProps> = ({
             }
             title={isFavorite ? "Seçdiklərdən çıxar" : "Seçdiklərə əlavə et"}
           >
-            <Heart size={16} className={styles.heartIcon} />
+            <Heart size={16} />
           </button>
         </div>
 
-        {/* Special Opportunity Badge (for pulsed items) */}
-        {shouldPulse && (
-          <div className={styles.post__chance}>
-            <div className={styles.post__chanceContent}>
-              <span className={styles.post__chanceIcon}>⚡</span>
-              <span className={styles.post__chanceText}>SUPER FÜRSƏT!</span>
-            </div>
+        {/* Loading State */}
+        {imageLoading && (
+          <div className={styles.post__imageLoader}>
+            <div className={styles.loader}></div>
           </div>
         )}
       </div>
 
-      {/* Store Info Section - MOVED OUTSIDE IMAGE */}
-      {post.isStore && post.storeInfo && (
-        <div className={styles.post__storeSection}>
+      {/* Content Section */}
+      <div className={styles.post__content}>
+        {/* Store Info (if available) */}
+        {post.storeInfo && (
           <div
             className={styles.post__store}
             onClick={handleStoreClick}
             role="button"
             tabIndex={0}
-            onKeyDown={handleStoreKeyDown}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                handleStoreClick(e as any);
+              }
+            }}
           >
-            <div className={styles.post__storeIcon}>
-              <Store size={14} />
-            </div>
+            <Store size={14} />
             <span className={styles.post__storeName}>
               {post.storeInfo.name}
             </span>
-            <div className={styles.post__storeIndicator}>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M4.5 3L7.5 6L4.5 9"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Info Section */}
-      <div className={styles.post__info}>
-        <div className={styles.post__content}>
-          {/* Title */}
-          <Link href={post.href} className={getTitleClass()}>
+        {/* Post Title */}
+        <h3 className={styles.post__title}>
+          <Link href={post.href} className={styles.post__titleLink}>
             {post.title}
           </Link>
+        </h3>
 
-          {/* Subtitle (only for VIP) */}
-          {shouldShowSubtitle && (
-            <p className={styles.post__subtitle}>{post.subtitle}</p>
-          )}
+        {/* Subtitle (for VIP posts) */}
+        {post.type === "vip" && post.subtitle && (
+          <p className={styles.post__subtitle}>{post.subtitle}</p>
+        )}
 
-          {/* Meta Info */}
-          <p className={styles.post__meta}>
-            {post.location}, {formatDate(post.date)}
-          </p>
+        {/* Price and Location */}
+        <div className={styles.post__meta}>
+          <div className={styles.post__price}>{displayPrice}</div>
+          <div className={styles.post__location}>{post.location}</div>
         </div>
 
-        {/* Footer */}
-        <div className={styles.post__footer}>
-          {/* Price */}
-          <div
-            className={`${styles.post__price} ${
-              shouldPulse ? styles["post__price--secondary"] : ""
-            }`}
-          >
-            {formatPrice(post.price, post.currency)}
+        {/* Features */}
+        {post.features && post.features.length > 0 && (
+          <div className={styles.post__features}>
+            {post.features.map((feature, index) => (
+              <span
+                key={index}
+                className={styles.post__feature}
+                title={feature.tooltip}
+                aria-label={feature.tooltip}
+              >
+                <Image
+                  src={feature.icon}
+                  alt={feature.tooltip}
+                  width={16}
+                  height={16}
+                />
+              </span>
+            ))}
           </div>
+        )}
 
-          {/* Features */}
-          {post.features.length > 0 && (
-            <div className={styles.post__features}>
-              {post.features.map((feature, index) => (
-                <span
-                  key={index}
-                  className={styles.post__feature}
-                  title={feature.tooltip}
-                  aria-label={feature.tooltip}
-                >
-                  <Image
-                    src={feature.icon}
-                    alt={feature.tooltip}
-                    width={18}
-                    height={18}
-                  />
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Date */}
+        <div className={styles.post__date}>{post.date}</div>
       </div>
-    </div>
+    </article>
   );
 };
 

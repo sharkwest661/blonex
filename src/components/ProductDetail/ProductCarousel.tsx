@@ -1,3 +1,4 @@
+// src/components/ProductDetail/ProductCarousel.tsx - FIXED ZOOM
 "use client";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
@@ -27,17 +28,29 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
 
   const handleSlideChange = (swiper: SwiperType) => {
     setActiveIndex(swiper.activeIndex);
+    // Reset zoom state when changing slides
+    setIsZoomed(false);
   };
 
   const handleZoomToggle = () => {
     if (mainSwiperRef.current && mainSwiperRef.current.zoom) {
-      if (isZoomed) {
-        mainSwiperRef.current.zoom.out();
-      } else {
-        mainSwiperRef.current.zoom.in();
+      try {
+        if (isZoomed) {
+          mainSwiperRef.current.zoom.out();
+          setIsZoomed(false);
+        } else {
+          mainSwiperRef.current.zoom.in();
+          setIsZoomed(true);
+        }
+      } catch (error) {
+        console.warn("Zoom functionality not available:", error);
       }
-      setIsZoomed(!isZoomed);
     }
+  };
+
+  // Handle zoom events from Swiper
+  const handleZoomChange = (swiper: SwiperType, scale: number) => {
+    setIsZoomed(scale > 1);
   };
 
   return (
@@ -51,18 +64,24 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
             nextEl: `.${styles.navNext}`,
             prevEl: `.${styles.navPrev}`,
           }}
-          thumbs={{ swiper: thumbsSwiper }}
+          thumbs={{
+            swiper:
+              thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+          }}
           zoom={{
             maxRatio: 3,
             minRatio: 1,
+            toggle: true, // Enable zoom toggle on double-click/tap
           }}
           keyboard={{
             enabled: true,
+            onlyInViewport: false,
           }}
           onSlideChange={handleSlideChange}
           onSwiper={(swiper) => {
             mainSwiperRef.current = swiper;
           }}
+          onZoomChange={handleZoomChange}
           className={styles.mainSwiper}
         >
           {images.map((image, index) => (
@@ -70,8 +89,8 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
               key={index}
               className={`${styles.mainSlide} ${isZoomed ? styles.zoomed : ""}`}
             >
-              {/* ✅ FIXED: Use CSS Modules class instead of global swiper-zoom-container */}
-              <div className={styles.zoomContainer}>
+              {/* ✅ FIXED: Use required Swiper global class for zoom */}
+              <div className="swiper-zoom-container">
                 <Image
                   src={image}
                   alt={`${title} - görünüş ${index + 1}`}
@@ -80,6 +99,10 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
                   className={styles.mainImage}
                   priority={index === 0}
                   quality={90}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
                 />
               </div>
             </SwiperSlide>
@@ -90,12 +113,14 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
         <button
           className={`${styles.navButton} ${styles.navPrev}`}
           aria-label="Əvvəlki şəkil"
+          type="button"
         >
           <ChevronLeft size={20} />
         </button>
         <button
           className={`${styles.navButton} ${styles.navNext}`}
           aria-label="Növbəti şəkil"
+          type="button"
         >
           <ChevronRight size={20} />
         </button>
@@ -105,6 +130,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
           className={styles.zoomButton}
           onClick={handleZoomToggle}
           aria-label={isZoomed ? "Kiçilt" : "Böyüt"}
+          type="button"
         >
           {isZoomed ? <ZoomOut size={16} /> : <ZoomIn size={16} />}
         </button>
@@ -137,10 +163,17 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
           >
             {images.map((image, index) => (
               <SwiperSlide key={index} className={styles.thumbSlide}>
-                <div
+                <button
+                  type="button"
                   className={`${styles.thumbContainer} ${
                     index === activeIndex ? styles.thumbActive : ""
                   }`}
+                  onClick={() => {
+                    if (mainSwiperRef.current) {
+                      mainSwiperRef.current.slideTo(index);
+                    }
+                  }}
+                  aria-label={`Şəkil ${index + 1}-ə keç`}
                 >
                   <Image
                     src={image}
@@ -150,7 +183,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images, title }) => {
                     className={styles.thumbImage}
                     quality={70}
                   />
-                </div>
+                </button>
               </SwiperSlide>
             ))}
           </Swiper>

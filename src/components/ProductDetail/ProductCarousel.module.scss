@@ -1,3 +1,4 @@
+// src/components/ProductDetail/ProductCarousel.module.scss - FIXED ZOOM
 @import "../../styles/variables.scss";
 
 .productCarousel {
@@ -22,6 +23,16 @@
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     height: 300px;
   }
+
+  // ✅ FIXED: Global Swiper zoom container styles
+  :global(.swiper-zoom-container) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
 }
 
 .mainSlide {
@@ -41,6 +52,9 @@
   height: 100%;
   object-fit: contain;
   transition: transform 0.3s ease;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 // Navigation Buttons
@@ -155,13 +169,16 @@
   border: 2px solid transparent;
   transition: all 0.3s ease;
   background-color: $background-color;
+  cursor: pointer;
+  display: block;
+  width: 100%;
 
   &:hover {
     border-color: $primary-color;
     transform: scale(1.05);
   }
 
-  &:focus-within {
+  &:focus {
     outline: 2px solid $secondary-color;
     outline-offset: 2px;
   }
@@ -181,15 +198,6 @@
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     height: 50px;
   }
-}
-
-// Zoom container styling (applied via className to swiper-zoom-container)
-.zoomContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
 }
 
 // Responsive adjustments
@@ -219,5 +227,27 @@
     left: 10px;
     padding: 4px 8px;
     font-size: 12px;
+  }
+}
+
+// ✅ FIXED: Additional zoom functionality styles
+.mainSwiper {
+  // Override Swiper default zoom cursor behavior
+  :global(.swiper-slide-zoomed) {
+    cursor: move;
+  }
+
+  // Ensure proper zoom container positioning
+  :global(.swiper-zoom-container) {
+    transition: transform 0.3s ease;
+  }
+}
+
+// Focus states for accessibility
+.productCarousel:focus-within {
+  .zoomButton,
+  .navButton {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
   }
 }

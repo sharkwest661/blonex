@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Heart, MapPin, Truck, RefreshCw, Percent, Eye } from "lucide-react";
 import styles from "./ProductInfo.module.scss";
+import { formatPrice } from "@/utils/formatters";
 
 interface ProductInfoProps {
   product: {
@@ -52,11 +53,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     });
   };
 
-  // Format price consistently - handle both number and string
+  // ✅ FIXED: Replace toLocaleString() with consistent formatter
   const displayPrice =
     typeof product.price === "string"
       ? product.price
-      : product.price.toLocaleString();
+      : formatPrice(product.price); // Use custom formatter instead of toLocaleString()
 
   return (
     <div className={styles.productInfo}>
