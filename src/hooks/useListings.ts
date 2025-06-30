@@ -18,7 +18,7 @@ const createMockVehicleData = (
   currency: "₼",
   location: "Bakı",
   date: "28.01.2025, 14:30",
-  imageUrl: "/assets/images/example/post2.png",
+  imageUrl: "/assets/images/example/post8.jpg",
   type,
   features: [
     {

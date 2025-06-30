@@ -1,19 +1,38 @@
-// src/components/PostCard/PostCard.module.scss - COMPLETE FIXED VERSION
+// src/components/PostCard/PostCard.module.scss - RESTORED ORIGINAL DESIGN
 @import "../../styles/variables.scss";
 
-// Main post card container
-.post {
+// PostCard-specific font sizes (scaled to match original)
+$post-title-size: 1.08rem;
+$post-subtitle-size: 0.94rem;
+$post-meta-size: 0.81rem;
+$post-price-size: 1.08rem;
+
+// Image link wrapper
+.imageLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+// Main post card container - ORIGINAL DESIGN
+.post__item {
   border-radius: $border-radius;
   background-color: $white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 0px 0px $primary-color, 0px 10px 20px rgba(0, 0, 0, 0.05);
+  font-size: 1.2rem;
+  line-height: 1.17;
   overflow: hidden;
   transition: all 0.3s ease;
+  z-index: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 0px 0px $primary-color,
+      0px 10px 12px rgba(0, 0, 0, 0.25);
     transform: translateY(-2px);
 
     .post__image {
@@ -21,9 +40,29 @@
     }
   }
 
+  // Checked state (for selection)
+  &--checked {
+    box-shadow: 0px 0px 0px 2px $primary-color,
+      0px 10px 20px rgba(0, 0, 0, 0.05);
+
+    &:hover {
+      box-shadow: 0px 0px 0px 2px $primary-color,
+        0px 10px 12px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  // Pulsed state (for special promotions)
+  &--pulsed {
+    animation: pulse 2s infinite;
+
+    .post__chance {
+      display: flex;
+    }
+  }
+
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     &:hover {
-      transform: none; // Disable hover transform on mobile
+      transform: none;
 
       .post__image {
         transform: none;
@@ -32,139 +71,128 @@
   }
 }
 
-// ✅ FIXED: Image Container with proper position and dimensions
-.post__imageContainer {
-  position: relative; // ✅ REQUIRED for Next.js Image fill prop
+// Image section - ORIGINAL DESIGN with position fix
+.post__img {
+  position: relative; // ✅ FIXED: Required for Next.js Image fill prop
   width: 100%;
-  height: 200px; // ✅ FIXED: Set explicit height to prevent full page
+  aspect-ratio: 1.34/1;
+  z-index: 0;
+  flex: 0 0 auto;
   overflow: hidden;
-  flex: 0 0 auto; // Don't grow or shrink
-  background-color: $background-light;
 
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    height: 180px;
-  }
-
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    height: 160px;
+  > img {
+    width: 100%;
+    height: 100%;
   }
 }
 
-// Image link wrapper
-.post__link {
-  display: block;
-  width: 100%;
-  height: 100%;
-  text-decoration: none;
-  color: inherit;
-}
-
-// ✅ FIXED: Image styles for fill prop
 .post__image {
+  width: 100% !important;
+  height: 100% !important;
   object-fit: cover;
   transition: transform 0.3s ease;
-
-  // These ensure proper aspect ratio maintenance
-  width: auto !important;
-  height: auto !important;
 }
 
-// Image placeholder for errors
 .post__imagePlaceholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $background-light;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($text-light, 0.1);
   color: $text-light;
   font-size: $font-size-small;
-  font-family: $font-family-main;
 }
 
-// Image loading state
-.post__imageLoader {
+// Overlay attributes (badges and favorites) - ORIGINAL DESIGN
+.post__attributes {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: $background-light;
-  z-index: 1;
-}
-
-.loader {
-  width: 32px;
-  height: 32px;
-  border: 3px solid $border-color;
-  border-top: 3px solid $primary-color;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-// ✅ FIXED: Overlays positioned within image container
-.post__overlays {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: $spacing-sm;
+  padding: 8px;
   z-index: 2;
-  pointer-events: none; // Allow clicks to pass through
 }
 
 .post__badges {
   display: flex;
   align-items: flex-start;
-  gap: $spacing-xs;
-  pointer-events: auto;
+  gap: 6px;
 }
 
-// VIP and Premium badges
-.post__vipBadge,
-.post__premiumBadge {
+// VIP and Premium badges - ORIGINAL DESIGN
+.post__vip,
+.post__premium {
   width: 32px;
   height: 32px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  border-radius: $spacing-xs;
-  transition: transform 0.3s ease;
+  border-radius: 6px;
+  transition: 0.3s ease;
 
   &:hover {
     transform: scale(1.05);
   }
 }
 
-.post__vipBadge {
+.post__vip {
   background-image: url("/assets/images/vip-icon.svg");
 }
 
-.post__premiumBadge {
+.post__premium {
   background-image: url("/assets/images/premium-icon.svg");
 }
 
-// ✅ FIXED: Favorites button
-.post__favoriteBtn {
+// Special opportunity badge - ORIGINAL DESIGN
+.post__chance {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  display: none; // Only show on pulsed items
+  z-index: 4;
+  animation: compactBounce 2s ease-in-out infinite;
+}
+
+.post__chanceContent {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: linear-gradient(135deg, #ff3030, #ff6b6b);
+  background-size: 200% 200%;
+  animation: subtleGradient 3s ease-in-out infinite alternate;
+  color: $white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-align: center;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(255, 48, 48, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
+  white-space: nowrap;
+}
+
+.post__chanceIcon {
+  font-size: 0.7rem;
+  animation: subtleGlow 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 0, 0.6));
+}
+
+.post__chanceText {
+  font-family: $font-family-main;
+  line-height: 1;
+}
+
+// Favorites button - ORIGINAL DESIGN
+.post__favorites {
   width: 36px;
   height: 36px;
   background-color: rgba($white, 0.9);
@@ -172,23 +200,34 @@
   border-radius: 50%;
   border: none;
   cursor: pointer;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  pointer-events: auto;
-  color: $text-light;
 
-  &:hover {
-    background-color: #ff4757;
-    transform: scale(1.1);
-    color: $white;
+  .heartIcon {
+    color: $text-light;
+    transition: all 0.3s ease;
   }
 
   &.active {
     background-color: #ff4757;
-    color: $white;
+
+    .heartIcon {
+      color: $white;
+      fill: currentColor;
+    }
+  }
+
+  &:hover {
+    background-color: #ff4757;
+    transform: scale(1.1);
+
+    .heartIcon {
+      color: $white;
+    }
   }
 
   &:focus {
@@ -197,126 +236,182 @@
   }
 }
 
-// Content section
-.post__content {
-  flex: 1;
-  padding: $spacing-lg;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-sm;
-
-  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: $spacing-md;
-  }
+// Store section - ORIGINAL DESIGN
+.post__storeSection {
+  position: relative;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-bottom: 1px solid #dee2e6;
+  flex: 0 0 auto;
 }
 
-// Store info section
 .post__store {
   display: flex;
   align-items: center;
-  gap: $spacing-xs;
-  padding: $spacing-xs $spacing-sm;
-  background-color: rgba($primary-color, 0.05);
-  border-radius: $spacing-xs;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: $font-size-small;
+  padding: 8px 12px;
   color: $primary-color;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  min-height: 36px;
 
   &:hover {
-    background-color: rgba($primary-color, 0.1);
+    background: linear-gradient(135deg, #e9ecef, #dee2e6);
+
+    .post__storeIndicator {
+      transform: translateX(2px);
+    }
   }
 
   &:focus {
     outline: 2px solid $secondary-color;
-    outline-offset: 2px;
+    outline-offset: -2px;
   }
+}
+
+.post__storeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: $primary-color;
+  color: $white;
+  border-radius: 4px;
+  margin-right: 8px;
+  flex-shrink: 0;
 }
 
 .post__storeName {
+  flex: 1;
+  font-size: 0.875rem;
   font-weight: 600;
+  color: $primary-color;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 8px;
 }
 
-// Title
-.post__title {
-  margin: 0;
-  font-family: $font-family-main;
-  font-size: $font-size-base;
-  font-weight: 600;
-  line-height: 1.3;
-  color: $text-dark;
-
-  // Limit to 2 lines
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-height: 2.6em; // Consistent height for 2 lines
+.post__storeIndicator {
+  display: flex;
+  align-items: center;
+  color: $text-light;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
-.post__titleLink {
-  text-decoration: none;
-  color: inherit;
+// Info section - ORIGINAL DESIGN
+.post__info {
+  position: relative;
+  color: rgba(0, 0, 0, 0.5);
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
 
-  &:hover {
-    color: $primary-color;
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 10px;
   }
 }
 
-// Subtitle (for VIP posts)
-.post__subtitle {
-  margin: 0;
-  font-size: $font-size-small;
-  color: $text-light;
-  font-family: $font-family-main;
-
-  // Limit to 1 line
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.post__content {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
 }
 
-// Meta section (price and location)
+// Titles - ORIGINAL DESIGN
+.post__title {
+  display: block;
+  margin: 0 0 6px 0;
+  font-weight: 600;
+  line-height: 1.3;
+  color: $primary-color;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  min-height: 2.6em;
+  font-family: $font-family-main;
+  font-size: $post-title-size;
+  text-decoration: none;
+
+  &:hover {
+    color: $secondary-color;
+  }
+}
+
+.other_post_title {
+  @extend .post__title;
+
+  @media screen and (max-width: 400px) {
+    font-size: 1.4rem;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
+    min-height: 2.4em;
+  }
+}
+
+.post__subtitle {
+  margin: 0 0 6px 0;
+  font-size: $post-subtitle-size;
+  font-weight: 400;
+  color: $text-light;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  line-height: 1.3;
+}
+
 .post__meta {
+  margin: 0;
+  font-size: $post-meta-size;
+  color: $text-light;
+  line-height: 1.3;
+}
+
+// Footer section - ORIGINAL DESIGN
+.post__footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: $spacing-sm;
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding-top: 8px;
+  border-top: 1px solid #f1f3f4;
+}
 
-  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: $spacing-xs;
+// Price - ORIGINAL DESIGN
+.post__price {
+  padding: 4px 8px;
+  font-family: $font-family-main;
+  font-size: $post-price-size;
+  font-weight: 700;
+  line-height: 1.2;
+  color: $primary-color;
+  background-color: rgba($secondary-color, 0.15);
+  border: 1px solid rgba($secondary-color, 0.3);
+  border-radius: 6px;
+  white-space: nowrap;
+
+  &--secondary {
+    background: linear-gradient(135deg, #ff3030, #ff6b6b);
+    color: $white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(255, 48, 48, 0.2);
   }
 }
 
-.post__price {
-  font-family: $font-family-main;
-  font-size: $font-size-large;
-  font-weight: 700;
-  color: $primary-color;
-  white-space: nowrap;
-}
-
-.post__location {
-  font-size: $font-size-small;
-  color: $text-light;
-  font-family: $font-family-main;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-// Features
+// Features section - ORIGINAL DESIGN
 .post__features {
   display: flex;
   align-items: center;
-  gap: $spacing-xs;
-  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .post__feature {
@@ -326,7 +421,7 @@
   width: 24px;
   height: 24px;
   background-color: rgba($primary-color, 0.1);
-  border-radius: $spacing-xs;
+  border-radius: 4px;
   cursor: help;
   transition: all 0.3s ease;
 
@@ -334,70 +429,138 @@
     background-color: rgba($primary-color, 0.2);
     transform: scale(1.1);
   }
+
+  img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+  }
 }
 
-// Date
-.post__date {
-  font-size: $font-size-small;
-  color: $text-light;
-  font-family: $font-family-main;
-  margin-top: auto; // Push to bottom
-  padding-top: $spacing-sm;
-  border-top: 1px solid $border-light;
+// Animations - ORIGINAL DESIGN
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0px rgba(255, 48, 48, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 48, 48, 0.3);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0px rgba(255, 48, 48, 0);
+  }
 }
 
-// Responsive adjustments
-@media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
-  .post__content {
-    gap: $spacing-xs;
+@keyframes compactBounce {
+  0%,
+  100% {
+    transform: scale(1);
   }
-
-  .post__title {
-    font-size: $font-size-small;
-    min-height: 2.4em;
+  50% {
+    transform: scale(1.05);
   }
+}
 
-  .post__price {
-    font-size: $font-size-base;
+@keyframes subtleGradient {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
   }
-
-  .post__overlays {
-    padding: $spacing-xs;
+  100% {
+    background-position: 100% 50%;
+    filter: hue-rotate(5deg);
   }
+}
 
-  .post__favoriteBtn {
-    width: 32px;
-    height: 32px;
+@keyframes subtleGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 0, 0.6));
   }
+  50% {
+    filter: drop-shadow(0 0 4px rgba(255, 255, 0, 0.9));
+  }
+}
 
-  .post__vipBadge,
-  .post__premiumBadge {
-    width: 28px;
-    height: 28px;
+// Loading state
+.post__item--loading {
+  .post__image {
+    background-color: rgba($text-light, 0.1);
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
   }
 }
 
 // Focus states for accessibility
-.post:focus-within {
+.post__item:focus-within {
   outline: 2px solid $secondary-color;
   outline-offset: 2px;
+  border-radius: $border-radius;
+}
+
+// Mobile optimizations
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .post__storeSection {
+    .post__store {
+      padding: 6px 10px;
+      min-height: 32px;
+    }
+
+    .post__storeName {
+      font-size: 0.8rem;
+    }
+  }
+
+  .post__features {
+    gap: 4px;
+  }
+
+  .post__feature {
+    width: 20px;
+    height: 20px;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .post__chanceContent {
+    padding: 3px 6px;
+    font-size: 0.6rem;
+    gap: 3px;
+  }
+
+  .post__chanceIcon {
+    font-size: 0.65rem;
+  }
 }
 
 // Reduced motion support
 @media (prefers-reduced-motion: reduce) {
-  .post {
-    transition: none;
-  }
-
-  .post__image {
-    transition: none;
-  }
-
-  .post__favoriteBtn {
-    transition: none;
-  }
-
-  .loader {
+  .post__item--pulsed {
     animation: none;
+  }
+
+  .post__chance {
+    animation: none;
+  }
+
+  .post__chanceContent {
+    animation: none;
+  }
+
+  .post__chanceIcon {
+    animation: none;
+    filter: none;
   }
 }

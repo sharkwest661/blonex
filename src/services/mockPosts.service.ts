@@ -99,7 +99,7 @@ const generateMockVehiclePost = (
     )}:${Math.floor(Math.random() * 60)
       .toString()
       .padStart(2, "0")}`,
-    imageUrl: "/assets/images/example/post2.png",
+    imageUrl: "/assets/images/example/post7.jpg",
     type,
     features: vehicleFeatures,
     href: `/neqliyyat/${make.toLowerCase().replace(/\s+/g, "-")}-${model
