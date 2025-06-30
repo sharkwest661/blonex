@@ -1,162 +1,172 @@
+// src/app/favorites/page.tsx
 "use client";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
+
+// Layout components
 import { Container } from "@/components/Layout/Container";
+
+// Business components
 import { HomeSearch } from "@/components/Home/HomeSearch";
+import { PostGrid } from "@/components/PostGrid";
+
+// Common components
+import { Loader } from "@/components/common";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
+
+// Hooks
+import { useFavoritesData } from "@/hooks/useFavoritesData";
+
+// Styles
 import styles from "./page.module.scss";
 
-// ✅ FIXED: Simple loading component to avoid import issues
-const SimpleLoader: React.FC = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "2rem",
-      color: "#666",
-    }}
-  >
-    <div
-      style={{
-        width: "20px",
-        height: "20px",
-        border: "2px solid #f3f3f3",
-        borderTop: "2px solid #013f44",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
-        marginRight: "10px",
-      }}
-    />
-    Yüklənir...
-    <style jsx>{`
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    `}</style>
-  </div>
-);
+// Types
+interface FavoritesPageProps {
+  children?: React.ReactNode;
+  className?: string;
+}
 
-// ✅ FIXED: Simple empty state component
-const EmptyState: React.FC<{ message: string }> = ({ message }) => (
-  <div
-    style={{
-      textAlign: "center",
-      padding: "3rem 1rem",
-      color: "#666",
-    }}
-  >
-    <div
-      style={{
-        fontSize: "3rem",
-        marginBottom: "1rem",
-        opacity: 0.5,
-      }}
-    >
-      ❤️
-    </div>
-    <p style={{ margin: 0, fontSize: "1.1rem" }}>{message}</p>
-  </div>
-);
-
-export default function FavoritesPage() {
+// Component
+const FavoritesPageContent: React.FC<FavoritesPageProps> = ({ className }) => {
+  const { favoritePosts, isLoading, error, hasFavorites } = useFavoritesData();
   const router = useRouter();
 
-  // ✅ FIXED: Simple state management without external dependencies
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [favorites, setFavorites] = React.useState<string[]>([]);
+  // Memoized search handler
+  const handleSearch = useCallback(
+    (query: string) => {
+      if (!query.trim()) return;
 
-  // ✅ FIXED: Client-side only hydration
-  React.useEffect(() => {
-    // Only run on client side
-    if (typeof window !== "undefined") {
-      try {
-        const storedFavorites = localStorage.getItem("bolbol-favorites");
-        if (storedFavorites) {
-          const parsed = JSON.parse(storedFavorites);
-          setFavorites(parsed.state?.favorites || []);
-        }
-      } catch (error) {
-        console.warn("Could not load favorites:", error);
-      }
-      setIsLoading(false);
-    }
+      // Navigate to search results page with query
+      const searchParams = new URLSearchParams({ q: query.trim() });
+      router.push(`/search?${searchParams.toString()}`);
+    },
+    [router]
+  );
+
+  // Memoized empty message
+  const emptyMessage = useMemo(() => {
+    return "Hələ heç bir elan seçməmisiniz";
   }, []);
 
-  const handleSearch = (query: string) => {
-    // Navigate to search results page with query
-    const searchParams = new URLSearchParams({ q: query });
-    router.push(`/search?${searchParams.toString()}`);
-  };
+  // Loading state
+  if (isLoading) {
+    return (
+      <main className={styles.loadingContainer} aria-label="Yüklənir">
+        <Container fluid>
+          <div className={styles.loaderWrapper}>
+            <Loader />
+            <p className={styles.loadingText}>Seçdikləriniz yüklənir...</p>
+          </div>
+        </Container>
+      </main>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <main className={styles.errorContainer} aria-label="Xəta baş verdi">
+        <Container fluid>
+          <div className={styles.errorWrapper}>
+            <h1 className={styles.errorTitle}>Xəta baş verdi</h1>
+            <p className={styles.errorMessage}>
+              Seçdiklərinizi yükləyərkən xəta baş verdi. Zəhmət olmasa yenidən
+              cəhd edin.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className={styles.retryButton}
+              aria-label="Səhifəni yenilə"
+            >
+              Yenidən cəhd et
+            </button>
+          </div>
+        </Container>
+      </main>
+    );
+  }
 
   return (
-    <main>
+    <main className={className} role="main">
       {/* Mobile Search Section - only visible on mobile */}
-      <section className={styles.mobileSearchSection}>
+      <section
+        className={styles.mobileSearchSection}
+        aria-label="Mobil axtarış bölməsi"
+      >
         <Container fluid>
-          <HomeSearch
-            onSearch={handleSearch}
-            placeholder="Axtardığınızı yazın..."
-            className={styles.mobileSearchWrapper}
-          />
+          <div className={styles.mobileSearchWrapper}>
+            <HomeSearch
+              onSearch={handleSearch}
+              placeholder="Axtardığınızı yazın..."
+              variant="small"
+            />
+          </div>
         </Container>
       </section>
 
       {/* Main Content */}
-      <section>
+      <section className={styles.mainSection} aria-label="Seçdiklər bölməsi">
         <Container fluid>
-          <h1 className={styles.pageTitle}>Seçdiklərim</h1>
+          {/* Page Header */}
+          <header className={styles.pageHeader}>
+            <h1 className={styles.pageTitle}>
+              Seçdiklərim
+              {hasFavorites && (
+                <span
+                  className={styles.favoritesCount}
+                  aria-label={`${favoritePosts.length} elan`}
+                >
+                  ({favoritePosts.length})
+                </span>
+              )}
+            </h1>
+          </header>
 
-          {/* ✅ FIXED: Simple content rendering without external dependencies */}
-          <div className={styles.favoritesGrid}>
-            {isLoading ? (
-              <SimpleLoader />
-            ) : favorites.length === 0 ? (
-              <EmptyState message="Hələ heç bir elan seçməmisiniz" />
-            ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-                  gap: "20px",
-                  padding: "20px 0",
-                }}
-              >
-                {favorites.map((favoriteId) => (
-                  <div
-                    key={favoriteId}
-                    style={{
-                      border: "1px solid #eee",
-                      borderRadius: "10px",
-                      padding: "20px",
-                      textAlign: "center",
-                      backgroundColor: "white",
-                    }}
-                  >
-                    <p style={{ margin: 0, color: "#666" }}>
-                      Elan #{favoriteId}
-                    </p>
-                    <p
-                      style={{
-                        margin: "10px 0 0 0",
-                        fontSize: "14px",
-                        color: "#999",
-                      }}
-                    >
-                      (PostCard komponenti tamamlandıqdan sonra burada
-                      görünəcək)
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
+          {/* Favorites Grid */}
+          <div className={styles.gridWrapper}>
+            <PostGrid
+              posts={favoritePosts}
+              isLoading={isLoading}
+              error={error}
+              emptyMessage={emptyMessage}
+              className={styles.favoritesGrid}
+              aria-label="Seçilmiş elanlar"
+            />
           </div>
         </Container>
       </section>
     </main>
   );
+};
+
+// Main component with error boundary
+export default function FavoritesPage() {
+  return (
+    <ErrorBoundary
+      fallback={
+        <main className={styles.errorContainer}>
+          <Container fluid>
+            <div className={styles.errorWrapper}>
+              <h1 className={styles.errorTitle}>Texniki xəta</h1>
+              <p className={styles.errorMessage}>
+                Səhifəni yükləyərkən xəta baş verdi. Zəhmət olmasa səhifəni
+                yeniləyin.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className={styles.retryButton}
+              >
+                Səhifəni yenilə
+              </button>
+            </div>
+          </Container>
+        </main>
+      }
+    >
+      <FavoritesPageContent />
+    </ErrorBoundary>
+  );
 }
+
+// Note: For SEO metadata, create a layout.tsx file in this directory
+// or move metadata to a parent layout since this is a client component
