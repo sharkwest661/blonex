@@ -1,7 +1,7 @@
 // src/components/Layout/Footer/Footer.tsx
 import React from "react";
 import Link from "next/link";
-import { Container } from "@/components/Layout/Container";
+import { Container } from "@/components/layout/Container";
 import { getAllCities } from "@/constants/cities";
 import styles from "./Footer.module.scss";
 

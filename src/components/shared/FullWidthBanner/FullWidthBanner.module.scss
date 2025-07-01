@@ -1,0 +1,43 @@
+// Fix for FullWidthBanner.module.scss
+
+@import "../../../styles/variables.scss";
+
+.fullWidthBanner {
+  width: 100%;
+  margin: $spacing-4xl 0;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin: $spacing-3xl 0;
+  }
+}
+
+.bannerLink {
+  display: block;
+  width: 100%;
+  position: relative; // ✅ For responsive aspect ratio
+  overflow: hidden;
+  border-radius: $border-radius;
+
+  // Maintain aspect ratio: 6:1 (1200px:200px)
+  aspect-ratio: 6 / 1;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    aspect-ratio: 4 / 1; // Adjust for mobile
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-sm} - 1px)) {
+    aspect-ratio: 3 / 1; // More square on small screens
+  }
+}
+
+.bannerImage {
+  // ✅ FIXED: Maintain aspect ratio properly
+  width: 100% !important;
+  height: auto !important; // Let height adjust automatically
+  object-fit: cover;
+  transition: transform $transition-slow;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}

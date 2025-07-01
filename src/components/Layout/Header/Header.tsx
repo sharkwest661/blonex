@@ -4,12 +4,13 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { Container } from "@/components/Layout/Container";
-import TopBar from "./TopBar/TopBar";
-import MobileMenu from "./MobileMenu/MobileMenu";
-import LoginModal from "@/components/Auth/LoginModal";
+import { Container } from "@/components/layout/Container";
+
 import { useAuthStore } from "@/stores/useAuthStore";
 import styles from "./Header.module.scss";
+import TopBar from "./TopBar/TopBar";
+import LoginModal from "@/components/features/Auth/LoginModal";
+import MobileMenu from "./MobileMenu";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

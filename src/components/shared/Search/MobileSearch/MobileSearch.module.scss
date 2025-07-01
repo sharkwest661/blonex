@@ -1,0 +1,95 @@
+// src/components/Search/MobileSearch/MobileSearch.module.scss
+@import "../../../../styles/variables.scss";
+
+.mobileSearchSection {
+  padding-bottom: 0;
+
+  // Only show on mobile devices
+  @media screen and (min-width: $breakpoint-md) {
+    display: none;
+  }
+}
+
+.search {
+  position: relative;
+  width: 100%;
+  padding: 16px 0;
+}
+
+.searchGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: $white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    border-color: $secondary-color;
+    box-shadow: 0 2px 12px rgba(255, 193, 7, 0.2);
+  }
+}
+
+.searchInput {
+  flex: 1;
+  height: 48px;
+  padding: 0 60px 0 16px;
+  border: none;
+  background: transparent;
+  font-size: $font-size-base;
+  font-family: $font-family-main;
+  color: $text-color;
+  outline: none;
+
+  &::placeholder {
+    color: $text-light;
+    font-style: italic;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.searchAppend {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.searchBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: $secondary-color;
+  border: none;
+  border-radius: 6px;
+  color: $primary-color;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover,
+  &:focus {
+    background-color: darken($secondary-color, 10%);
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  &:focus {
+    outline: 2px solid rgba($secondary-color, 0.5);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}

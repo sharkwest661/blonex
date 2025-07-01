@@ -4,14 +4,12 @@ import React, { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 // Layout components
-import { Container } from "@/components/Layout/Container";
+import { Container } from "@/components/layout/Container";
 
 // Business components
-import { HomeSearch } from "@/components/Home/HomeSearch";
-import { PostGrid } from "@/components/PostGrid";
+import { HomeSearch } from "@/components/features/Home/HomeSearch";
 
 // Common components
-import { Loader } from "@/components/common";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 
 // Hooks
@@ -19,6 +17,8 @@ import { useFavoritesData } from "@/hooks/useFavoritesData";
 
 // Styles
 import styles from "./page.module.scss";
+import PostGrid from "@/components/shared/PostGrid";
+import Loader from "@/components/common/Loader";
 
 // Types
 interface FavoritesPageProps {

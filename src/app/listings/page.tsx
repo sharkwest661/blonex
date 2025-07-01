@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
-import { Container } from "@/components/Layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Search, Filter } from "lucide-react";
 import styles from "./page.module.scss";
 

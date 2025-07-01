@@ -1,7 +1,7 @@
 // src/app/layout.tsx
+import { Footer, Header } from "@/components/layout";
 import "./globals.scss";
-import Header from "@/components/Layout/Header/Header";
-import Footer from "@/components/Layout/Footer/Footer";
+
 import { Providers } from "@/providers";
 
 export const metadata = {
