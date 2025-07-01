@@ -21,7 +21,7 @@ export interface Post {
   location: string;
   date: string;
   time: string;
-  image: string;
+  imageUrl: string;
   imageAlt?: string;
   href: string;
   type?: "regular" | "vip" | "premium";
@@ -121,9 +121,9 @@ const PostCard: React.FC<PostCardProps> = ({
       {/* Image Section */}
       <div className={styles.post__img}>
         <Link href={post.href} className={styles.post__imgLink}>
-          {!imageError && post.image && post.image.trim() !== "" ? (
+          {!imageError && post.imageUrl && post.imageUrl.trim() !== "" ? (
             <Image
-              src={post.image}
+              src={post.imageUrl}
               alt={post.imageAlt || post.title}
               fill
               className={styles.post__image}
@@ -137,7 +137,7 @@ const PostCard: React.FC<PostCardProps> = ({
             </div>
           )}
 
-          {imageLoading && !imageError && post.image && (
+          {imageLoading && !imageError && post.imageUrl && (
             <div className={styles.post__imageLoader}>
               <div className={styles.post__imageSpinner}></div>
             </div>

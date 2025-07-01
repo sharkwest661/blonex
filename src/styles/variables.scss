@@ -13,57 +13,68 @@ $favorite-color-darken-hover: #c0392b; // Darker red on hover
 $vip-badge-color: #ff6b35; // Orange-red instead of bright yellow
 $background-light: #f8f9fa; // Light background for sections
 
-// ✅ NEW: Status Colors
+// Status Colors
 $success-color: #28a745;
 $danger-color: #dc3545;
 $warning-color: #ffc107;
 $info-color: #17a2b8;
 
 /* Typography - Updated to use custom fonts */
-$font-family-main: "Arimo-Regular", "Arimo", Helvetica, Arial, sans-serif;
-$font-family-bold: "Arimo-Bold", "Arimo", Helvetica, Arial, sans-serif;
+$font-family-main: "Arimo", Helvetica, Arial, sans-serif;
+$font-family-bold: "Arimo-Bold", Helvetica, Arial, sans-serif;
+$font-family-italic: "Arimo-Italic", Helvetica, Arial, sans-serif;
 $font-family-arimo: "Arimo", Helvetica, Arial, sans-serif;
 
 // Font weights
+$font-weight-light: 300;
 $font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
 $font-weight-bold: 700;
 
 // Font sizes (standard 16px base)
-$font-size-base: 1rem; // = 16px
-$font-size-large: 1.125rem; // = 18px
-$font-size-xl: 1.5rem; // = 24px
-$font-size-small: 0.875rem; // = 14px
-// ✅ NEW: Additional font sizes
-$font-size-extra-small: 0.75rem; // = 12px
-$font-size-2xl: 2rem; // = 32px
-$font-size-3xl: 2.5rem; // = 40px
-
-// Section title specific font sizes
+$font-size-xs: 0.75rem; // 12px
+$font-size-extra-small: 0.75rem; // = 12px (alias)
+$font-size-small: 0.875rem; // 14px
+$font-size-base: 1rem; // 16px
+$font-size-medium: 1.125rem; // 18px
+$font-size-large: 1.25rem; // 20px
+$font-size-xl: 1.5rem; // 24px
+$font-size-2xl: 2rem; // 32px
+$font-size-3xl: 2.5rem; // 40px
+$font-size-xxl: 2rem; // 32px (alias)
 $font-size-section-title: 2.4rem; // = 38.4px
 $font-size-section-title-variant: 2.2rem; // = 35.2px
 
+// Line heights
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
 /* Breakpoints */
+$breakpoint-xs: 480px;
 $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
 
-/* Spacing System - FIXED */
+/* Spacing System */
 $spacing-unit: 8px;
 
 // Calculated spacing values (use these instead of hardcoded values)
-$spacing-xs: $spacing-unit * 0.5; // 4px
-$spacing-sm: $spacing-unit * 0.75; // 6px
-$spacing-md: $spacing-unit; // 8px
-$spacing-lg: $spacing-unit * 1.5; // 12px
-$spacing-xl: $spacing-unit * 2; // 16px
-$spacing-2xl: $spacing-unit * 3; // 24px
-$spacing-3xl: $spacing-unit * 4; // 32px
-$spacing-4xl: $spacing-unit * 5; // 40px
-$spacing-5xl: $spacing-unit * 6.25; // 50px
+$spacing-xs: 0.25rem; // 4px
+$spacing-sm: 0.5rem; // 8px
+$spacing-md: 1rem; // 16px
+$spacing-lg: 1.5rem; // 24px
+$spacing-xl: 2rem; // 32px
+$spacing-xxl: 3rem; // 48px
+$spacing-2xl: 24px;
+$spacing-3xl: 32px;
+$spacing-4xl: 40px;
+$spacing-5xl: 50px;
 
-/* Size System - NEW */
-// Use these for consistent sizing
+/* Size System */
 $size-xs: 6px;
 $size-sm: 8px;
 $size-md: 12px;
@@ -75,13 +86,20 @@ $size-4xl: 48px;
 $size-5xl: 64px;
 
 /* Borders */
-$border-radius: 10px;
 $border-radius-sm: 4px;
+$border-radius: 8px;
+$border-radius-md: 10px;
 $border-radius-lg: 12px;
+$border-radius-xl: 16px;
 $border-radius-full: 50%;
 $border-color: #cccccc;
+$border-width: 1px;
+$border-style: solid;
+$border-standard: 1px solid #dee2e6;
+$border-light: 1px solid #eee;
+$border: $border-width $border-style #e1e5e9;
 
-/* Z-index System - NEW */
+/* Z-index System */
 $z-dropdown: 1000;
 $z-sticky: 1020;
 $z-fixed: 1030;
@@ -90,32 +108,17 @@ $z-modal: 1050;
 $z-popover: 1060;
 $z-tooltip: 1070;
 
-// ✅ NEW: Animation & Transition Variables
-$transition-fast: 0.15s ease;
-$transition-normal: 0.2s ease;
-$transition-slow: 0.3s ease;
-
-// ✅ NEW: Shadow Variables
-$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
-$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
-
-// ✅ NEW: Opacity Variables
-$opacity-disabled: 0.6;
-$opacity-muted: 0.7;
-$opacity-overlay: 0.24;
-
-// ✅ FIXED: Container Variables (Previously Missing)
+/* Container Variables */
 $container-padding: 16px; // Padding for main container
 $container-max-width: 1600px; // Maximum container width
 $container-max-width-percentage: 95%; // Container max-width as percentage
+$container-sm: 540px;
+$container-md: 720px;
+$container-lg: 960px;
+$container-xl: 1140px;
+$container-xxl: 1320px;
 
-// ✅ NEW: Border Variables
-$border-standard: 1px solid #dee2e6;
-$border-light: 1px solid #eee;
-
-// ✅ NEW: Button Variables
+/* Button Variables */
 $button-padding-x: 16px;
 $button-padding-y: 12px;
 $button-padding-sm-x: 12px;
@@ -123,112 +126,24 @@ $button-padding-sm-y: 8px;
 $button-padding-lg-x: 20px;
 $button-padding-lg-y: 14px;
 
-// src/styles/variables.scss
-// MANDATORY SCSS Variables - Used throughout PostCard components
-
-// Colors
-$primary-color: #013f44;
-$secondary-color: #ffe600;
-$white: #ffffff;
-$black: #000000;
-
-// Text colors
-$text-primary: #333333;
-$text-secondary: #666666;
-$text-light: #999999;
-$text-muted: #cccccc;
-
-// Background colors
-$bg-primary: #ffffff;
-$bg-secondary: #f8f9fa;
-$bg-light: #f5f5f5;
-$bg-dark: #212529;
-
-// Font families
-$font-family-main: "Arimo", Helvetica, Arial, sans-serif;
-$font-family-bold: "Arimo-Bold", Helvetica, Arial, sans-serif;
-$font-family-italic: "Arimo-Italic", Helvetica, Arial, sans-serif;
-
-// Font sizes
-$font-size-xs: 0.75rem; // 12px
-$font-size-small: 0.875rem; // 14px
-$font-size-base: 1rem; // 16px
-$font-size-medium: 1.125rem; // 18px
-$font-size-large: 1.25rem; // 20px
-$font-size-xl: 1.5rem; // 24px
-$font-size-xxl: 2rem; // 32px
-
-// Font weights
-$font-weight-light: 300;
-$font-weight-normal: 400;
-$font-weight-medium: 500;
-$font-weight-semibold: 600;
-$font-weight-bold: 700;
-
-// Line heights
-$line-height-tight: 1.2;
-$line-height-normal: 1.5;
-$line-height-relaxed: 1.75;
-
-// Spacing
-$spacing-xs: 0.25rem; // 4px
-$spacing-sm: 0.5rem; // 8px
-$spacing-md: 1rem; // 16px
-$spacing-lg: 1.5rem; // 24px
-$spacing-xl: 2rem; // 32px
-$spacing-xxl: 3rem; // 48px
-
-// Border radius
-$border-radius-sm: 4px;
-$border-radius: 8px;
-$border-radius-md: 10px;
-$border-radius-lg: 12px;
-$border-radius-xl: 16px;
-$border-radius-full: 50%;
-
-// Borders
-$border-width: 1px;
-$border-style: solid;
-$border-color: #e1e5e9;
-$border: $border-width $border-style $border-color;
-
-// Shadows
+/* Shadows */
 $shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
 $shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+$shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
 
-// Breakpoints
-$breakpoint-xs: 480px;
-$breakpoint-sm: 576px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 992px;
-$breakpoint-xl: 1200px;
-$breakpoint-xxl: 1400px;
+/* Opacity Variables */
+$opacity-disabled: 0.6;
+$opacity-muted: 0.7;
+$opacity-overlay: 0.24;
 
-// Container max widths
-$container-sm: 540px;
-$container-md: 720px;
-$container-lg: 960px;
-$container-xl: 1140px;
-$container-xxl: 1320px;
-
-// Z-index layers
-$z-dropdown: 1000;
-$z-sticky: 1020;
-$z-fixed: 1030;
-$z-modal-backdrop: 1040;
-$z-modal: 1050;
-$z-popover: 1060;
-$z-tooltip: 1070;
-
-// Transitions
+/* Transitions */
 $transition-fast: 0.15s ease-in-out;
+$transition-normal: 0.2s ease;
 $transition-base: 0.3s ease-in-out;
 $transition-slow: 0.5s ease-in-out;
 
-// Common transition properties
 $transition-all: all $transition-base;
 $transition-transform: transform $transition-base;
 $transition-opacity: opacity $transition-base;
@@ -238,12 +153,6 @@ $transition-colors: color $transition-base, background-color $transition-base,
 // Component specific variables
 $post-card-aspect-ratio: 92%; // matches original padding-top: 92%
 $post-card-border-radius: $border-radius-md;
-
-// Status colors
-$success-color: #28a745;
-$info-color: #17a2b8;
-$warning-color: #ffc107;
-$danger-color: #dc3545;
 
 // Social colors
 $facebook-color: #3b5998;
