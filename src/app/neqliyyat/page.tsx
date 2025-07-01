@@ -2,22 +2,23 @@
 "use client";
 import React, { useState, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { Container } from "@/components/Layout/Container";
-import { DateSortFilter } from "@/components/Filters/DateSortFilter";
-import { VehicleFilterBar } from "@/components/Filters/VehicleFilters";
-import {
-  MobileFilterTrigger,
-  VehicleFilterOverlay,
-} from "@/components/Filters/MobileFilters";
-import { VehicleListingsSection } from "@/components/Listings/VehicleListingsSection";
-import { FullWidthBanner } from "@/components/FullWidthBanner";
+import { Container } from "@/components/layout/Container";
+
 import { useVipListings, useRecentListings } from "@/hooks/useListings";
 import styles from "./page.module.scss";
 import { useVehicleFilterStoreHydrated } from "@/stores/useVehicleFilterStore";
 import type { VehicleData } from "@/types/vehicle.types";
+import VehicleFilterBar from "@/components/shared/Filters/VehicleFilters";
+import {
+  MobileFilterTrigger,
+  VehicleFilterOverlay,
+} from "@/components/shared/Filters/MobileFilters";
+import DateSortFilter from "@/components/shared/Filters/DateSortFilter";
+import { VehicleListingsSection } from "@/components/features/Vehicles";
+import FullWidthBanner from "@/components/shared/FullWidthBanner";
 
 // ✅ FIX: Dynamically import BrandsGrid to prevent SSR issues
-const BrandsGrid = dynamic(() => import("@/components/Brands"), {
+const BrandsGrid = dynamic(() => import("@/components/shared/Brands"), {
   ssr: false,
   loading: () => <div className={styles.brandsLoading}>Loading brands...</div>,
 });

@@ -1,9 +1,9 @@
 // src/app/page.tsx
+import HomeFilter from "@/components/features/Home/HomeFilter";
+import HomePageContent from "@/components/features/Home/HomePage";
+import { Container } from "@/components/layout";
+import CategoryGrid from "@/components/shared/CategoryGrid";
 import React from "react";
-import { Container } from "@/components/Layout/Container";
-import { HomeFilter } from "@/components/Home";
-import CategoryGrid from "@/components/CategoryGrid/CategoryGrid";
-import HomePageContent from "@/components/HomePage/HomePageContent";
 
 const HomePage: React.FC = () => {
   return (

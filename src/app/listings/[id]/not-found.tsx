@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Container } from "@/components/Layout/Container";
+import { Container } from "@/components/layout/Container";
 import { Search, Home, ArrowLeft } from "lucide-react";
 import styles from "./not-found.module.scss";
 

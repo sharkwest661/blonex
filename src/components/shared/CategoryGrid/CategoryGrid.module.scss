@@ -1,0 +1,231 @@
+// src/components/CategoryGrid/CategoryGrid.module.scss (Updated for semantic structure)
+@import "../../../styles/variables.scss";
+
+// Main category container (now <nav>)
+.category {
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    margin-top: -16px;
+    padding-top: 40px;
+  }
+}
+
+// Category list - flex container (now <ul>)
+.category__list {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+
+  // Remove default list styling
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  // List items (category containers)
+  li {
+    // Desktop: 6 columns (16.666667% each)
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 16.666667%;
+    -moz-box-flex: 0;
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+
+    // Tablet: 4 columns (25% each) - between 768px-991px
+    @media screen and (max-width: 991px) and (min-width: 768px) {
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 25%;
+      -moz-box-flex: 0;
+      -ms-flex: 0 0 25%;
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+
+    // Mobile: 2 columns (50% each) - 767px and below
+    @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 50%;
+      -moz-box-flex: 0;
+      -ms-flex: 0 0 50%;
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+}
+
+// Base category item styles (now the <Link> inside <li>)
+.category__item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 14px 5px;
+  cursor: pointer;
+  color: $primary-color;
+  word-break: break-word;
+  text-decoration: none;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: 14px 0;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: $primary-color;
+  }
+
+  // Category icon styles (for img inside category item)
+  img {
+    margin-right: 10px;
+  }
+}
+
+// Base button styles
+.btn {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 46px;
+  padding: 12px 30px;
+  background-color: $primary-color;
+  -webkit-border-radius: $border-radius;
+  -moz-border-radius: $border-radius;
+  border-radius: $border-radius;
+  font-family: $font-family-main;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: $white;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  -moz-transition: 0.3s;
+  transition: 0.3s;
+  border: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: #014c52;
+    color: $white;
+  }
+}
+
+// Category button specific styles
+.category__btn.btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 16px;
+  background: rgba($primary-color, 0.1);
+  border-radius: 5px;
+  color: $primary-color;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  // ✅ FIXED: Center text and set 18px font size
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: $font-size-large; // ✅ 18px (1.125rem)
+  font-family: $font-family-main;
+  font-weight: 500;
+
+  &:before {
+    content: "";
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    background: url("/assets/images/categories/categories-more.svg") no-repeat
+      center/cover;
+    display: block;
+  }
+
+  &:hover,
+  &:focus {
+    background: rgba($primary-color, 0.15);
+    color: $primary-color;
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+}
+
+// Hide category button on desktop
+@media screen and (min-width: $breakpoint-md) {
+  .category__btn.btn {
+    display: none;
+  }
+}
+
+// Hide category button on desktop
+@media screen and (min-width: $breakpoint-md) {
+  .category__btn.btn {
+    display: none;
+  }
+}
+
+// Loading state
+.category__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: $text-light;
+  font-size: $font-size-base;
+}
+
+// Error state
+.category__error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #dc3545;
+  font-size: $font-size-base;
+  text-align: center;
+}
+
+// Empty state
+.category__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: $text-light;
+  font-size: $font-size-base;
+  text-align: center;
+}

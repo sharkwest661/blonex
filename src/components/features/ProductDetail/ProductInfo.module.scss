@@ -1,0 +1,300 @@
+@import "../../../styles/variables.scss";
+
+.productInfo {
+  width: 100%;
+}
+
+// Product attributes section
+.productAttributes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+.productId {
+  font-size: $font-size-small;
+  color: $text-light;
+  font-family: $font-family-main;
+}
+
+.productStats {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+}
+
+.productView {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: $font-size-small;
+  color: $text-light;
+  font-family: $font-family-main;
+}
+
+.productFavorite {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background-color: transparent;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  color: $text-light;
+  font-size: $font-size-small;
+  font-family: $font-family-main;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+
+  &.active {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    color: $white;
+  }
+}
+
+// Breadcrumb navigation
+.breadcrumb {
+  margin-bottom: 15px;
+}
+
+.breadcrumbList {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: $font-size-small;
+  font-family: $font-family-main;
+}
+
+.breadcrumbItem {
+  display: flex;
+  align-items: center;
+
+  &:not(:last-child)::after {
+    content: ">";
+    margin-left: 8px;
+    color: $text-light;
+  }
+}
+
+.breadcrumbLink {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+}
+
+.breadcrumbCurrent {
+  color: $text-light;
+}
+
+// Product title
+.productTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: $text-color;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+  font-family: $font-family-main;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 20px;
+  }
+}
+
+// Last updated date
+.productDate {
+  font-size: $font-size-small;
+  color: $text-light;
+  margin: 0 0 20px 0;
+  font-family: $font-family-main;
+}
+
+// Price section
+.priceSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+.productPrice {
+  font-size: 28px;
+  font-weight: 700;
+  color: $primary-color;
+  font-family: $font-family-main;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 24px;
+  }
+}
+
+.productState {
+  padding: 4px 12px;
+  background-color: $background-color;
+  color: $text-color;
+  font-size: $font-size-small;
+  font-family: $font-family-main;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+// Features section
+.productFeatures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    gap: 10px;
+  }
+}
+
+.productFeature {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background-color: $background-color;
+  color: $text-color;
+  font-size: $font-size-small;
+  font-family: $font-family-main;
+  border-radius: $border-radius;
+  font-weight: 500;
+}
+
+// Specifications table
+.specificationsSection {
+  margin-bottom: 30px;
+}
+
+.specificationsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: $font-family-main;
+
+  tr {
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  th,
+  td {
+    padding: 12px 0;
+    text-align: left;
+    vertical-align: top;
+  }
+}
+
+.specKey {
+  font-size: $font-size-base;
+  color: $text-light;
+  font-weight: 500;
+  width: 40%;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    width: 50%;
+  }
+}
+
+.specValue {
+  font-size: $font-size-base;
+  color: $text-color;
+  font-weight: 600;
+}
+
+// Description section
+.descriptionSection {
+  margin-bottom: 30px;
+}
+
+.descriptionContent {
+  font-size: $font-size-base;
+  line-height: 1.6;
+  color: $text-color;
+  font-family: $font-family-main;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+  }
+}
+
+.descriptionParagraph {
+  margin: 0 0 15px 0;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.descriptionListItem {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+
+  &:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: $primary-color;
+    font-weight: bold;
+  }
+}
+
+// Responsive adjustments
+@media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+  .productInfo {
+    padding: 15px;
+  }
+
+  .specificationsTable {
+    th,
+    td {
+      padding: 10px 0;
+    }
+  }
+
+  .specKey,
+  .specValue {
+    font-size: $font-size-small;
+  }
+
+  .descriptionContent {
+    font-size: $font-size-small;
+  }
+}

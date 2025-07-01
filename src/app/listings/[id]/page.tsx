@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProductDetailPage } from "@/components/ProductDetail";
+import { ProductDetailPage } from "@/components/features/ProductDetail";
 
 interface ListingPageProps {
   params: {

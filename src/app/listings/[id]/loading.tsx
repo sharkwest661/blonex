@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "@/components/Layout/Container";
+import { Container } from "@/components/layout/Container";
 import styles from "./loading.module.scss";
 
 const ListingLoadingPage: React.FC = () => {

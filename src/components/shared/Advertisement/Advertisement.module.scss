@@ -1,0 +1,46 @@
+// src/components/Advertisement/Advertisement.module.scss
+@import "../../../styles/variables.scss";
+
+// Sticky advertisement container
+.stickyAd {
+  position: sticky;
+  top: 10px;
+  z-index: 3 !important;
+
+  // ✅ HIDE COMPLETELY under 768px (mobile)
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none; // ✅ Completely hidden on mobile
+  }
+
+  // Make all nested elements fill height on desktop
+  &,
+  & > *,
+  & > * > * {
+    height: auto;
+  }
+}
+
+// Desktop link - visible on medium screens and up (768px+)
+.desktopLink {
+  display: block;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none; // ✅ Hidden on mobile (redundant but safe)
+  }
+}
+
+// Mobile link - now also hidden since parent is hidden
+.mobileLink {
+  display: none;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    display: none; // ✅ Keep hidden since parent is hidden
+  }
+}
+
+// Banner image
+.bannerImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}

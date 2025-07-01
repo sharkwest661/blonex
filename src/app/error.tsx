@@ -1,7 +1,7 @@
 "use client";
+import { ErrorFallback } from "@/components/common/ErrorBoundary";
 // src/app/error.tsx (Next.js App Router error boundary)
 import React from "react";
-import { ErrorFallback } from "@/components/common";
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
