@@ -1,4 +1,4 @@
-// src/stores/useFavoritesStore.ts - HYDRATION FIX
+// src/stores/useFavoritesStore.ts
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useEffect, useState } from "react";
@@ -13,9 +13,10 @@ interface FavoritesState {
   clearFavorites: () => void;
 }
 
-// ✅ FIX: SSR-safe storage
+// Create SSR-safe storage that won't cause hydration issues
 const createSSRSafeStorage = () => {
   if (typeof window === "undefined") {
+    // Return a no-op storage for server-side rendering
     return {
       getItem: () => null,
       setItem: () => {},
@@ -25,6 +26,7 @@ const createSSRSafeStorage = () => {
   return localStorage;
 };
 
+// Main store with persistence
 export const useFavoritesStore = create<FavoritesState>()(
   persist(
     (set, get) => ({
@@ -77,43 +79,65 @@ export const useFavoritesStore = create<FavoritesState>()(
     {
       name: "bolbol-favorites",
       storage: createJSONStorage(() => createSSRSafeStorage()),
-      // ✅ FIX: Skip hydration to prevent mismatch
-      skipHydration: true,
+      skipHydration: true, // Skip automatic hydration to prevent SSR mismatch
       version: 1,
-      migrate: (persistedState: any, version: number) => {
-        if (version === 0) {
-          return persistedState;
-        }
-        return persistedState;
-      },
     }
   )
 );
 
-// ✅ FIX: Hydration-safe hook
+// Hydration-safe hook that handles SSR properly
 export const useFavoritesStoreHydrated = () => {
   const [hydrated, setHydrated] = useState(false);
   const store = useFavoritesStore();
 
   useEffect(() => {
-    useFavoritesStore.persist.rehydrate();
-    setHydrated(true);
+    // Only rehydrate on the client side
+    if (typeof window !== "undefined") {
+      useFavoritesStore.persist.rehydrate();
+      setHydrated(true);
+    }
   }, []);
 
-  return hydrated
-    ? store
-    : {
-        favorites: [],
-        toggleFavorite: () => {},
-        addFavorite: () => {},
-        removeFavorite: () => {},
-        isFavorite: () => false,
-        getFavoritesCount: () => 0,
-        clearFavorites: () => {},
-      };
+  // Return store data only after hydration on client, or safe defaults on server
+  if (typeof window === "undefined" || !hydrated) {
+    // Return safe defaults for SSR and before hydration
+    return {
+      favorites: [],
+      toggleFavorite: (postId: string) => {
+        // After hydration, this will work normally
+        if (hydrated) {
+          store.toggleFavorite(postId);
+        }
+      },
+      addFavorite: (postId: string) => {
+        if (hydrated) {
+          store.addFavorite(postId);
+        }
+      },
+      removeFavorite: (postId: string) => {
+        if (hydrated) {
+          store.removeFavorite(postId);
+        }
+      },
+      isFavorite: (postId: string) => {
+        return hydrated ? store.isFavorite(postId) : false;
+      },
+      getFavoritesCount: () => {
+        return hydrated ? store.getFavoritesCount() : 0;
+      },
+      clearFavorites: () => {
+        if (hydrated) {
+          store.clearFavorites();
+        }
+      },
+    };
+  }
+
+  // Return actual store after hydration
+  return store;
 };
 
-// Export individual hydration-safe hooks
+// Export convenience hooks for easier usage
 export const useFavorites = () => {
   const { favorites } = useFavoritesStoreHydrated();
   return favorites;
@@ -134,4 +158,5 @@ export const useFavoritesCount = () => {
   return getFavoritesCount();
 };
 
+// Default export
 export default useFavoritesStore;

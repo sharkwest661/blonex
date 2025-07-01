@@ -1,52 +1,72 @@
-// src/components/PostCard/PostCard.tsx - RESTORED ORIGINAL DESIGN
-"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Store, Heart } from "lucide-react";
-import type { Post } from "@/types/post.types";
+import { Heart } from "lucide-react";
+import { useFavoritesStore } from "@/stores/useFavoritesStore";
 import styles from "./PostCard.module.scss";
+
+// TypeScript interfaces
+export interface PostFeature {
+  icon: string;
+  tooltip: string;
+  type: "barter" | "credit" | "delivery" | "warranty";
+}
+
+export interface Post {
+  id: string;
+  title: string;
+  subtitle?: string;
+  price: number;
+  currency: string;
+  location: string;
+  date: string;
+  time: string;
+  image: string;
+  imageAlt?: string;
+  href: string;
+  type?: "regular" | "vip" | "premium";
+  isChance?: boolean;
+  features?: PostFeature[];
+  store?: {
+    name: string;
+    icon?: string;
+    href: string;
+  };
+}
 
 interface PostCardProps {
   post: Post;
   className?: string;
   onFavoriteToggle?: (postId: string, isFavorite: boolean) => void;
+  isChecked?: boolean;
+  onCheckedChange?: (postId: string, isChecked: boolean) => void;
+  variant?: "default" | "compact" | "featured";
 }
 
-export const PostCard: React.FC<PostCardProps> = ({
+const PostCard: React.FC<PostCardProps> = ({
   post,
-  className,
+  className = "",
   onFavoriteToggle,
+  isChecked = false,
+  onCheckedChange,
+  variant = "default",
 }) => {
+  // State for loading states
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
 
+  // Get favorites from store
+  const favorites = useFavoritesStore((state) => state.favorites);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  const isFavorite = favorites.includes(post.id);
+
+  // Event handlers
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
-    const newFavoriteState = !isFavorite;
-    setIsFavorite(newFavoriteState);
-    onFavoriteToggle?.(post.id, newFavoriteState);
-  };
-
-  const handleStoreClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (post.storeInfo?.href) {
-      window.open(post.storeInfo.href, "_blank");
-    }
-  };
-
-  const handleStoreKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      e.stopPropagation();
-      if (post.storeInfo?.href) {
-        window.open(post.storeInfo.href, "_blank");
-      }
-    }
+    toggleFavorite(post.id);
+    onFavoriteToggle?.(post.id, !isFavorite);
   };
 
   const handleImageLoad = () => {
@@ -58,101 +78,94 @@ export const PostCard: React.FC<PostCardProps> = ({
     setImageError(true);
   };
 
-  const formatPrice = (price: number, currency: string) => {
-    return `${price
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${currency}`;
+  // Helper functions
+  const formatPrice = (price: number, currency: string): string => {
+    return `${price.toLocaleString()} ${currency}`;
   };
 
-  // Determine title class based on post type
-  const getTitleClass = () => {
-    if (post.type === "vip") {
-      return styles.post__title;
+  const formatDateTime = (date: string, time: string): string => {
+    return `${date}, ${time}`;
+  };
+
+  // Component CSS classes
+  const getCardClasses = (): string => {
+    let classes = styles.post__item;
+
+    if (isChecked) classes += ` ${styles["post__item--checked"]}`;
+    if (post.isChance) classes += ` ${styles["post__item--pulsed"]}`;
+    if (variant !== "default")
+      classes += ` ${styles[`post__item--${variant}`]}`;
+    if (className) classes += ` ${className}`;
+
+    return classes;
+  };
+
+  const getTitleClasses = (): string => {
+    let classes = styles.post__title;
+    if (post.type === "vip" || post.type === "premium") {
+      classes += ` ${styles.post__title__special}`;
     }
-    return styles.other_post_title;
+    return classes;
   };
 
-  // Determine if should show subtitle (only for VIP)
-  const shouldShowSubtitle = post.type === "vip" && post.subtitle;
-
-  // Determine if card should have pulsed animation
-  const shouldPulse = post.type === "premium";
+  const getPriceClasses = (): string => {
+    let classes = styles.post__price;
+    if (post.type === "premium") {
+      classes += ` ${styles["post__price--secondary"]}`;
+    }
+    return classes;
+  };
 
   return (
-    <div
-      className={`${styles.post__item} ${className || ""} ${
-        shouldPulse ? styles["post__item--pulsed"] : ""
-      }`}
-    >
-      {/* Store Section - ORIGINAL DESIGN */}
-      {post.storeInfo && (
-        <div className={styles.post__storeSection}>
-          <div
-            className={styles.post__store}
-            onClick={handleStoreClick}
-            onKeyDown={handleStoreKeyDown}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={styles.post__storeIcon}>
-              <Store size={14} />
-            </div>
-            <span className={styles.post__storeName}>
-              {post.storeInfo.name}
-            </span>
-            <div className={styles.post__storeIndicator}>
-              <span>›</span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Image Section - ORIGINAL DESIGN with position fix */}
+    <div className={getCardClasses()}>
+      {/* Image Section */}
       <div className={styles.post__img}>
-        <Link href={post.href} className={styles.imageLink}>
-          {!imageError ? (
+        <Link href={post.href} className={styles.post__imgLink}>
+          {!imageError && post.image && post.image.trim() !== "" ? (
             <Image
-              src={post.imageUrl}
-              alt={post.title}
-              fill // ✅ Now properly supported with relative parent
-              sizes="(max-width: 576px) 50vw, (max-width: 767px) 33vw, (max-width: 1024px) 25vw, 20vw"
+              src={post.image}
+              alt={post.imageAlt || post.title}
+              fill
               className={styles.post__image}
               onLoad={handleImageLoad}
               onError={handleImageError}
-              style={{ objectFit: "cover" }}
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             />
           ) : (
             <div className={styles.post__imagePlaceholder}>
-              <span>Şəkil yüklənmədi</span>
+              <span>Şəkil yoxdur</span>
+            </div>
+          )}
+
+          {imageLoading && !imageError && post.image && (
+            <div className={styles.post__imageLoader}>
+              <div className={styles.post__imageSpinner}></div>
             </div>
           )}
         </Link>
 
-        {/* Image Overlays - ORIGINAL DESIGN */}
+        {/* Attributes Overlay */}
         <div className={styles.post__attributes}>
-          <div className={styles.post__badges}>
-            {/* VIP Badge */}
-            {(post.hasVipBadge || post.type === "vip") && (
-              <span
-                className={styles.post__vip}
-                title="VIP elan"
-                aria-label="VIP elan"
-              />
-            )}
+          {/* VIP Badge - CSS background image like original */}
+          {post.type === "vip" && (
+            <span
+              className={styles.post__vip}
+              title="VIP elan"
+              aria-label="VIP elan"
+            />
+          )}
 
-            {/* Premium Badge */}
-            {(post.hasPremiumBadge || post.type === "premium") && (
-              <span
-                className={styles.post__premium}
-                title="Premium elan"
-                aria-label="Premium elan"
-              />
-            )}
-          </div>
+          {/* Premium Badge - CSS background image like original */}
+          {post.type === "premium" && (
+            <span
+              className={styles.post__premium}
+              title="Premium elan"
+              aria-label="Premium elan"
+            />
+          )}
 
-          {/* Favorites Button - ORIGINAL DESIGN */}
+          {/* Favorites Button */}
           <button
-            type="button"
             className={`${styles.post__favorites} ${
               isFavorite ? styles.active : ""
             }`}
@@ -162,48 +175,58 @@ export const PostCard: React.FC<PostCardProps> = ({
             }
             title={isFavorite ? "Seçdiklərdən çıxar" : "Seçdiklərə əlavə et"}
           >
-            <Heart size={16} className={styles.heartIcon} />
+            <Heart size={16} />
           </button>
         </div>
 
-        {/* Special Opportunity Badge - ORIGINAL DESIGN */}
-        <div className={styles.post__chance}>
-          <div className={styles.post__chanceContent}>
-            <span className={styles.post__chanceIcon}>⚡</span>
-            <span className={styles.post__chanceText}>FÜRSƏT</span>
-          </div>
-        </div>
+        {/* Special Chance Badge */}
+        {post.isChance && <div className={styles.post__chance}>FÜRSƏT</div>}
       </div>
 
-      {/* Info Section - ORIGINAL DESIGN */}
+      {/* Store Section (if available) */}
+      {post.store && (
+        <div className={styles.post__storeSection}>
+          <Link href={post.store.href} className={styles.post__store}>
+            {post.store.icon && (
+              <Image
+                src={post.store.icon}
+                alt={post.store.name}
+                width={16}
+                height={16}
+                className={styles.post__storeIcon}
+              />
+            )}
+            <span className={styles.post__storeName}>{post.store.name}</span>
+          </Link>
+        </div>
+      )}
+
+      {/* Info Section */}
       <div className={styles.post__info}>
         <div className={styles.post__content}>
           {/* Title */}
-          <Link href={post.href} className={getTitleClass()}>
+          <Link href={post.href} className={getTitleClasses()}>
             {post.title}
           </Link>
 
-          {/* Subtitle (for VIP posts) */}
-          {shouldShowSubtitle && (
+          {/* Subtitle (for special posts) */}
+          {post.subtitle && (
             <div className={styles.post__subtitle}>{post.subtitle}</div>
           )}
 
-          {/* Meta */}
-          <div className={styles.post__meta}>{post.location}</div>
+          {/* Meta Information */}
+          <div className={styles.post__meta}>
+            {formatDateTime(post.date, post.time)}
+          </div>
         </div>
 
-        {/* Footer - ORIGINAL DESIGN */}
+        {/* Footer with Price and Features */}
         <div className={styles.post__footer}>
-          {/* Price */}
-          <div
-            className={`${styles.post__price} ${
-              post.type === "premium" ? styles["post__price--secondary"] : ""
-            }`}
-          >
+          <div className={getPriceClasses()}>
             {formatPrice(post.price, post.currency)}
           </div>
 
-          {/* Features */}
+          {/* Features Icons */}
           {post.features && post.features.length > 0 && (
             <div className={styles.post__features}>
               {post.features.map((feature, index) => (
@@ -216,8 +239,8 @@ export const PostCard: React.FC<PostCardProps> = ({
                   <Image
                     src={feature.icon}
                     alt={feature.tooltip}
-                    width={18}
-                    height={18}
+                    width={20}
+                    height={20}
                   />
                 </span>
               ))}

@@ -1,6 +1,15 @@
-// src/components/PostCard/index.ts - UPDATED EXPORTS
+// src/components/shared/PostCard/index.ts
+
 export { default as PostCard } from "./PostCard";
 export { default } from "./PostCard";
 
-// ✅ FIX: Export from unified types location
-export type { Post, PostFeature } from "@/types/post.types";
+// Re-export types for convenience
+export type {
+  Post,
+  PostCardData,
+  PostFeature,
+  PostStore,
+  PostCardProps,
+  PostType,
+  PostFeatureType,
+} from "@/types/post.types";

@@ -1,0 +1,111 @@
+// src/utils/sampleData.ts
+import type { Post } from "@/components/shared/PostCard/PostCard";
+
+export const samplePosts: Post[] = [
+  {
+    id: "1",
+    title: "Samsung Galaxy S12 phone sell",
+    price: 2180,
+    currency: "₼",
+    location: "Bakı",
+    date: "28.01.2021",
+    time: "16:34",
+    image: "/assets/images/example/post2.png",
+    href: "/elan/samsung-galaxy-s12",
+    type: "vip",
+    features: [
+      {
+        icon: "/assets/images/barter.svg",
+        tooltip: "Barter mümkündür",
+        type: "barter",
+      },
+      {
+        icon: "/assets/images/percent.svg",
+        tooltip: "Kredit mümkündür",
+        type: "credit",
+      },
+    ],
+  },
+  {
+    id: "2",
+    title: "Volkswagen Tiguan 2020",
+    price: 45000,
+    currency: "₼",
+    location: "Bakı, Nəsimi",
+    date: "29.01.2021",
+    time: "10:15",
+    image: "/assets/images/example/car1.jpg",
+    imageAlt: "Volkswagen Tiguan",
+    href: "/elan/volkswagen-tiguan-2020",
+    type: "premium",
+    features: [
+      {
+        icon: "/assets/images/warranty.svg",
+        tooltip: "Zəmanət verilir",
+        type: "warranty",
+      },
+    ],
+  },
+  {
+    id: "3",
+    title: "iPhone 13 Pro Max 256GB",
+    price: 1800,
+    currency: "₼",
+    location: "Bakı, Yasamal",
+    date: "30.01.2021",
+    time: "14:22",
+    image: "/assets/images/example/phone1.jpg",
+    href: "/elan/iphone-13-pro-max",
+    type: "regular",
+    isChance: true,
+    features: [
+      {
+        icon: "/assets/images/delivery.svg",
+        tooltip: "Çatdırılma var",
+        type: "delivery",
+      },
+    ],
+  },
+  {
+    id: "4",
+    title: 'MacBook Pro 16" M1 Pro',
+    subtitle: "Ideal vəziyyətdə",
+    price: 3200,
+    currency: "₼",
+    location: "Bakı, Nərimanov",
+    date: "31.01.2021",
+    time: "09:45",
+    image: "/assets/images/example/laptop1.jpg",
+    href: "/elan/macbook-pro-16",
+    type: "vip",
+    store: {
+      name: "TechStore",
+      icon: "/assets/images/stores/techstore.png",
+      href: "/magaza/techstore",
+    },
+    features: [
+      {
+        icon: "/assets/images/warranty.svg",
+        tooltip: "Zəmanət verilir",
+        type: "warranty",
+      },
+      {
+        icon: "/assets/images/barter.svg",
+        tooltip: "Barter mümkündür",
+        type: "barter",
+      },
+    ],
+  },
+  {
+    id: "5",
+    title: "Toyota Camry 2019",
+    price: 32000,
+    currency: "₼",
+    location: "Bakı, Səbail",
+    date: "01.02.2021",
+    time: "11:30",
+    image: "/assets/images/example/car2.jpg",
+    href: "/elan/toyota-camry-2019",
+    type: "regular",
+  },
+];
