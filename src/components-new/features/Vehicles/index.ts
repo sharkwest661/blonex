@@ -1,4 +1,4 @@
-// src/components/Listings/index.ts - FIXED VERSION
+// src/components/Vehicles/index.ts - FIXED VERSION
 export { VehicleCard } from "./VehicleCard";
 export { VehicleListingsSection } from "./VehicleListingsSection";
 

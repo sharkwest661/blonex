@@ -1,0 +1,497 @@
+// src/components/common/ErrorBoundary/ErrorBoundary.module.scss
+@import "../../../styles/variables.scss";
+
+.errorBoundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: $spacing-3xl;
+  background-color: $background-light;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    min-height: 300px;
+    padding: $spacing-2xl;
+  }
+}
+
+.errorContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-2xl;
+  max-width: 500px;
+  padding: $spacing-3xl;
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  text-align: center;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    max-width: 90%;
+    padding: $spacing-2xl;
+    gap: $spacing-xl;
+  }
+}
+
+.errorIcon {
+  font-size: 4rem;
+  line-height: 1;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 3rem;
+  }
+}
+
+.errorTitle {
+  margin: 0;
+  font-family: $font-family-bold;
+  font-size: $font-size-xl;
+  font-weight: 700;
+  color: $danger-color;
+  line-height: 1.2;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-large;
+  }
+}
+
+.errorMessage {
+  margin: 0;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  color: $text-color;
+  line-height: 1.6;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+.errorCode {
+  margin: $spacing-sm 0 0;
+  font-family: $font-family-main;
+  font-size: $font-size-small;
+  color: $text-light;
+
+  code {
+    background-color: $background-light;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    font-family: monospace;
+    font-size: $font-size-extra-small;
+  }
+}
+
+.errorDetails {
+  width: 100%;
+  margin-top: $spacing-xl;
+  padding: 0;
+  background-color: transparent;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  text-align: left;
+}
+
+.errorSummary {
+  font-family: $font-family-main;
+  font-size: $font-size-small;
+  font-weight: 600;
+  color: $text-color;
+  cursor: pointer;
+  padding: $spacing-sm;
+  background-color: $background-light;
+  border-radius: $border-radius $border-radius 0 0;
+  border: none;
+  width: 100%;
+  text-align: left;
+
+  &:hover {
+    color: $primary-color;
+    background-color: darken($background-light, 5%);
+  }
+}
+
+.errorDetailsContent {
+  padding: $spacing-sm;
+  background-color: $white;
+}
+
+.errorDetailsSection {
+  margin-bottom: $spacing-md;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h4 {
+    margin: 0 0 $spacing-xs;
+    font-family: $font-family-bold;
+    font-size: $font-size-small;
+    color: $text-dark;
+  }
+}
+
+.errorDetailsText {
+  margin: 0;
+  padding: $spacing-sm;
+  background-color: $background-light;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+  font-family: monospace;
+  font-size: $font-size-extra-small;
+  color: $text-color;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.copyButton {
+  margin-top: $spacing-sm;
+  padding: $spacing-xs $spacing-sm;
+  background-color: $primary-color;
+  color: $white;
+  border: none;
+  border-radius: $border-radius-sm;
+  font-family: $font-family-main;
+  font-size: $font-size-extra-small;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.errorActions {
+  display: flex;
+  gap: $spacing-xl;
+  margin-top: $spacing-sm;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-direction: column;
+    width: 100%;
+    gap: $spacing-sm;
+  }
+}
+
+.retryButton,
+.reloadButton,
+.homeButton {
+  padding: $spacing-sm $spacing-2xl;
+  border: none;
+  border-radius: $border-radius;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: $spacing-sm $spacing-xl;
+    font-size: $font-size-small;
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+.retryButton {
+  background-color: $primary-color;
+  color: $white;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.reloadButton,
+.homeButton {
+  background-color: transparent;
+  color: $primary-color;
+  border: 2px solid $primary-color;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $white;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .retryButton,
+  .reloadButton,
+  .homeButton,
+  .copyButton {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .errorTitle {
+    color: $black;
+  }
+
+  .errorMessage {
+    color: $black;
+  }
+
+  .retryButton,
+  .reloadButton,
+  .homeButton {
+    border: 2px solid $black;
+  }
+
+  .retryButton {
+    background-color: $black;
+    color: $white;
+  }
+
+  .reloadButton,
+  .homeButton {
+    background-color: transparent;
+    color: $black;
+  }
+} // src/components/common/ErrorBoundary/ErrorBoundary.module.scss
+@import "../../../styles/variables.scss";
+
+.errorBoundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: $spacing-3xl;
+  background-color: $background-light;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    min-height: 300px;
+    padding: $spacing-2xl;
+  }
+}
+
+.errorContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-2xl;
+  max-width: 500px;
+  padding: $spacing-3xl;
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  text-align: center;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    max-width: 90%;
+    padding: $spacing-2xl;
+    gap: $spacing-xl;
+  }
+}
+
+.errorIcon {
+  font-size: 4rem;
+  line-height: 1;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: 3rem;
+  }
+}
+
+.errorTitle {
+  margin: 0;
+  font-family: $font-family-bold;
+  font-size: $font-size-xl;
+  font-weight: 700;
+  color: $danger-color;
+  line-height: 1.2;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-large;
+  }
+}
+
+.errorMessage {
+  margin: 0;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  color: $text-color;
+  line-height: 1.6;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    font-size: $font-size-small;
+  }
+}
+
+.errorDetails {
+  width: 100%;
+  margin-top: $spacing-xl;
+  padding: $spacing-sm;
+  background-color: $background-light;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  text-align: left;
+}
+
+.errorSummary {
+  font-family: $font-family-main;
+  font-size: $font-size-small;
+  font-weight: 600;
+  color: $text-color;
+  cursor: pointer;
+  padding: $spacing-xs 0;
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+.errorStack {
+  margin: $spacing-sm 0 0;
+  padding: $spacing-sm;
+  background-color: $white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  font-family: monospace;
+  font-size: $font-size-extra-small;
+  color: $text-color;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.errorActions {
+  display: flex;
+  gap: $spacing-xl;
+  margin-top: $spacing-sm;
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    flex-direction: column;
+    width: 100%;
+    gap: $spacing-sm;
+  }
+}
+
+.retryButton,
+.homeButton {
+  padding: $spacing-sm $spacing-2xl;
+  border: none;
+  border-radius: $border-radius;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+
+  &:focus {
+    outline: 2px solid $secondary-color;
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
+    padding: $spacing-sm $spacing-xl;
+    font-size: $font-size-small;
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+.retryButton {
+  background-color: $primary-color;
+  color: $white;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.homeButton {
+  background-color: transparent;
+  color: $primary-color;
+  border: 2px solid $primary-color;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $white;
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .retryButton,
+  .homeButton {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .errorTitle {
+    color: $black;
+  }
+
+  .errorMessage {
+    color: $black;
+  }
+
+  .retryButton,
+  .homeButton {
+    border: 2px solid $black;
+  }
+
+  .retryButton {
+    background-color: $black;
+    color: $white;
+  }
+
+  .homeButton {
+    background-color: transparent;
+    color: $black;
+  }
+}
