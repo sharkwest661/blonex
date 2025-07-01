@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./SectionTitle.module.scss";
-import { Select } from "@/components/ui";
+import { Select } from "@/components/UI";
 
 export interface SectionTitleProps {
   title: string;

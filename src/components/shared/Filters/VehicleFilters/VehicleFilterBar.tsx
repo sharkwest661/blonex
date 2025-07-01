@@ -14,7 +14,7 @@ import {
 } from "@/constants/vehicleOptions";
 import type { VehicleCondition } from "@/types/vehicle.types";
 import styles from "./VehicleFilterBar.module.scss";
-import { Select } from "@/components/ui";
+import { Select } from "@/components/UI";
 
 interface VehicleFilterBarProps {
   className?: string;
