@@ -56,7 +56,7 @@ const ListingSectionContent: React.FC<ListingSectionProps> = ({
       )}
 
       {/* Main Content */}
-      <Container>
+      <Container fluid>
         <div className={styles.wrapper}>
           {/* Post Grid */}
           <div className={styles.content}>

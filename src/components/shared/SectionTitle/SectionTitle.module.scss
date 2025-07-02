@@ -6,9 +6,12 @@
   padding: 10px 0;
   border-bottom: 1px solid #f0f0f0;
   margin-bottom: 20px;
+  height: 55px;
+  display: flex;
+  align-items: center;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding: 16px 0;
+    // padding: 16px 0;
     margin-bottom: 5px;
   }
 }
@@ -89,9 +92,10 @@
   // border-radius: $border-radius;
   color: $primary-color;
   text-decoration: none;
-  font-size: $font-size-base; // ✅ KEPT: Font size variable
-  font-weight: 500;
+  font-size: 18px; // ✅ KEPT: Font size variable
+  font-weight: 400;
   transition: all 0.2s ease;
+  font-family: $font-family-main;
 
   // &:hover {
   //   background-color: $primary-color;
@@ -100,7 +104,7 @@
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     padding: 6px 12px;
-    font-size: $font-size-small; // ✅ KEPT: Font size variable
+    font-size: $font-size-base; // ✅ KEPT: Font size variable
     gap: 4px;
   }
 }

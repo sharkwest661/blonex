@@ -81,7 +81,7 @@
 
   &::placeholder {
     color: #999;
-    font-style: italic;
+    // font-style: italic;
   }
 
   &:focus {
@@ -127,7 +127,7 @@
   }
 
   &:disabled {
-    cursor: not-allowed;
+    // cursor: not-allowed;
   }
 
   // Remove default button focus outline

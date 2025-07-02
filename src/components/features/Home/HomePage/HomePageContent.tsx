@@ -27,8 +27,8 @@ export const HomePageContent: React.FC = () => {
         title={{
           title: "VIP Elanlar",
           icon: "/assets/images/vip-large.svg",
-          iconWidth: 24,
-          iconHeight: 24,
+          iconWidth: 40,
+          iconHeight: 40,
           seeAllText: "Bütün VIP elanlar",
           seeAllHref: "/vip-listings",
           align: "left",
