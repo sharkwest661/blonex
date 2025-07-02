@@ -12,6 +12,7 @@
 .post__list {
   display: grid;
   gap: 10px; // ✅ TIGHT gaps like reference image
+  row-gap: 1.8rem; // ✅ 24px row gap for better spacing
 
   // Responsive grid columns
   grid-template-columns: repeat(5, 1fr);

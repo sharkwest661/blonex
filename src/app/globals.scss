@@ -50,14 +50,18 @@ a {
 
 // Global main and section styles to match original
 main {
-  padding: $spacing-2xl 0 $spacing-3xl !important; // ✅ FIXED: 24px 0 32px (was 25px 0 50px)
+  padding: $spacing-lg 0 $spacing-3xl !important;
+
+  @media (max-width: calc(#{$breakpoint-md})) {
+    padding: 0 0 $spacing-2xl !important;
+  }
 }
 
 section {
-  padding-bottom: $spacing-xl; // ✅ FIXED: 16px (was 50px - much smaller!)
+  padding-bottom: $spacing-sm;
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
-    padding-bottom: $spacing-lg; // ✅ FIXED: 12px mobile (was 40px - much smaller!)
+    // padding-bottom: $spacing-sm; //
   }
 }
 .main_container {
