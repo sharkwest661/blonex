@@ -61,51 +61,27 @@ export interface Post {
   id: string;
   title: string;
   subtitle?: string;
-  description?: string;
   price: number;
   currency: string;
-  location: PostLocation;
-  images: PostImage[];
-  primaryImage: string; // URL of the primary image
+  location: string;
+  date: string;
+  imageUrl: string;
   href: string;
-  slug: string;
-
-  // Post metadata
-  type: "regular" | "vip" | "premium";
-  category: {
-    id: string;
+  type?: "vip" | "premium" | "regular" | "recent";
+  hasVipBadge?: boolean;
+  hasPremiumBadge?: boolean;
+  isStore: boolean;
+  storeInfo?: {
     name: string;
-    slug: string;
-    parentId?: string;
+    logo: string;
+    href: string;
   };
-
-  // Special flags
-  isChance?: boolean;
-  isFeatured?: boolean;
-  isUrgent?: boolean;
-  isNegotiable?: boolean;
-
-  // Additional features
-  features?: PostFeature[];
-  store?: PostStore;
-  contact?: PostContact;
-  stats?: PostStats;
-
-  // Timestamps
-  createdAt: string;
-  updatedAt: string;
-  expiresAt?: string;
-
-  // SEO and meta
-  metaTitle?: string;
-  metaDescription?: string;
-  tags?: string[];
-
-  // User information
-  userId: string;
-  userName?: string;
-  userAvatar?: string;
-  userVerified?: boolean;
+  features: {
+    type: string;
+    icon: string;
+    tooltip: string;
+    enabled?: boolean;
+  }[];
 }
 
 // Simplified Post interface for cards/lists (THIS IS WHAT PostCard USES)
@@ -118,7 +94,7 @@ export interface PostCardData {
   location: string;
   date: string;
   time: string;
-  image: string;
+  imageUrl: string;
   imageAlt?: string;
   href: string;
   type?: "regular" | "vip" | "premium";
@@ -248,7 +224,7 @@ export interface PostGridProps extends PostListProps {
 
 // Utility types
 export type PostType = Post["type"];
-export type PostCategory = Post["category"];
+// export type PostCategory = Post["category"];
 export type PostFeatureType = PostFeature["type"];
 export type PostSortOption = PostFilters["sortBy"];
 

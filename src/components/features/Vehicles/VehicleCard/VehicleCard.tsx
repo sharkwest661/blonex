@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, Clock, MapPin, Fuel, ArrowRight } from "lucide-react";
 import { useFavoritesStore } from "@/stores/useFavoritesStore";
-import type { VehicleCardProps } from "@/types/vehicle.types";
+import type { VehicleCardProps, VehicleFeature } from "@/types/vehicle.types";
 import styles from "./VehicleCard.module.scss";
 
 export const VehicleCard: React.FC<VehicleCardProps> = ({
@@ -157,7 +157,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
         {/* Features (Barter, Credit) */}
         {vehicle.features.length > 0 && (
           <div className={styles.features}>
-            {vehicle.features.map((feature, index) => (
+            {vehicle.features.map((feature: VehicleFeature, index: number) => (
               <div
                 key={index}
                 className={styles.feature}

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { Post, PostFeature } from "@/types/post.types";
+import { PostCardData } from "@/types/post.types"; // ✅ Use central type
 import styles from "./SimilarListings.module.scss";
 import PostCard from "@/components/shared/PostCard";
 
@@ -13,20 +13,20 @@ interface SimilarListingsProps {
 interface BannerAd {
   id: string;
   type: "banner";
-  image: string;
+  imageUrl: string;
   href: string;
   alt: string;
 }
 
-type GridItem = Post | BannerAd;
+type GridItem = PostCardData | BannerAd; // ✅ Use PostCardData
 
 // Helper function to check if item is a banner
 const isBannerAd = (item: GridItem): item is BannerAd => {
   return "type" in item && item.type === "banner";
 };
 
-// Generate unique mock listings to avoid duplicate keys
-const generateMockListings = (): Post[] => {
+// ✅ Generate PostCardData instead of local Post type
+const generateMockListings = (): PostCardData[] => {
   const products = [
     { title: "Samsung Galaxy S12 Ultra", image: "post1.png", id: "2001" },
     { title: "iPhone 11 Pro Max 256GB", image: "post2.png", id: "2002" },
@@ -38,61 +38,66 @@ const generateMockListings = (): Post[] => {
     { title: "Google Pixel 6 Pro", image: "carousel1.png", id: "2008" },
   ];
 
+  // ✅ Create features without 'enabled' property
   const createFeatures = (
     barter: boolean = false,
     credit: boolean = false
-  ): PostFeature[] => {
-    const features: PostFeature[] = [];
+  ): PostCardData["features"] => {
+    const features: PostCardData["features"] = [];
 
     if (barter) {
-      features.push({
+      features!.push({
         type: "barter",
         icon: "/assets/images/barter.svg",
         tooltip: "Barter mümkündür",
-        enabled: true,
       });
     }
 
     if (credit) {
-      features.push({
+      features!.push({
         type: "credit",
         icon: "/assets/images/percent.svg",
         tooltip: "Kredit mümkündür",
-        enabled: true,
       });
     }
 
     return features;
   };
 
-  return products.map((product, index) => ({
-    id: product.id,
-    title: product.title,
-    price: 1500 + index * 200, // Varied prices
-    currency: "₼",
-    location: index % 2 === 0 ? "Bakı" : "Gəncə",
-    date: `${25 + index}.04.2021, 16:${30 + index}`,
-    imageUrl: `/assets/images/example/${product.image}`,
-    href: `/listings/${product.id}`,
-    type: index % 3 === 0 ? "vip" : index % 3 === 1 ? "premium" : "recent",
-    hasVipBadge: index % 3 === 0,
-    hasPremiumBadge: index % 3 === 1,
-    features: createFeatures(index % 2 === 0, index % 3 === 0),
-    storeInfo:
-      index % 2 === 0
-        ? {
-            name: index % 4 === 0 ? "Kontakt Home" : "World Telecom",
-            logo: "/assets/images/example/seller.svg",
-            href: `/store/${product.id}`,
-          }
-        : undefined,
-    isStore: index % 2 === 0,
-  }));
+  return products.map((product, index) => {
+    const day = 25 + index;
+    const minute = 30 + index;
+
+    return {
+      id: product.id,
+      title: product.title,
+      subtitle: `Model ${index + 1}`,
+      price: 1500 + index * 200,
+      currency: "₼",
+      location: index % 2 === 0 ? "Bakı" : "Gəncə",
+      date: `${day}.04.2021`, // ✅ Separate date
+      time: `16:${minute}`, // ✅ Separate time
+      imageUrl: `/assets/images/example/${product.image}`, // ✅ Use 'image' not 'imageUrl'
+      imageAlt: product.title,
+      href: `/listings/${product.id}`,
+      type: index % 3 === 0 ? "vip" : index % 3 === 1 ? "premium" : "regular",
+      isChance: index % 5 === 0,
+      features: createFeatures(index % 2 === 0, index % 3 === 0),
+      store:
+        index % 2 === 0
+          ? {
+              name: index % 4 === 0 ? "Kontakt Home" : "World Telecom",
+              icon: "/assets/images/example/seller.svg",
+              href: `/store/${product.id}`,
+            }
+          : undefined,
+    };
+  });
 };
 
 const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
   const [mounted, setMounted] = useState(false);
-  const [mockListings, setMockListings] = useState<Post[]>([]);
+  const [mockListings, setMockListings] = useState<PostCardData[]>([]); // ✅ Use PostCardData
 
   // Fix hydration issues
   useEffect(() => {
@@ -113,7 +118,7 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
     items.push({
       id: "banner-1",
       type: "banner",
-      image: "/assets/images/example/banner.png",
+      imageUrl: "/assets/images/example/banner.png",
       href: "/promo/banner-1",
       alt: "Reklam banneri",
     });
@@ -126,9 +131,14 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
 
   const gridItems = createGridItems();
 
-  const handleFavoriteToggle = (listingId: string) => {
-    // Handle favorite toggle logic
-    console.log("Toggle favorite for listing:", listingId);
+  // ✅ Correct callback signature
+  const handleFavoriteToggle = (listingId: string, isFavorite: boolean) => {
+    console.log(
+      "Toggle favorite for listing:",
+      listingId,
+      "New state:",
+      isFavorite
+    );
   };
 
   const renderGridItem = (item: GridItem, index: number) => {
@@ -137,7 +147,7 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
         <div key={item.id} className={styles.bannerItem}>
           <Link href={item.href}>
             <Image
-              src={item.image}
+              src={item.imageUrl}
               alt={item.alt}
               width={300}
               height={200}
@@ -148,22 +158,21 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
       );
     }
 
-    // It's a Post item
+    // ✅ PostCard now expects PostCardData, which matches our GridItem type
     return (
       <PostCard
         key={item.id}
         post={item}
-        onFavoriteToggle={() => handleFavoriteToggle(item.id)}
+        onFavoriteToggle={handleFavoriteToggle}
       />
     );
   };
 
-  // Don't render until mounted to prevent hydration mismatch
+  // Loading skeleton
   if (!mounted) {
     return (
       <section className={`${styles.similarListings} ${className || ""}`}>
         <div className={styles.similarGrid}>
-          {/* Render loading skeletons */}
           {[...Array(8)].map((_, index) => (
             <div key={`skeleton-${index}`} className={styles.skeletonCard}>
               <div className={styles.skeletonImage}></div>
@@ -180,7 +189,10 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ className }) => {
   }
 
   return (
-    <section className={`${styles.similarListings} ${className || ""}`}>
+    <section
+      className={`${styles.similarListings} ${className || ""}`}
+      aria-label="Oxşar elanlar"
+    >
       <div className={styles.similarGrid}>
         {gridItems.map((item, index) => renderGridItem(item, index))}
       </div>

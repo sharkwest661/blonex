@@ -3,8 +3,9 @@
 import React from "react";
 
 import styles from "./PostGrid.module.scss";
-import PostCard, { Post } from "../PostCard";
+import PostCard from "../PostCard";
 import Loader from "@/components/common/Loader";
+import { Post } from "@/types/post.types";
 
 export interface PostGridProps {
   posts: Post[];

@@ -8,9 +8,15 @@ import type { ListingSummary } from "@/services/types/listing.types";
 
 // Mock data for development when API is not available
 const generateMockPost = (id: string): Post => {
-  const storeNames = ["Kontakt Home", "World Telecom", "Optimal Electronics", "TechMart", "Digital Plaza"];
+  const storeNames = [
+    "Kontakt Home",
+    "World Telecom",
+    "Optimal Electronics",
+    "TechMart",
+    "Digital Plaza",
+  ];
   const hasStore = Math.random() > 0.4; // 60% chance of having store
-  
+
   return {
     id,
     title: `Samsung Galaxy S12 ${id.slice(-3)}`,
@@ -19,30 +25,41 @@ const generateMockPost = (id: string): Post => {
     currency: "₼",
     location: "Bakı",
     date: "28.01.2021, 16:34",
-    imageUrl: `/assets/images/example/post${(parseInt(id.slice(-1)) % 5) + 1}.png`,
+    imageUrl: `/assets/images/example/post${
+      (parseInt(id.slice(-1)) % 5) + 1
+    }.png`,
     href: `/listing/${id}`,
-    type: Math.random() > 0.7 ? "vip" : Math.random() > 0.5 ? "premium" : "recent",
+    type:
+      Math.random() > 0.7 ? "vip" : Math.random() > 0.5 ? "premium" : "regular",
     hasVipBadge: Math.random() > 0.7,
     hasPremiumBadge: Math.random() > 0.8,
     isStore: hasStore,
-    storeInfo: hasStore ? {
-      name: storeNames[Math.floor(Math.random() * storeNames.length)],
-      logo: "/assets/images/example/seller.svg",
-      href: `/store/${id}`,
-    } : undefined,
+    storeInfo: hasStore
+      ? {
+          name: storeNames[Math.floor(Math.random() * storeNames.length)],
+          logo: "/assets/images/example/seller.svg",
+          href: `/store/${id}`,
+        }
+      : undefined,
     features: [
-      ...(Math.random() > 0.5 ? [{
-        type: "barter" as const,
-        icon: "/assets/images/barter.svg",
-        tooltip: "Barter mümkündür",
-        enabled: true
-      }] : []),
-      ...(Math.random() > 0.5 ? [{
-        type: "credit" as const,
-        icon: "/assets/images/percent.svg", 
-        tooltip: "Kredit mümkündür",
-        enabled: true
-      }] : []),
+      ...(Math.random() > 0.5
+        ? [
+            {
+              type: "barter" as const,
+              icon: "/assets/images/barter.svg",
+              tooltip: "Barter mümkündür",
+            },
+          ]
+        : []),
+      ...(Math.random() > 0.5
+        ? [
+            {
+              type: "credit" as const,
+              icon: "/assets/images/percent.svg",
+              tooltip: "Kredit mümkündür",
+            },
+          ]
+        : []),
     ],
   };
 };
@@ -58,19 +75,28 @@ const transformListingToPost = (listing: ListingSummary): Post => ({
   date: new Date(listing.createdAt).toLocaleDateString("az-AZ"),
   imageUrl: listing.mainImage?.url || "/assets/images/placeholder.png",
   href: `/listing/${listing.id}`,
-  type: listing.type === "vip" ? "vip" : listing.type === "premium" ? "premium" : "recent",
+  type:
+    listing.type === "vip"
+      ? "vip"
+      : listing.type === "premium"
+      ? "premium"
+      : "recent",
   hasVipBadge: listing.type === "vip",
   hasPremiumBadge: listing.type === "premium",
   isStore: false, // ListingSummary doesn't have store info
   storeInfo: undefined,
   features: [
     // Add default features based on listing properties
-    ...(listing.isNegotiable ? [{
-      type: "barter" as const,
-      icon: "/assets/images/barter.svg",
-      tooltip: "Barter mümkündür",
-      enabled: true
-    }] : []),
+    ...(listing.isNegotiable
+      ? [
+          {
+            type: "barter" as const,
+            icon: "/assets/images/barter.svg",
+            tooltip: "Barter mümkündür",
+            enabled: true,
+          },
+        ]
+      : []),
   ],
 });
 
@@ -95,7 +121,7 @@ export const useFavoritesData = () => {
       try {
         // Try to fetch from API
         const response = await listingsService.getFavoriteListings();
-        
+
         // Filter posts to only include those in favorites and transform
         const filteredPosts = response.data
           .filter((listing) => favorites.includes(listing.id))
@@ -103,8 +129,11 @@ export const useFavoritesData = () => {
 
         return filteredPosts;
       } catch (error) {
-        console.warn("API not available, using mock data for favorites:", error);
-        
+        console.warn(
+          "API not available, using mock data for favorites:",
+          error
+        );
+
         // Fallback to mock data when API is not implemented
         return favorites.map(generateMockPost);
       }

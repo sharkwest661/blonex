@@ -3,37 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useFavoritesStore } from "@/stores/useFavoritesStore";
+import { PostCardData } from "@/types/post.types"; // ✅ Use central type
 import styles from "./PostCard.module.scss";
 
-// Use existing Post interface from the project
-export interface Post {
-  id: string;
-  title: string;
-  subtitle?: string;
-  price: number;
-  currency: string;
-  location: string;
-  date: string;
-  time: string;
-  imageUrl: string;
-  imageAlt?: string;
-  href: string;
-  type?: "regular" | "vip" | "premium";
-  isChance?: boolean;
-  features?: {
-    icon: string;
-    tooltip: string;
-    type: "barter" | "credit" | "delivery" | "warranty";
-  }[];
-  store?: {
-    name: string;
-    icon?: string;
-    href: string;
-  };
-}
-
+// ✅ Remove local Post interface and use central PostCardData
 export interface PostCardProps {
-  post: Post;
+  post: PostCardData; // ✅ Use central type
   className?: string;
   onFavoriteToggle?: (postId: string, isFavorite: boolean) => void;
 }

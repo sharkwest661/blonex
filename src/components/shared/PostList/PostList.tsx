@@ -1,8 +1,8 @@
 // src/components/shared/PostList/PostList.tsx
 import React from "react";
 import { PostCard } from "../PostCard";
-import type { Post } from "../PostCard/PostCard";
 import styles from "./PostList.module.scss";
+import { Post } from "@/types/post.types";
 
 // Simple Loader component (you can replace with your own)
 const Loader: React.FC<{ size?: "small" | "medium" | "large" }> = ({
@@ -101,10 +101,7 @@ const PostList: React.FC<PostListProps> = ({
       <div className={getListClasses()}>
         {posts.map((post: Post) => (
           <div key={post.id} className={styles.post__item_wrapper}>
-            <PostCard
-              post={post}
-              variant={variant === "grid" ? "default" : "compact"}
-            />
+            <PostCard post={post} />
           </div>
         ))}
       </div>
