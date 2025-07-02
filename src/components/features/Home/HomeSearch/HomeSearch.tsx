@@ -1,14 +1,15 @@
-"use client";
 // src/components/Home/HomeSearch/HomeSearch.tsx
+"use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Search } from "lucide-react";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useTypingAnimation } from "@/hooks/useTypingAnimation";
+import {
+  searchService,
+  type SearchSuggestion,
+} from "@/services/search.service";
 import styles from "./HomeSearch.module.scss";
-
-interface Suggestion {
-  id: string;
-  text: string;
-  category?: string;
-  type?: string;
-}
 
 interface HomeSearchProps {
   className?: string;
@@ -19,13 +20,10 @@ interface HomeSearchProps {
 }
 
 const PLACEHOLDER_TEXTS = [
-  "bolbol axtar",
-  "iPhone 12",
-  "Pərdə",
-  "Maşın təkəri",
-  "Xiaomi Mi9T",
-  "Rəqs dərsləri",
-  "və sairə...",
+  "iPhone, Samsung, Xiaomi...",
+  "Avtomobil, mətbəx dəsti...",
+  "Ev, mənzil, ofis...",
+  "İş elanları...",
 ];
 
 export const HomeSearch: React.FC<HomeSearchProps> = ({
@@ -36,31 +34,24 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
   autoFocus = false,
 }) => {
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isFocused, setIsFocused] = useState(false);
-  const [animatedPlaceholder, setAnimatedPlaceholder] = useState(
-    PLACEHOLDER_TEXTS[0]
-  );
 
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Animated placeholder effect for default variant
-  useEffect(() => {
-    if (variant !== "default") return;
+  // Debounce the search query
+  const debouncedQuery = useDebounce(query, 300);
 
-    const interval = setInterval(() => {
-      setAnimatedPlaceholder((current) => {
-        const currentIndex = PLACEHOLDER_TEXTS.indexOf(current);
-        const nextIndex = (currentIndex + 1) % PLACEHOLDER_TEXTS.length;
-        return PLACEHOLDER_TEXTS[nextIndex];
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [variant]);
+  // Typing animation for placeholder
+  const animatedPlaceholder = useTypingAnimation({
+    phrases: PLACEHOLDER_TEXTS,
+    typeSpeed: 80,
+    deleteSpeed: 40,
+    pauseTime: 2000,
+    isPaused: isFocused || query.length > 0 || variant !== "default",
+  });
 
   // Auto focus effect
   useEffect(() => {
@@ -69,22 +60,17 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
     }
   }, [autoFocus]);
 
-  // Mock suggestions - replace with actual API call
-  const fetchSuggestions = useCallback(async (searchQuery: string) => {
-    if (searchQuery.length < 2) {
-      setSuggestions([]);
-      return;
-    }
-
-    // Mock data - replace with actual API call
-    const mockSuggestions: Suggestion[] = [
-      { id: "1", text: `${searchQuery} avtomobil`, category: "Nəqliyyat" },
-      { id: "2", text: `${searchQuery} mənzil`, category: "Daşınmaz əmlak" },
-      { id: "3", text: `${searchQuery} telefon`, category: "Elektronika" },
-    ];
-
-    setSuggestions(mockSuggestions);
-  }, []);
+  // React Query for search suggestions
+  const {
+    data: suggestions = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["searchSuggestions", debouncedQuery],
+    queryFn: () => searchService.getSearchSuggestions(debouncedQuery),
+    enabled: debouncedQuery.length > 1 && variant === "default",
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -92,7 +78,6 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
     setSelectedIndex(-1);
 
     if (variant === "default") {
-      fetchSuggestions(value);
       setShowSuggestions(value.length > 0);
     }
   };
@@ -123,27 +108,32 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
       case "ArrowDown":
         e.preventDefault();
         setSelectedIndex((prev) =>
-          prev < suggestions.length - 1 ? prev + 1 : prev
+          prev < suggestions.length - 1 ? prev + 1 : 0
         );
         break;
       case "ArrowUp":
         e.preventDefault();
-        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1));
+        setSelectedIndex((prev) =>
+          prev > 0 ? prev - 1 : suggestions.length - 1
+        );
         break;
       case "Enter":
-        if (selectedIndex >= 0) {
-          e.preventDefault();
+        e.preventDefault();
+        if (selectedIndex >= 0 && suggestions[selectedIndex]) {
           handleSuggestionClick(suggestions[selectedIndex]);
+        } else {
+          handleSubmit(e);
         }
         break;
       case "Escape":
         setShowSuggestions(false);
         setSelectedIndex(-1);
+        inputRef.current?.blur();
         break;
     }
   };
 
-  const handleSuggestionClick = (suggestion: Suggestion) => {
+  const handleSuggestionClick = (suggestion: SearchSuggestion) => {
     setQuery(suggestion.text);
     setShowSuggestions(false);
 
@@ -176,6 +166,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
         !searchRef.current.contains(event.target as Node)
       ) {
         setShowSuggestions(false);
+        setSelectedIndex(-1);
       }
     };
 
@@ -192,7 +183,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
 
   const getCurrentPlaceholder = () => {
     if (variant === "default" && !query && !isFocused) {
-      return animatedPlaceholder;
+      return animatedPlaceholder || "Axtar...";
     }
     return placeholder || "Axtar...";
   };
@@ -220,43 +211,75 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
           <div className={styles.search__append}>
             <button
               type="submit"
-              className={`${styles.search__btn} ${
-                variant === "small" ? styles["search__btn--small"] : ""
-              }`.trim()}
+              className={styles.search__btn}
               aria-label="Axtar"
               disabled={!query.trim()}
-            ></button>
+            >
+              <Search size={24} />
+            </button>
           </div>
         </div>
       </form>
 
-      {variant === "default" && showSuggestions && suggestions.length > 0 && (
-        <div className={styles.suggestions} role="listbox">
-          <ul className={styles.suggestions__list}>
-            {suggestions.map((suggestion, index) => (
-              <li
-                key={suggestion.id}
-                className={`${styles.suggestions__item} ${
-                  index === selectedIndex
-                    ? styles["suggestions__item--selected"]
-                    : ""
-                }`}
-                onClick={() => handleSuggestionClick(suggestion)}
-                role="option"
-                aria-selected={index === selectedIndex}
-                tabIndex={-1}
-              >
-                <div className={styles.suggestions__text}>
-                  {suggestion.text}
-                </div>
-                {suggestion.category && (
-                  <div className={styles.suggestions__category}>
-                    {suggestion.category}
+      {/* Search Suggestions */}
+      {showSuggestions && query.length > 0 && variant === "default" && (
+        <div className={styles.suggestions}>
+          {isLoading && (
+            <div className={styles.suggestions__loading}>Axtarılır...</div>
+          )}
+
+          {error && (
+            <div className={styles.suggestions__error}>Xəta baş verdi</div>
+          )}
+
+          {suggestions.length > 0 && !isLoading && (
+            <ul
+              className={styles.suggestions__list}
+              role="listbox"
+              aria-label="Axtarış təklifləri"
+            >
+              {suggestions.map((suggestion, index) => (
+                <li
+                  key={suggestion.id}
+                  className={`${styles.suggestions__item} ${
+                    index === selectedIndex
+                      ? styles["suggestions__item--selected"]
+                      : ""
+                  }`}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  role="option"
+                  aria-selected={index === selectedIndex}
+                >
+                  <div className={styles.suggestions__content}>
+                    <span className={styles.suggestions__text}>
+                      {suggestion.text}
+                    </span>
+                    {suggestion.category && (
+                      <span className={styles.suggestions__category}>
+                        {suggestion.category}
+                      </span>
+                    )}
                   </div>
-                )}
-              </li>
-            ))}
-          </ul>
+                  {suggestion.type && (
+                    <div className={styles.suggestions__type}>
+                      {suggestion.type === "product" && "Məhsul"}
+                      {suggestion.type === "category" && "Kateqoriya"}
+                      {suggestion.type === "location" && "Yer"}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {suggestions.length === 0 &&
+            !isLoading &&
+            !error &&
+            debouncedQuery && (
+              <div className={styles.suggestions__empty}>
+                Heç bir nəticə tapılmadı
+              </div>
+            )}
         </div>
       )}
     </div>

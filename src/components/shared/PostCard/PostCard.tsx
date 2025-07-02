@@ -1,17 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useFavoritesStore } from "@/stores/useFavoritesStore";
 import styles from "./PostCard.module.scss";
 
-// TypeScript interfaces
-export interface PostFeature {
-  icon: string;
-  tooltip: string;
-  type: "barter" | "credit" | "delivery" | "warranty";
-}
-
+// Use existing Post interface from the project
 export interface Post {
   id: string;
   title: string;
@@ -26,7 +20,11 @@ export interface Post {
   href: string;
   type?: "regular" | "vip" | "premium";
   isChance?: boolean;
-  features?: PostFeature[];
+  features?: {
+    icon: string;
+    tooltip: string;
+    type: "barter" | "credit" | "delivery" | "warranty";
+  }[];
   store?: {
     name: string;
     icon?: string;
@@ -34,34 +32,23 @@ export interface Post {
   };
 }
 
-interface PostCardProps {
+export interface PostCardProps {
   post: Post;
   className?: string;
   onFavoriteToggle?: (postId: string, isFavorite: boolean) => void;
-  isChecked?: boolean;
-  onCheckedChange?: (postId: string, isChecked: boolean) => void;
-  variant?: "default" | "compact" | "featured";
 }
 
 const PostCard: React.FC<PostCardProps> = ({
   post,
-  className = "",
+  className,
   onFavoriteToggle,
-  isChecked = false,
-  onCheckedChange,
-  variant = "default",
 }) => {
-  // State for loading states
-  const [imageLoading, setImageLoading] = useState(true);
-  const [imageError, setImageError] = useState(false);
-
   // Get favorites from store
   const favorites = useFavoritesStore((state) => state.favorites);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
 
   const isFavorite = favorites.includes(post.id);
 
-  // Event handlers
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -69,181 +56,108 @@ const PostCard: React.FC<PostCardProps> = ({
     onFavoriteToggle?.(post.id, !isFavorite);
   };
 
-  const handleImageLoad = () => {
-    setImageLoading(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoading(false);
-    setImageError(true);
-  };
-
-  // Helper functions
-  const formatPrice = (price: number, currency: string): string => {
-    return `${price.toLocaleString()} ${currency}`;
-  };
-
-  const formatDateTime = (date: string, time: string): string => {
-    return `${date}, ${time}`;
-  };
-
-  // Component CSS classes
-  const getCardClasses = (): string => {
-    let classes = styles.post__item;
-
-    if (isChecked) classes += ` ${styles["post__item--checked"]}`;
-    if (post.isChance) classes += ` ${styles["post__item--pulsed"]}`;
-    if (variant !== "default")
-      classes += ` ${styles[`post__item--${variant}`]}`;
-    if (className) classes += ` ${className}`;
-
-    return classes;
-  };
-
-  const getTitleClasses = (): string => {
-    let classes = styles.post__title;
-    if (post.type === "vip" || post.type === "premium") {
-      classes += ` ${styles.post__title__special}`;
+  // Helper to get feature icons
+  const getFeatureIcon = (featureType: string) => {
+    switch (featureType) {
+      case "credit":
+        return "/assets/images/percent.svg";
+      case "barter":
+        return "/assets/images/barter.svg";
+      default:
+        return null;
     }
-    return classes;
-  };
-
-  const getPriceClasses = (): string => {
-    let classes = styles.post__price;
-    if (post.type === "premium") {
-      classes += ` ${styles["post__price--secondary"]}`;
-    }
-    return classes;
   };
 
   return (
-    <div className={getCardClasses()}>
-      {/* Image Section */}
-      <div className={styles.post__img}>
-        <Link href={post.href} className={styles.post__imgLink}>
-          {!imageError && post.imageUrl && post.imageUrl.trim() !== "" ? (
-            <Image
-              src={post.imageUrl}
-              alt={post.imageAlt || post.title}
-              fill
-              className={styles.post__image}
-              onLoad={handleImageLoad}
-              onError={handleImageError}
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            />
-          ) : (
-            <div className={styles.post__imagePlaceholder}>
-              <span>Şəkil yoxdur</span>
-            </div>
-          )}
-
-          {imageLoading && !imageError && post.imageUrl && (
-            <div className={styles.post__imageLoader}>
-              <div className={styles.post__imageSpinner}></div>
-            </div>
-          )}
+    <div className={`${styles.postItem} ${className || ""}`}>
+      <div className={styles.postImg}>
+        <Link href={post.href}>
+          <Image
+            src={post.imageUrl}
+            alt={post.imageAlt || post.title}
+            fill
+            sizes="(max-width: 576px) 50vw, (max-width: 767px) 33vw, (max-width: 1024px) 25vw, 20vw"
+            className={styles.image}
+          />
         </Link>
 
-        {/* Attributes Overlay */}
-        <div className={styles.post__attributes}>
-          {/* VIP Badge - CSS background image like original */}
+        <div className={styles.postAttributes}>
           {post.type === "vip" && (
             <span
-              className={styles.post__vip}
+              className={styles.postVip}
               title="VIP elan"
               aria-label="VIP elan"
             />
           )}
-
-          {/* Premium Badge - CSS background image like original */}
           {post.type === "premium" && (
             <span
-              className={styles.post__premium}
+              className={styles.postPremium}
               title="Premium elan"
               aria-label="Premium elan"
             />
           )}
-
-          {/* Favorites Button */}
           <button
-            className={`${styles.post__favorites} ${
+            className={`${styles.postFavorites} ${
               isFavorite ? styles.active : ""
             }`}
             onClick={handleFavoriteClick}
             aria-label={
-              isFavorite ? "Seçdiklərdən çıxar" : "Seçdiklərə əlavə et"
+              isFavorite ? "Remove from favorites" : "Add to favorites"
             }
-            title={isFavorite ? "Seçdiklərdən çıxar" : "Seçdiklərə əlavə et"}
+            type="button"
           >
-            <Heart size={16} />
+            <Heart
+              size={16}
+              fill={isFavorite ? "#ff6b6b" : "transparent"}
+              stroke={isFavorite ? "#ff6b6b" : "#666"}
+            />
           </button>
         </div>
-
-        {/* Special Chance Badge */}
-        {post.isChance && <div className={styles.post__chance}>FÜRSƏT</div>}
       </div>
 
-      {/* Store Section (if available) */}
-      {post.store && (
-        <div className={styles.post__storeSection}>
-          <Link href={post.store.href} className={styles.post__store}>
-            {post.store.icon && (
-              <Image
-                src={post.store.icon}
-                alt={post.store.name}
-                width={16}
-                height={16}
-                className={styles.post__storeIcon}
-              />
-            )}
-            <span className={styles.post__storeName}>{post.store.name}</span>
-          </Link>
-        </div>
-      )}
-
-      {/* Info Section */}
-      <div className={styles.post__info}>
-        <div className={styles.post__content}>
-          {/* Title */}
-          <Link href={post.href} className={getTitleClasses()}>
+      <div className={styles.postInfo}>
+        {/* First div: Title section with 2 lines */}
+        <div className={styles.titleSection}>
+          <Link href={post.href} className={styles.postTitle}>
             {post.title}
           </Link>
-
-          {/* Subtitle (for special posts) */}
-          {post.subtitle && (
-            <div className={styles.post__subtitle}>{post.subtitle}</div>
-          )}
-
-          {/* Meta Information */}
-          <div className={styles.post__meta}>
-            {formatDateTime(post.date, post.time)}
-          </div>
+          <div className={styles.postSubtitle}>{post.subtitle || ""}</div>
         </div>
 
-        {/* Footer with Price and Features */}
-        <div className={styles.post__footer}>
-          <div className={getPriceClasses()}>
-            {formatPrice(post.price, post.currency)}
-          </div>
+        <div style={{ flex: 1 }}></div>
 
-          {/* Features Icons */}
+        {/* Second div: Location and date */}
+        <div className={styles.metaSection}>
+          <p>
+            {post.location}, {post.date}, {post.time}
+          </p>
+        </div>
+
+        {/* Third div: Price and features */}
+        <div className={styles.priceSection}>
+          <div className={styles.postPrice}>
+            {post.price.toLocaleString()} {post.currency}
+          </div>
           {post.features && post.features.length > 0 && (
-            <div className={styles.post__features}>
-              {post.features.map((feature, index) => (
-                <span
-                  key={index}
-                  className={styles.post__feature}
-                  title={feature.tooltip}
-                  aria-label={feature.tooltip}
-                >
-                  <Image
-                    src={feature.icon}
-                    alt={feature.tooltip}
-                    width={20}
-                    height={20}
-                  />
-                </span>
-              ))}
+            <div className={styles.featuresContainer}>
+              {post.features.map((feature, index) => {
+                const iconSrc = getFeatureIcon(feature.type);
+                return iconSrc ? (
+                  <span
+                    key={index}
+                    className={styles.postFeature}
+                    title={feature.tooltip}
+                    aria-label={feature.tooltip}
+                  >
+                    <Image
+                      src={iconSrc}
+                      alt={feature.tooltip}
+                      width={20}
+                      height={20}
+                    />
+                  </span>
+                ) : null;
+              })}
             </div>
           )}
         </div>

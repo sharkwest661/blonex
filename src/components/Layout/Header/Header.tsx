@@ -1,4 +1,4 @@
-// src/components/Layout/Header/Header.tsx - FIXED: Added onLoginClick prop
+// src/components/layout/Header/Header.tsx - FIXED: Added onLoginClick prop
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
