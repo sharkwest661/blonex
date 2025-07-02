@@ -26,38 +26,59 @@
   margin: 0;
 }
 
-// ✅ FIXED: Minimal padding in wrapper to match reference image
+// ✅ UPDATED: Wrapper with CSS Grid layout
 .wrapper {
-  display: flex;
-  gap: $spacing-lg;
-  padding: $spacing-xs;
+  padding: 24px 0px 24px 20px;
 
-  @media screen and (max-width: calc(#{$breakpoint-lg} - 1px)) {
-    gap: $spacing-md;
+  @media screen and (min-width: calc(#{$breakpoint-md})) {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 5fr 1fr;
+    grid-template-columns: 5fr 1fr;
+    grid-gap: 20px;
+    padding: 20px;
   }
 
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     flex-direction: column;
-    padding: $spacing-xs / 2;
+    padding: 20px 0px;
     gap: $spacing-md;
   }
 }
 
+// Secondary wrapper variant
+.wrapper--secondary {
+  padding-left: 0;
+  padding-right: 0;
+
+  @media screen and (min-width: calc(#{$breakpoint-md})) {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 4fr 1fr;
+    grid-template-columns: 4fr 1fr;
+    grid-gap: 20px;
+    padding-top: 0;
+    padding-bottom: 20px;
+  }
+}
+
+// Full-width wrapper variant
+.wrapper--full {
+  padding-top: 24px;
+
+  @media screen and (min-width: calc(#{$breakpoint-md})) {
+    -ms-grid-columns: 1fr;
+    grid-template-columns: 1fr;
+  }
+}
+
 .content {
-  flex: 1;
-  min-width: 0;
+  min-width: 0; // Prevent grid overflow
 }
 
 .sidebar {
-  flex-shrink: 0;
-  width: 20%;
-  min-width: 114px;
-  max-width: 180px;
-
   @media screen and (max-width: calc(#{$breakpoint-md} - 1px)) {
     width: 100%;
-    min-width: unset;
-    max-width: 100%;
     order: -1;
   }
 }
