@@ -2,7 +2,6 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search } from "lucide-react";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useTypingAnimation } from "@/hooks/useTypingAnimation";
 import {
@@ -214,9 +213,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({
               className={styles.search__btn}
               aria-label="Axtar"
               disabled={!query.trim()}
-            >
-              <Search size={24} />
-            </button>
+            ></button>
           </div>
         </div>
       </form>
